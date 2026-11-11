@@ -59,3 +59,9 @@
 - Decision: Use fictional coordinates and people in automated fixtures and leave Sandy Beach coordinates unset until verified from a reliable source.
 - Rationale: Tests need realistic relationships but must not turn guessed location data into published fact.
 - Consequence: Task 07 must verify the exact Sandy Beach identity and coordinates before publishing the first story or map marker.
+
+## 2026-11-12 — Use a paper-and-ink editorial system
+
+- Decision: Build the interface from warm paper surfaces, dark ink, pale map lines, restrained terracotta/sea/yellow accents, a system serif editorial face, and a system sans-serif control face.
+- Rationale: The visual language should feel personal and travel-journal-like without loading third-party fonts or competing with photographs, maps, and story text.
+- Consequence: Future components should reuse the central tokens and preview route. Decorative rotation stays subtle and is removed on small screens; motion and colour must retain accessible fallbacks.

@@ -2,9 +2,9 @@
 
 Last updated: 12 November 2026 (Pacific/Auckland)
 
-Overall status: Validated content and location model complete locally; editorial design system is next.
+Overall status: Editorial design system complete locally; the public reading experience is next.
 
-Next task: `03-editorial-design-system.md`
+Next task: `04-public-reading-experience.md`
 
 ## Task tracker
 
@@ -13,7 +13,7 @@ Next task: `03-editorial-design-system.md`
 | 00 Requirements and plan                                  | Complete    | Shared roadmap inspected in the in-app browser; eight Sandy Beach media files inventoried; `.agent` harness created and validated. The original interactive artifact itself was not exposed by the shared page. | Local commit `d6024dc`; GitHub push pending sign-in                                             |
 | 01 Repository foundation                                  | Complete    | Static Astro/TypeScript app, strict checks, unit and browser tests, local studio boundary, clean dependency audit, and responsive visual QA completed.                                                          | Local commit `6b74484`; GitHub repository creation unavailable through the connected GitHub app |
 | 02 Content and location model                             | Complete    | Strict record schemas, safe content rules, relationship validation, repeated-visit fixtures, geographic filtering, and documentation verified.                                                                  | Local commit `4870169`; GitHub repository creation unavailable through the connected GitHub app |
-| 03 Editorial design system                                | Not started | —                                                                                                                                                                                                               | —                                                                                               |
+| 03 Editorial design system                                | Complete    | Map-first responsive shell, shared controls/cards/states, component preview, accessibility reflow checks, and three viewport screenshots verified.                                                              | Local commit pending; GitHub repository creation unavailable through the connected GitHub app   |
 | 04 Public reading experience                              | Not started | —                                                                                                                                                                                                               | —                                                                                               |
 | 05 Map and geographic discovery                           | Not started | —                                                                                                                                                                                                               | —                                                                                               |
 | 06 Owner authoring studio                                 | Not started | —                                                                                                                                                                                                               | —                                                                                               |
@@ -53,6 +53,15 @@ Next task: `03-editorial-design-system.md`
 - Discovery: tested queries resolve stories by place, descendant geographic area, author, exact visit date, and combined tags.
 - Full verification: `npm run verify` passed formatting, linting, strict type checks, 14 unit tests, the static build, and the Chromium smoke test.
 - Security: `npm audit --audit-level=low` reported 0 vulnerabilities.
+
+## Task 03 verification
+
+- Visual system: warm paper and ink tokens, restrained terracotta/sea/note accents, editorial and UI type stacks, borders, shadows, spacing, and motion rules are defined centrally.
+- Shell and components: compact header, desktop side rail, mobile navigation, discovery controls, buttons, chips, story cards, sticky notes, and empty/error/loading states render on the public shell and `/design-system` preview.
+- Automated browser checks: three Chromium tests cover the read-only shell, 320-pixel component-preview reflow, and simulated 200% root text sizing without horizontal page overflow.
+- Accessibility: interactive controls use 44-pixel minimum heights, keyboard focus is visibly outlined, reduced-motion and forced-colour media queries are present, and the sticky note loses rotation on small screens.
+- Visual QA: inspected the live site in the app's built-in browser and corrected a stretched side-rail layout found during review.
+- Screenshot records: full-page mobile (390 × 844), tablet (768 × 1024), and desktop (1440 × 1000) captures are stored in `docs/screenshots/`.
 
 ## Current blockers
 

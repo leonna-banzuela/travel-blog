@@ -1,0 +1,29 @@
+---
+const { active = "stories" } = Astro.props;
+
+const navItems = [
+  { key: "stories", label: "Stories", href: "/" },
+  { key: "map", label: "Map", href: "/#map" },
+  { key: "design", label: "Design", href: "/design-system" },
+];
+---
+
+<header class="site-header">
+  <a class="brand" href="/" aria-label="Leonna Banzuela travel journal home">
+    <span class="brand-mark" aria-hidden="true">LB</span>
+    <span>
+      <strong>Leonna’s journal</strong>
+      <small>Places, dated in ink</small>
+    </span>
+  </a>
+
+  <nav class="primary-nav" aria-label="Primary navigation">
+    {
+      navItems.map((item) => (
+        <a href={item.href} aria-current={active === item.key ? "page" : undefined}>
+          {item.label}
+        </a>
+      ))
+    }
+  </nav>
+</header>

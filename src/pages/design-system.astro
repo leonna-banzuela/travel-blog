@@ -1,0 +1,107 @@
+---
+import DiscoveryControls from "../components/DiscoveryControls.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Editorial design system · Leonna’s journal"
+  description="A preview of the visual language and interface states for Leonna’s travel journal."
+>
+  <SiteHeader active="design" />
+
+  <main id="main-content" class="preview-page">
+    <header class="preview-heading">
+      <p class="eyebrow">Component preview · v1</p>
+      <h1>Paper, ink, and useful details.</h1>
+      <p>
+        A warm editorial system that keeps stories readable and lets the map stay close to the top.
+      </p>
+    </header>
+
+    <section class="preview-section" aria-labelledby="controls-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Find a memory</p>
+          <h2 id="controls-title">Controls and actions</h2>
+        </div>
+      </div>
+      <DiscoveryControls />
+      <div class="component-row">
+        <button class="button button--ink" type="button">Primary action</button>
+        <button class="button button--paper" type="button">Secondary action</button>
+        <a class="text-link" href="#states">Quiet text link <span>→</span></a>
+      </div>
+    </section>
+
+    <section class="preview-section" aria-labelledby="cards-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Story surfaces</p>
+          <h2 id="cards-title">Cards and notes</h2>
+        </div>
+      </div>
+      <div class="card-grid card-grid--three">
+        <article class="story-card">
+          <div class="card-image-placeholder card-image-placeholder--blue" aria-hidden="true">
+            <span>4:3 image</span>
+          </div>
+          <div class="card-body">
+            <p class="card-kicker">Coast · 1 Nov 2026</p>
+            <h3>A day near the water</h3>
+            <p>Story cards keep dates, places, and authors easy to scan.</p>
+            <div class="tag-list"><span class="tag">Beach</span><span class="tag">Quiet</span></div>
+          </div>
+        </article>
+
+        <article class="story-card">
+          <div class="card-image-placeholder card-image-placeholder--green" aria-hidden="true">
+            <span>4:3 image</span>
+          </div>
+          <div class="card-body">
+            <p class="card-kicker">City · 18 Oct 2026</p>
+            <h3>A second visit</h3>
+            <p>The same place can hold another independently dated story.</p>
+            <div class="tag-list"><span class="tag">Repeat visit</span></div>
+          </div>
+        </article>
+
+        <article class="sticky-note">
+          <p class="handwritten">Field note</p>
+          <h3>Look up before you leave.</h3>
+          <p>The sticky-note treatment adds personality without rotating the text beyond comfort.</p>
+          <a class="text-link" href="#states">Read the practical tip <span>→</span></a>
+        </article>
+      </div>
+    </section>
+
+    <section id="states" class="preview-section" aria-labelledby="states-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Clear feedback</p>
+          <h2 id="states-title">Empty, error, and loading states</h2>
+        </div>
+      </div>
+      <div class="state-grid">
+        <article class="state-panel">
+          <span class="state-icon" aria-hidden="true">○</span>
+          <h3>No stories here yet</h3>
+          <p>Try another filter, or return to all stories.</p>
+          <button class="button button--paper" type="button">Clear filters</button>
+        </article>
+        <article class="state-panel state-panel--error" role="alert">
+          <span class="state-icon" aria-hidden="true">!</span>
+          <h3>The map took a wrong turn</h3>
+          <p>Your stories are safe. Try loading the map again.</p>
+          <button class="button button--paper" type="button">Try again</button>
+        </article>
+        <article class="state-panel" aria-busy="true" aria-label="Loading stories">
+          <span class="loading-line loading-line--short"></span>
+          <span class="loading-line"></span>
+          <span class="loading-line"></span>
+          <span class="sr-only">Loading stories…</span>
+        </article>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

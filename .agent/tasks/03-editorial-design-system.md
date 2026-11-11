@@ -1,6 +1,6 @@
 # Task 03 — Editorial design system
 
-Status: Not started
+Status: Complete locally (GitHub push pending repository creation)
 
 Depends on: Tasks 01–02
 
@@ -27,3 +27,12 @@ Create the simple editorial visual system and responsive shell without letting d
 ## Git checkpoint
 
 Commit as `task(03): build editorial design system` and push it.
+
+## Completion evidence
+
+- Added reusable compact header, wide-screen side navigation, discovery controls, buttons, chips, story cards, sticky notes, and empty/error/loading states.
+- Added `/design-system` as a static component preview and documented the design tokens and accessibility rules.
+- Playwright verified the 320-pixel viewport and simulated 200% root text sizing without horizontal page overflow.
+- Built-in browser QA confirmed the desktop side rail, map-first hierarchy, component preview, and visible keyboard focus.
+- Recorded full-page screenshots at 390 × 844, 768 × 1024, and 1440 × 1000 under `docs/screenshots/`.
+- The focused local Git commit is required before this task's version is recorded; remote backup remains blocked until the GitHub repository exists.
