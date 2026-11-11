@@ -1,0 +1,28 @@
+# Dependencies and generated output
+node_modules/
+dist/
+.astro/
+.cache/
+coverage/
+playwright-report/
+test-results/
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Original travel media stays local; optimized public derivatives are added later.
+blog_assets/**/*.HEIC
+blog_assets/**/*.heic
+blog_assets/**/*.MOV
+blog_assets/**/*.mov
+
+# Editors and operating systems
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.log
