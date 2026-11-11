@@ -41,7 +41,7 @@ The required four-sentence story copy is:
 - Owner-only local authoring studio/CMS for creating and editing stories, selecting a place on a map, adding visit dates, photos, video or video links, external links, tags, ratings, and tips.
 - Static or pre-rendered public pages with shareable URLs.
 - GitHub is the version history and source of every release.
-- Cloudflare Pages is the intended initial host unless Task 01 records a better evidence-backed choice.
+- Cloudflare Workers static assets is the intended initial host, following the evidence-backed Task 01 decision.
 
 ## Growth scope, not first-release scope
 

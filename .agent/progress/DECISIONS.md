@@ -29,3 +29,15 @@
 - Decision: Evaluate Astro + TypeScript for the content-heavy public site, interactive islands for map/filter behavior, schema validation, a local Node-based authoring studio, and Cloudflare Pages deployment.
 - Rationale: This favors pre-rendered, shareable, fast pages while isolating interactive features and keeping the public build read-only.
 - Consequence: Task 01 may refine the exact libraries after checking current compatibility and deployment constraints; changes require a new decision entry.
+
+## 2026-11-12 — Foundation stack validated
+
+- Decision: Use a static Astro `7.3.8` + strict TypeScript foundation, Vitest for unit tests, Playwright for browser smoke tests, ESLint for JavaScript/Astro, and Prettier for formatting. Keep the owner studio isolated under `tools/studio/`.
+- Rationale: Astro matches the content-first, shareable-page requirements. Version `7.3.8` contains the available security fixes while remaining compatible with the machine's Node `22.21.1`; Astro `7.4.11` requires Node `22.23.4+`. The locked dependency graph audits cleanly.
+- Consequence: Upgrade Astro and Node together once the local runtime can meet the newer documented minimum. Public code remains statically generated and read-only.
+
+## 2026-11-12 — Prefer Cloudflare Workers for eventual deployment
+
+- Decision: Replace the earlier tentative Cloudflare Pages target with a static-assets Cloudflare Workers deployment during Task 10.
+- Rationale: Current official Astro deployment guidance says Cloudflare recommends Workers for new projects.
+- Consequence: Task 10 will add Wrangler and deployment configuration only after the public application is production-ready; Task 01 does not add runtime or mutation endpoints.

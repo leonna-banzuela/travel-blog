@@ -1,0 +1,39 @@
+{
+  "name": "leonna-travel-blog",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "A map-first editorial travel journal beginning in Auckland.",
+  "engines": {
+    "node": ">=22.12.0 <23"
+  },
+  "packageManager": "npm@10.9.4",
+  "scripts": {
+    "dev": "astro dev --host 127.0.0.1",
+    "build": "astro build",
+    "preview": "astro preview --host 127.0.0.1",
+    "format": "prettier --check .",
+    "format:write": "prettier --write .",
+    "lint": "eslint .",
+    "typecheck": "astro check",
+    "test": "npm run test:unit && npm run test:e2e",
+    "test:unit": "vitest run",
+    "test:e2e": "playwright test",
+    "verify": "npm run format && npm run lint && npm run typecheck && npm run test:unit && npm run build && npm run test:e2e"
+  },
+  "dependencies": {
+    "astro": "7.3.8"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.12",
+    "@eslint/js": "9.39.5",
+    "@playwright/test": "1.65.0",
+    "@types/node": "26.6.6",
+    "eslint": "9.39.5",
+    "eslint-plugin-astro": "1.7.0",
+    "prettier": "3.10.0",
+    "prettier-plugin-astro": "1.1.2",
+    "typescript": "6.0.3",
+    "vitest": "5.1.0"
+  }
+}

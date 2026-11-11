@@ -1,6 +1,6 @@
 # Task 01 — Repository foundation
 
-Status: Not started
+Status: Complete locally; GitHub push blocked by missing remote repository
 
 Depends on: Task 00
 
@@ -29,3 +29,9 @@ Create a minimal, maintainable, runnable project and establish recoverable Git/G
 ## Git checkpoint
 
 Commit as `task(01): establish repository foundation` and push it.
+
+## Evidence
+
+- `npm ci`, `npm run verify`, and `npm audit --audit-level=low` passed on 12 November 2026.
+- Responsive visual QA covered mobile, tablet, and desktop viewport classes.
+- The connected GitHub account has no target repository and the connector cannot create one; the local task commit is retained until a remote exists.

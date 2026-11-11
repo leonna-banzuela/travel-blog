@@ -13,4 +13,4 @@ For each task:
 5. Push the branch/commit to GitHub and record its URL or hash in `STATUS.md`.
 6. Tag public milestones (`v0.1.0`, `v0.2.0`, and so on) only after the deployed result is verified.
 
-Never force-push shared history, commit secrets, or bypass failed required checks. Do not claim a version is on GitHub until the remote confirms it. Task 00 initialized the local Git repository, but no `gh` command is installed and the built-in browser currently reaches a GitHub sign-in page. Task 01 must establish the remote after an authenticated route is available.
+Never force-push shared history, commit secrets, or bypass failed required checks. Do not claim a version is on GitHub until the remote confirms it. Task 00 initialized the local Git repository. The GitHub integration is connected as `leonna-banzuela`, but it cannot create a new repository and no target repository currently exists; the built-in browser is also signed out. Establish and verify the remote as soon as an empty repository is available.
