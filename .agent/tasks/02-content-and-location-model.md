@@ -1,6 +1,6 @@
 # Task 02 — Content and location model
 
-Status: Not started
+Status: Complete locally (GitHub push pending repository creation)
 
 Depends on: Task 01
 
@@ -28,3 +28,12 @@ Define validated content that supports repeated visits, multiple creators, map d
 ## Git checkpoint
 
 Commit as `task(02): add validated travel content model` and push it.
+
+## Completion evidence
+
+- Added strict Zod schemas for places, dated stories/visits, authors, media, geographic areas, and controlled tag groups.
+- Added catalog-level checks for duplicate identities, missing relationships, and geographic cycles.
+- Added repeated-visit and multiple-author fixtures plus filtering by place, area, author, date, and tags.
+- `npm run verify` passed 14 unit tests, the static production build, and the Chromium smoke test.
+- `npm audit --audit-level=low` reported 0 vulnerabilities.
+- The focused local Git commit is required before this task's version is recorded; remote backup remains blocked until the GitHub repository exists.

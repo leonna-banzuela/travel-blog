@@ -41,3 +41,21 @@
 - Decision: Replace the earlier tentative Cloudflare Pages target with a static-assets Cloudflare Workers deployment during Task 10.
 - Rationale: Current official Astro deployment guidance says Cloudflare recommends Workers for new projects.
 - Consequence: Task 10 will add Wrangler and deployment configuration only after the public application is production-ready; Task 01 does not add runtime or mutation endpoints.
+
+## 2026-11-12 — Validate content at record and catalog boundaries
+
+- Decision: Use pinned Zod 4 schemas for individual records and a separate catalog validator for cross-record identity, relationship, and geographic-cycle checks.
+- Rationale: A record can be structurally valid while still pointing to a missing author, place, media item, or area. Keeping both validation layers makes authoring errors actionable before a build is published.
+- Consequence: New content sources and the future local studio must pass the same schemas and catalog validation before committing generated content.
+
+## 2026-11-12 — Permit safe Markdown and allowlisted media only
+
+- Decision: Story content is Markdown without raw HTML; external links must use HTTPS, local media paths must stay under `/media/`, and remote video embeds are limited to YouTube and Vimeo HTTPS URLs.
+- Rationale: The first release is read-only, but unsafe stored content could still become executable when rendered. Restricting accepted inputs reduces that risk at the content boundary.
+- Consequence: Additional embed providers or rich HTML require an explicit security review and schema change rather than being accepted implicitly.
+
+## 2026-11-12 — Do not invent real-world location facts
+
+- Decision: Use fictional coordinates and people in automated fixtures and leave Sandy Beach coordinates unset until verified from a reliable source.
+- Rationale: Tests need realistic relationships but must not turn guessed location data into published fact.
+- Consequence: Task 07 must verify the exact Sandy Beach identity and coordinates before publishing the first story or map marker.

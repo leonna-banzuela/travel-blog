@@ -2,9 +2,9 @@
 
 Last updated: 12 November 2026 (Pacific/Auckland)
 
-Overall status: Repository foundation complete locally; content modelling is next.
+Overall status: Validated content and location model complete locally; editorial design system is next.
 
-Next task: `02-content-and-location-model.md`
+Next task: `03-editorial-design-system.md`
 
 ## Task tracker
 
@@ -12,7 +12,7 @@ Next task: `02-content-and-location-model.md`
 | --------------------------------------------------------- | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
 | 00 Requirements and plan                                  | Complete    | Shared roadmap inspected in the in-app browser; eight Sandy Beach media files inventoried; `.agent` harness created and validated. The original interactive artifact itself was not exposed by the shared page. | Local commit `d6024dc`; GitHub push pending sign-in                                             |
 | 01 Repository foundation                                  | Complete    | Static Astro/TypeScript app, strict checks, unit and browser tests, local studio boundary, clean dependency audit, and responsive visual QA completed.                                                          | Local commit `6b74484`; GitHub repository creation unavailable through the connected GitHub app |
-| 02 Content and location model                             | Not started | —                                                                                                                                                                                                               | —                                                                                               |
+| 02 Content and location model                             | Complete    | Strict record schemas, safe content rules, relationship validation, repeated-visit fixtures, geographic filtering, and documentation verified.                                                                  | Local commit pending; GitHub repository creation unavailable through the connected GitHub app   |
 | 03 Editorial design system                                | Not started | —                                                                                                                                                                                                               | —                                                                                               |
 | 04 Public reading experience                              | Not started | —                                                                                                                                                                                                               | —                                                                                               |
 | 05 Map and geographic discovery                           | Not started | —                                                                                                                                                                                                               | —                                                                                               |
@@ -43,6 +43,16 @@ Next task: `02-content-and-location-model.md`
 - Security: `npm audit --audit-level=low` reported 0 vulnerabilities; no public mutation route or owner-studio code is included in `dist/`.
 - Visual QA: inspected the live page at mobile, tablet, and desktop viewport classes; no horizontal overflow was present, the mobile header measured 56 px, and the map placeholder collapsed to one column.
 - GitHub: the connected account is `leonna-banzuela`, but it has no travel-blog repository and the available connector can work only with existing repositories. The browser remains signed out, so a remote cannot yet be created or pushed.
+
+## Task 02 verification
+
+- Content records: strict Zod schemas cover geographic areas, authors, places, media, stories/visits, and controlled tag groups.
+- Repeated visits: tests prove that one author can publish independently dated stories about the same place and that another author can publish there too.
+- Relationships: catalog validation rejects duplicate IDs/slugs, missing area/place/author/media records, and geographic cycles.
+- Safe input: tests reject invalid ISO dates, non-HTTPS links, unsafe media paths and embeds, out-of-range coordinates, raw HTML, and publication-state inconsistencies.
+- Discovery: tested queries resolve stories by place, descendant geographic area, author, exact visit date, and combined tags.
+- Full verification: `npm run verify` passed formatting, linting, strict type checks, 14 unit tests, the static build, and the Chromium smoke test.
+- Security: `npm audit --audit-level=low` reported 0 vulnerabilities.
 
 ## Current blockers
 
