@@ -36,4 +36,4 @@ Commit as `task(02): add validated travel content model` and push it.
 - Added repeated-visit and multiple-author fixtures plus filtering by place, area, author, date, and tags.
 - `npm run verify` passed 14 unit tests, the static production build, and the Chromium smoke test.
 - `npm audit --audit-level=low` reported 0 vulnerabilities.
-- The focused local Git commit is required before this task's version is recorded; remote backup remains blocked until the GitHub repository exists.
+- Focused local version: commit `4870169` (`task(02): add validated travel content model`). Remote backup remains blocked until the GitHub repository exists.
