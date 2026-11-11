@@ -35,4 +35,4 @@ Commit as `task(03): build editorial design system` and push it.
 - Playwright verified the 320-pixel viewport and simulated 200% root text sizing without horizontal page overflow.
 - Built-in browser QA confirmed the desktop side rail, map-first hierarchy, component preview, and visible keyboard focus.
 - Recorded full-page screenshots at 390 × 844, 768 × 1024, and 1440 × 1000 under `docs/screenshots/`.
-- The focused local Git commit is required before this task's version is recorded; remote backup remains blocked until the GitHub repository exists.
+- Focused local version: commit `a5e420f` (`task(03): build editorial design system`). Remote backup remains blocked until the GitHub repository exists.
