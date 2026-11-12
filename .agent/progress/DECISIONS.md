@@ -89,3 +89,15 @@
 - Decision: Show an editorial area-level Auckland symbol and an always-visible list while Sandy Beach coordinates are unverified; do not draw a false Auckland boundary or place marker.
 - Rationale: The map should communicate that a published visit exists in the area without implying that the entire region was explored or that the beach location is known precisely.
 - Consequence: Task 07 may replace the pending state with a verified place marker. Map failure must never block the geographic breadcrumb, place page, or story link.
+
+## 2026-11-12 — Keep canonical content in one validated JSON catalog
+
+- Decision: Store the repository's canonical author, place, media, and story records in `content/data/catalog.json`, import it through the shared catalog validator, and have the local studio update that same file deterministically.
+- Rationale: One schema-validated source removes duplicate hand-maintained fixtures and lets both the static build and owner tool prove they use identical content rules.
+- Consequence: Content changes must validate as a whole catalog before replacing the canonical file; ignored local backup and recovery data are not publishable content.
+
+## 2026-11-12 — Defend the local studio in depth
+
+- Decision: Bind the owner studio to IPv4 loopback only and combine exact host checks, same-origin mutation checks, an unpredictable process token, an HttpOnly SameSite cookie, restrictive response headers, content-sniffed uploads, safe filenames, and explicit public-bundle scanning.
+- Rationale: Localhost is the primary boundary, but layered controls reduce the risk of DNS rebinding, cross-site requests, malicious uploads, traversal, and accidental deployment.
+- Consequence: The first release has no remote editing or public write route. Remote authoring requires a separately designed authenticated and authorized service.

@@ -281,6 +281,7 @@ export const storySchema = z
       .refine((ids) => new Set(ids).size === ids.length, {
         error: "A story cannot reference the same media item more than once.",
       }),
+    coverMediaId: recordIdSchema.nullable().default(null),
     tags: z
       .array(controlledTagSchema)
       .max(20)
@@ -306,6 +307,17 @@ export const storySchema = z
         code: "custom",
         path: ["publishedAt"],
         message: "Only published stories may have a publishedAt date-time.",
+      });
+    }
+
+    if (
+      story.coverMediaId !== null &&
+      !story.mediaIds.includes(story.coverMediaId)
+    ) {
+      context.addIssue({
+        code: "custom",
+        path: ["coverMediaId"],
+        message: "The cover media item must also appear in mediaIds.",
       });
     }
   });

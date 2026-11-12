@@ -20,6 +20,10 @@ blog_assets/**/*.heic
 blog_assets/**/*.MOV
 blog_assets/**/*.mov
 
+# Local studio uploads and recovery state never ship or enter Git history.
+content/studio/uploads/
+tools/studio/.studio-state/
+
 # Editors and operating systems
 .DS_Store
 Thumbs.db

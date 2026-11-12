@@ -1,6 +1,6 @@
 # Task 06 — Owner authoring studio
 
-Status: Not started
+Status: Complete
 
 Depends on: Tasks 02, 04, and 05
 
@@ -28,3 +28,10 @@ Provide a simple owner CMS for writing stories and adding media, links, dates, t
 ## Git checkpoint
 
 Commit as `task(06): add secure local authoring studio` and push it.
+
+## Completion evidence
+
+- The loopback-only studio was exercised in the built-in browser from draft creation through media upload, safe preview, canonical save, reload, and a second save.
+- Reopened drafts preserve visit date, rating, tags, tips, media metadata, ordering, and cover selection.
+- Unit tests reject unsafe hosts, file signatures, paths, links, dates, coordinates, and raw HTML; the production-boundary scan rejects studio/API markers in `dist/`.
+- `npm run verify`, `npm audit --audit-level=low`, and `git diff --check` pass.

@@ -12,6 +12,7 @@
     "dev": "astro dev --host 127.0.0.1",
     "build": "astro build",
     "preview": "astro preview --host 127.0.0.1",
+    "studio": "tsx tools/studio/server.ts",
     "format": "prettier --check .",
     "format:write": "prettier --write .",
     "lint": "eslint .",
@@ -19,7 +20,8 @@
     "test": "npm run test:unit && npm run test:e2e",
     "test:unit": "vitest run",
     "test:e2e": "playwright test",
-    "verify": "npm run format && npm run lint && npm run typecheck && npm run test:unit && npm run build && npm run test:e2e"
+    "verify:boundary": "node tools/verify-public-boundary.mjs",
+    "verify": "npm run format && npm run lint && npm run typecheck && npm run test:unit && npm run build && npm run verify:boundary && npm run test:e2e"
   },
   "dependencies": {
     "astro": "7.3.8",
@@ -36,6 +38,7 @@
     "eslint-plugin-astro": "1.7.0",
     "prettier": "3.10.0",
     "prettier-plugin-astro": "1.1.2",
+    "tsx": "4.23.15",
     "typescript": "6.0.3",
     "vitest": "5.1.0"
   }

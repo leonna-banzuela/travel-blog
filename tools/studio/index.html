@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="studio-token" content="__STUDIO_TOKEN__" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Owner studio · Leonna’s journal</title>
+    <link rel="stylesheet" href="/studio.css" />
+    <script type="module" src="/studio.js"></script>
+  </head>
+  <body>
+    <header class="studio-header">
+      <div>
+        <p class="eyebrow">Local owner tool</p>
+        <h1>Leonna’s story studio</h1>
+      </div>
+      <div class="security-badge">
+        <strong>Localhost only</strong>
+        <span>No public write endpoint</span>
+      </div>
+    </header>
+
+    <div id="recovery-banner" class="recovery-banner" hidden>
+      <p>
+        <strong>Recovered autosave found.</strong> Restore the unfinished form
+        or discard it.
+      </p>
+      <div>
+        <button
+          id="restore-recovery"
+          class="button button-primary"
+          type="button"
+        >
+          Restore
+        </button>
+        <button id="discard-recovery" class="button" type="button">
+          Discard
+        </button>
+      </div>
+    </div>
+
+    <main class="studio-shell">
+      <form id="story-form" novalidate>
+        <section class="panel panel-intro">
+          <div>
+            <p class="step">Draft</p>
+            <h2>Create or reopen a story</h2>
+          </div>
+          <label>
+            Saved story
+            <select id="story-picker" name="storyPicker">
+              <option value="">New draft</option>
+            </select>
+          </label>
+        </section>
+
+        <div
+          id="validation-summary"
+          class="validation-summary"
+          role="alert"
+          tabindex="-1"
+          hidden
+        ></div>
+
+        <section class="panel" aria-labelledby="author-heading">
+          <div class="panel-heading">
+            <p class="step">1 · Creator</p>
+            <h2 id="author-heading">Who wrote this?</h2>
+          </div>
+          <div class="field-grid">
+            <label>
+              Creator
+              <select id="author-select" name="authorId"></select>
+            </label>
+            <label class="new-author-field" hidden>
+              Creator name
+              <input
+                id="author-name"
+                name="authorName"
+                maxlength="120"
+                autocomplete="name"
+              />
+            </label>
+            <label class="field-wide new-author-field" hidden>
+              Short bio
+              <textarea
+                id="author-bio"
+                name="authorBio"
+                rows="3"
+                maxlength="1000"
+              ></textarea>
+            </label>
+          </div>
+        </section>
+
+        <section class="panel" aria-labelledby="place-heading">
+          <div class="panel-heading">
+            <p class="step">2 · Place</p>
+            <h2 id="place-heading">Where did the visit happen?</h2>
+          </div>
+          <div class="field-grid">
+            <label>
+              Place
+              <select id="place-select" name="placeId"></select>
+            </label>
+            <label class="new-place-field" hidden>
+              Place name
+              <input id="place-name" name="placeName" maxlength="160" />
+            </label>
+            <label class="new-place-field" hidden>
+              Area
+              <select id="area-select" name="areaId"></select>
+            </label>
+            <label class="new-place-field" hidden>
+              Address summary
+              <input
+                id="address-summary"
+                name="addressSummary"
+                maxlength="240"
+              />
+            </label>
+            <label class="new-place-field">
+              Latitude <span class="optional">optional until verified</span>
+              <input
+                id="latitude"
+                name="latitude"
+                inputmode="decimal"
+                placeholder="-36.8500"
+              />
+            </label>
+            <label class="new-place-field">
+              Longitude <span class="optional">optional until verified</span>
+              <input
+                id="longitude"
+                name="longitude"
+                inputmode="decimal"
+                placeholder="174.7600"
+              />
+            </label>
+          </div>
+          <p class="help">
+            Leave both coordinates empty if the exact location is not verified.
+            Never guess a marker.
+          </p>
+        </section>
+
+        <section class="panel" aria-labelledby="story-heading">
+          <div class="panel-heading">
+            <p class="step">3 · Story</p>
+            <h2 id="story-heading">Write the dated visit</h2>
+          </div>
+          <div class="field-grid">
+            <label class="field-wide">
+              Story title
+              <input id="story-title" name="title" required maxlength="180" />
+            </label>
+            <label>
+              Visit date
+              <input id="visit-date" name="visitDate" type="date" required />
+            </label>
+            <label>
+              Personal rating
+              <select id="rating" name="rating" required>
+                <option value="">Choose</option>
+                <option value="1">1 / 5</option>
+                <option value="1.5">1.5 / 5</option>
+                <option value="2">2 / 5</option>
+                <option value="2.5">2.5 / 5</option>
+                <option value="3">3 / 5</option>
+                <option value="3.5">3.5 / 5</option>
+                <option value="4">4 / 5</option>
+                <option value="4.5">4.5 / 5</option>
+                <option value="5">5 / 5</option>
+              </select>
+            </label>
+            <label class="field-wide">
+              Short summary
+              <textarea
+                id="story-summary"
+                name="summary"
+                required
+                rows="3"
+                maxlength="320"
+              ></textarea>
+            </label>
+            <label class="field-wide">
+              Story body
+              <textarea
+                id="story-body"
+                name="body"
+                required
+                rows="10"
+                maxlength="50000"
+              ></textarea>
+            </label>
+          </div>
+
+          <fieldset class="tags-fieldset">
+            <legend>Discovery tags</legend>
+            <div id="tag-options" class="tag-options"></div>
+          </fieldset>
+        </section>
+
+        <section class="panel" aria-labelledby="tips-heading">
+          <div class="panel-heading panel-heading-actions">
+            <div>
+              <p class="step">4 · Notes</p>
+              <h2 id="tips-heading">Tips and useful links</h2>
+            </div>
+            <div>
+              <button id="add-tip" class="button" type="button">Add tip</button>
+              <button id="add-link" class="button" type="button">
+                Add link
+              </button>
+            </div>
+          </div>
+          <div id="tips-list" class="repeat-list" aria-label="Story tips"></div>
+          <div
+            id="links-list"
+            class="repeat-list"
+            aria-label="External links"
+          ></div>
+        </section>
+
+        <section class="panel" aria-labelledby="media-heading">
+          <div class="panel-heading">
+            <p class="step">5 · Media</p>
+            <h2 id="media-heading">Photos and videos</h2>
+          </div>
+          <div class="media-tools">
+            <label class="file-picker">
+              Select photos or videos
+              <input
+                id="media-files"
+                type="file"
+                multiple
+                accept=".jpg,.jpeg,.png,.webp,.avif,.heic,.mp4,.mov,.webm"
+              />
+            </label>
+            <div class="embed-fields">
+              <label>
+                YouTube or Vimeo URL
+                <input id="embed-url" type="url" placeholder="https://…" />
+              </label>
+              <label>
+                Video description
+                <input id="embed-alt" maxlength="300" />
+              </label>
+              <button id="add-embed" class="button" type="button">
+                Add video link
+              </button>
+            </div>
+          </div>
+          <p id="upload-status" class="help" aria-live="polite"></p>
+          <div
+            id="media-list"
+            class="media-list"
+            aria-label="Ordered story media"
+          ></div>
+          <p class="help">
+            JPEG, PNG, WebP, AVIF, HEIC, MP4, MOV, and WebM are inspected by
+            file content. Images are limited to 30 MB and videos to 250 MB.
+            Staged originals stay local and ignored by Git.
+          </p>
+        </section>
+
+        <section class="save-bar" aria-label="Draft actions">
+          <p id="autosave-status" aria-live="polite">Autosave ready</p>
+          <div>
+            <button id="preview-story" class="button" type="button">
+              Preview
+            </button>
+            <button id="save-story" class="button button-primary" type="submit">
+              Save validated draft
+            </button>
+          </div>
+        </section>
+      </form>
+
+      <aside
+        id="preview-panel"
+        class="preview-panel"
+        aria-labelledby="preview-heading"
+      >
+        <p class="step">Safe local preview</p>
+        <h2 id="preview-heading">Your story preview</h2>
+        <div id="preview-content" class="preview-content">
+          <p>
+            Choose Preview to see the current draft. Preview content is inserted
+            as text, never executable HTML.
+          </p>
+        </div>
+      </aside>
+    </main>
+  </body>
+</html>

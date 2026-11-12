@@ -2,9 +2,9 @@
 
 Last updated: 12 November 2026 (Pacific/Auckland)
 
-Overall status: Accessible geographic discovery complete locally; the owner authoring studio is next.
+Overall status: Secure local owner authoring is complete; Sandy Beach media processing is next.
 
-Next task: `06-owner-authoring-studio.md`
+Next task: `07-sandy-beach-story-and-media.md`
 
 ## Task tracker
 
@@ -16,7 +16,7 @@ Next task: `06-owner-authoring-studio.md`
 | 03 Editorial design system                                | Complete    | Map-first responsive shell, shared controls/cards/states, component preview, accessibility reflow checks, and three viewport screenshots verified.                                                              | Local commit `a5e420f`; GitHub repository creation unavailable through the connected GitHub app |
 | 04 Public reading experience                              | Complete    | Static story/list, place, area, creator, and 404 routes; Sandy Beach seed story; safe optional sections; sharing; and core reading tests verified.                                                              | Local commit `ef7ac6d`; GitHub repository creation unavailable through the connected GitHub app |
 | 05 Map and geographic discovery                           | Complete    | Attributed Auckland map, area-level story cue, geographic navigation, keyboard/screen-reader support, list parity, and tile-failure fallback verified.                                                          | Local commit `a69d38e`; GitHub repository creation unavailable through the connected GitHub app |
-| 06 Owner authoring studio                                 | Not started | —                                                                                                                                                                                                               | —                                                                                               |
+| 06 Owner authoring studio                                 | Complete    | Loopback-only CMS, schema-validated deterministic saves, inspected media uploads, safe preview, autosave/recovery, and public-build exclusion verified.                                                         | Local commit pending; GitHub repository creation unavailable through the connected GitHub app   |
 | 07 Sandy Beach story and media                            | Not started | Source media exists in `blog_assets/sandy_beach/`.                                                                                                                                                              | —                                                                                               |
 | 08 Filters, search, related content, and sharing          | Not started | —                                                                                                                                                                                                               | —                                                                                               |
 | 09 Quality, accessibility, SEO, performance, and security | Not started | —                                                                                                                                                                                                               | —                                                                                               |
@@ -83,6 +83,16 @@ Next task: `06-owner-authoring-studio.md`
 - Fallback: exact Sandy Beach coordinates remain unset; a browser test aborts all OpenStreetMap tile requests and still reaches the place and story through the list.
 - Automated checks: 16 unit tests and 8 Chromium tests pass, including 320-pixel and 200% text reflow coverage.
 - Visual QA: inspected live tiles, attribution, the map/list responsive layout, and the activated Auckland popup in the app's built-in browser.
+
+## Task 06 verification
+
+- Owner boundary: the studio binds only to `127.0.0.1`, rejects non-loopback hosts and cross-origin mutations, uses a random per-process token plus an HttpOnly SameSite cookie, and applies restrictive browser headers.
+- Authoring: create/edit/preview supports authors, hierarchical places, required visit dates, ratings, controlled tags, tips, HTTPS links, inspected file uploads, approved video embeds, media ordering, and cover selection.
+- Safety: uploaded JPEG, PNG, WebP, AVIF, HEIC, MP4, MOV, and WebM files are content-sniffed with size limits and safe hashed names; traversal, raw HTML, invalid dates/links/coordinates, and inconsistent catalog data are rejected.
+- Recovery: autosave/recovery and catalog backup state remain local and Git-ignored; canonical content is written deterministically to `content/data/catalog.json`.
+- Browser QA: created a temporary complete draft, uploaded a PNG, previewed it, saved and reloaded it, found and fixed tag state loss after save, then confirmed tags, tips, media, cover choice, date, rating, and copy survive a second save.
+- Automated checks: `npm run verify` passed formatting, linting, strict type checks, 24 unit tests, the 10-page static build, the public-boundary scan across 13 generated files, and 8 Chromium tests.
+- Security: `npm audit --audit-level=low` reported 0 vulnerabilities; the temporary verification story was removed from canonical content before committing.
 
 ## Current blockers
 
