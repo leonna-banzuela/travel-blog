@@ -79,10 +79,21 @@ const existingMediaInputSchema = z.object({
   id: recordIdSchema,
   kind: z.enum(["image", "video", "video-embed"]),
   src: z.string().min(1).max(2_000),
+  poster: z.string().min(1).max(2_000).optional(),
   altText: z.string().trim().min(1).max(300),
   caption: z.string().trim().max(500).default(""),
   width: z.number().int().positive().optional(),
   height: z.number().int().positive().optional(),
+  variants: z
+    .array(
+      z.object({
+        src: z.string().min(1).max(2_000),
+        width: z.number().int().positive(),
+        type: z.enum(["image/avif", "image/webp", "image/jpeg"]),
+      }),
+    )
+    .max(12)
+    .optional(),
 });
 
 const studioInputSchema = z.object({
@@ -331,8 +342,10 @@ export function buildStudioCatalog(
         : {
             ...common,
             src: item.src,
+            poster: item.source === "existing" ? item.poster : undefined,
             width: item.source === "existing" ? item.width : undefined,
             height: item.source === "existing" ? item.height : undefined,
+            variants: item.source === "existing" ? item.variants : undefined,
           },
     );
   });

@@ -23,9 +23,15 @@ const paragraphs = splitStoryParagraphs(view.story.bodyMarkdown);
 const observedTips = view.story.tips.filter((tip) => tip.perspective === "observed");
 const personalTips = view.story.tips.filter((tip) => tip.perspective === "subjective");
 const rating = `${view.story.authorRating} out of 5`;
+const cover = view.media.find((item) => item.id === view.story.coverMediaId);
 ---
 
-<BaseLayout title={`${view.story.title} · Leonna’s journal`} description={view.story.summary}>
+<BaseLayout
+  title={`${view.story.title} · Leonna’s journal`}
+  description={view.story.summary}
+  image={cover?.kind === "image" ? cover.src : cover?.poster}
+  imageAlt={cover?.altText}
+>
   <SiteHeader active="stories" />
   <main id="main-content" class="reading-page">
     <nav class="breadcrumbs" aria-label="Breadcrumb">

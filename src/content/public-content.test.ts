@@ -17,9 +17,23 @@ describe("public reading content", () => {
     expect(view.place.name).toBe("Sandy Beach");
     expect(view.author.name).toBe("Leonna Banzuela");
     expect(formatVisitDate(view.story.visitDate)).toBe("1 November 2026");
+    expect(view.place.coordinates).toEqual({
+      latitude: -36.975,
+      longitude: 174.62,
+    });
+    expect(view.story.bodyMarkdown).toBe(
+      "Sandy Beach was a lovely place to slow down and enjoy the Auckland coast. The water looked so inviting that I really wanted to go for a swim. Unfortunately, I had not brought my swimsuit, so I could not get in. I still had a nice time taking in the view and would happily return better prepared.",
+    );
     expect(
       splitStoryParagraphs(view.story.bodyMarkdown)[0].split(". "),
     ).toHaveLength(4);
+    expect(view.media.map((item) => item.kind)).toEqual([
+      "image",
+      "image",
+      "video",
+    ]);
+    expect(view.story.coverMediaId).toBe("sandy-beach-pohutukawa");
+    expect(view.media[0]?.variants).toHaveLength(4);
   });
 
   it("keeps repeat visits as separate published reading entries", () => {

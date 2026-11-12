@@ -68,7 +68,13 @@ test("reader can discover and open the Sandy Beach story", async ({ page }) => {
   await expect(page.getByRole("button", { name: "Share story" })).toBeVisible();
   await expect(
     page.getByRole("heading", { name: "Photos and videos" }),
-  ).toHaveCount(0);
+  ).toBeVisible();
+  await expect(
+    page.getByRole("img", { name: /broad-canopied tree/i }),
+  ).toBeVisible();
+  await expect(page.locator("video")).toHaveAttribute("preload", "metadata");
+  await expect(page.locator("video")).not.toHaveAttribute("autoplay", "");
+  await expect(page.locator('source[type="image/avif"]')).toHaveCount(2);
   await expect(page.getByRole("heading", { name: "Useful links" })).toHaveCount(
     0,
   );
@@ -84,7 +90,18 @@ test("direct story route has metadata and connected reading pages", async ({
   );
   await expect(page.locator('meta[name="description"]')).toHaveAttribute(
     "content",
-    /quiet visit to Sandy Beach/i,
+    /lovely Auckland coast visit/i,
+  );
+  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
+    "content",
+    "/media/sandy-beach/pohutukawa-and-water-1280.webp",
+  );
+  await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute(
+    "content",
+    "summary_large_image",
+  );
+  await expect(page.locator(".story-copy p:not(.eyebrow)")).toHaveText(
+    "Sandy Beach was a lovely place to slow down and enjoy the Auckland coast. The water looked so inviting that I really wanted to go for a swim. Unfortunately, I had not brought my swimsuit, so I could not get in. I still had a nice time taking in the view and would happily return better prepared.",
   );
 
   await page.getByRole("link", { name: "More at this place" }).click();
@@ -93,7 +110,7 @@ test("direct story route has metadata and connected reading pages", async ({
   ).toBeVisible();
   await expect(
     page.getByText("Exact map position is awaiting verification."),
-  ).toBeVisible();
+  ).toHaveCount(0);
 
   await page.goto("/areas/auckland");
   await expect(
@@ -124,7 +141,7 @@ test("map and accessible list provide the same discovery path", async ({
   await page.goto("/");
 
   const map = page.getByRole("region", {
-    name: /interactive map centered on the Auckland area/i,
+    name: /interactive map centered on the verified Sandy Beach visit location/i,
   });
   await expect(map).toBeVisible();
   await expect(
@@ -133,7 +150,7 @@ test("map and accessible list provide the same discovery path", async ({
   await expect(page.getByRole("link", { name: "World" })).toBeVisible();
   await expect(page.getByRole("link", { name: "New Zealand" })).toBeVisible();
   await expect(
-    page.getByText("Area contains a published visit", { exact: true }),
+    page.getByText("Verified visit location", { exact: true }),
   ).toBeVisible();
 
   await page.getByRole("link", { name: "Read story →", exact: true }).click();
@@ -156,6 +173,6 @@ test("map failure leaves the list route available", async ({ page }) => {
     "/places/sandy-beach-auckland",
   );
   await expect(
-    page.getByText(/exact coordinates are not yet verified/i),
+    page.getByText(/visit location is verified from the original media/i),
   ).toBeAttached();
 });

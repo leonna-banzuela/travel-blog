@@ -1,6 +1,6 @@
 # Task 07 — Sandy Beach story and media
 
-Status: Not started
+Status: Complete
 
 Depends on: Tasks 04–06
 
@@ -28,3 +28,12 @@ Publish the first real story using the supplied Sandy Beach media and required c
 ## Git checkpoint
 
 Commit as `task(07): publish Sandy Beach story` and push it.
+
+## Completion evidence
+
+- All eight originals were inventoried, visually reviewed, hashed before processing, and confirmed unchanged afterward.
+- Repeated photo metadata supports the rounded visit marker at `-36.9750, 174.6200`; no third-party reverse-geocoding service received the source coordinates.
+- Two privacy-conscious photos and one short silent video were converted to responsive, metadata-free public derivatives with honest alt text and captions.
+- The published direct route contains the exact four required sentences, Leonna Banzuela, 1 November 2026, responsive media, a cover/social image, and verified map/list discovery.
+- The story was reopened and saved through the local studio; mobile, tablet, and desktop visual QA passed in the built-in browser.
+- `npm run verify`, `npm audit --audit-level=low`, and `git diff --check` pass.

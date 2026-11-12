@@ -1,0 +1,46 @@
+---
+import { mediaSchema } from "../content/schemas";
+
+const { media: mediaInput, sizes = "100vw", loading = "lazy" } = Astro.props;
+const media = mediaSchema.parse(mediaInput);
+
+if (media.kind !== "image") {
+  throw new Error("ResponsiveImage requires image media.");
+}
+
+const variants = media.variants ?? [];
+const types = [...new Set(variants.map((variant) => variant.type))];
+const fallbackVariants = variants
+  .filter((variant) => variant.type === "image/webp")
+  .sort((left, right) => left.width - right.width);
+const sourceGroups = types
+  .filter((type) => type !== "image/webp")
+  .map((type) => ({
+    type,
+    srcset: variants
+      .filter((variant) => variant.type === type)
+      .sort((left, right) => left.width - right.width)
+      .map((variant) => `${variant.src} ${variant.width}w`)
+      .join(", "),
+  }));
+---
+
+<picture>
+  {
+    sourceGroups.map((group) => (
+      <source type={group.type} srcset={group.srcset} sizes={sizes} />
+    ))
+  }
+  <img
+    src={media.src}
+    srcset={fallbackVariants.length
+      ? fallbackVariants.map((variant) => `${variant.src} ${variant.width}w`).join(", ")
+      : undefined}
+    sizes={fallbackVariants.length ? sizes : undefined}
+    alt={media.altText}
+    width={media.width}
+    height={media.height}
+    loading={loading}
+    decoding="async"
+  />
+</picture>

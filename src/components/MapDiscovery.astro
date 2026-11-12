@@ -3,6 +3,8 @@ import "leaflet/dist/leaflet.css";
 
 const { view } = Astro.props;
 const storyCount = 1;
+const coordinates = view.place.coordinates;
+const hasExactLocation = coordinates !== null;
 ---
 
 <section id="map-discovery" class="map-discovery" aria-labelledby="map-title">
@@ -10,10 +12,16 @@ const storyCount = 1;
     <div>
       <p class="eyebrow">Map journal</p>
       <h2 id="map-title">Explore Auckland</h2>
-      <p>
-        The outlined area contains a published visit. It does not mean every part of Auckland has
-        been explored.
-      </p>
+      {
+        hasExactLocation ? (
+          <p>This point marks a visit location verified from the original media.</p>
+        ) : (
+          <p>
+            The outlined area contains a published visit. It does not mean every part of Auckland
+            has been explored.
+          </p>
+        )
+      }
     </div>
     <div class="view-jumps" aria-label="Choose a discovery view">
       <a class="chip is-active" href="#interactive-map">Map view</a>
@@ -35,8 +43,15 @@ const storyCount = 1;
         data-travel-map
         data-story-count={storyCount}
         data-area-url="/areas/auckland"
+        data-place-name={view.place.name}
+        data-place-url={`/places/${view.place.slug}`}
+        data-story-url={`/stories/${view.story.slug}`}
+        data-latitude={coordinates?.latitude}
+        data-longitude={coordinates?.longitude}
         role="region"
-        aria-label="Interactive map centered on the Auckland area. The outlined Auckland marker represents one published visit; Sandy Beach's exact position is pending verification."
+        aria-label={hasExactLocation
+          ? `Interactive map centered on the verified ${view.place.name} visit location.`
+          : `Interactive map centered on the Auckland area. The outlined marker represents one published visit; ${view.place.name}'s exact position is pending verification.`}
       >
         <p class="map-loading">Loading the Auckland map…</p>
       </div>
@@ -51,11 +66,17 @@ const storyCount = 1;
       <h3 id="place-list-title">1 place with a story</h3>
       <article class="map-place-card">
         <div>
-          <p class="card-kicker">Auckland · location pending</p>
-          <h4>{view.place.name}</h4>
-          <p>
-            The story is published, but the exact map marker will wait for verified coordinates.
+          <p class="card-kicker">
+            Auckland · {hasExactLocation ? "visit location verified" : "location pending"}
           </p>
+          <h4>{view.place.name}</h4>
+          {
+            hasExactLocation ? (
+              <p>The map point is supported by repeated coordinates in the original visit media.</p>
+            ) : (
+              <p>The story is published, but the exact map marker will wait for verified coordinates.</p>
+            )
+          }
         </div>
         <div class="map-place-actions">
           <a class="button button--paper" href={`/places/${view.place.slug}`}>Place page</a>
@@ -66,12 +87,14 @@ const storyCount = 1;
   </div>
 
   <div class="map-legend" aria-label="Map legend">
-    <span><i class="legend-swatch legend-swatch--story" aria-hidden="true"></i>Area contains a published visit</span>
+    <span><i class="legend-swatch legend-swatch--story" aria-hidden="true"></i>{hasExactLocation ? "Verified visit location" : "Area contains a published visit"}</span>
     <span><i class="legend-swatch" aria-hidden="true"></i>No published visit recorded</span>
   </div>
   <p class="sr-only" aria-live="polite">
-    Auckland contains one published visit at Sandy Beach. Its exact coordinates are not yet
-    verified. The list view provides the same place and story links as the map.
+    Auckland contains one published visit at Sandy Beach. {hasExactLocation
+      ? "The visit location is verified from the original media."
+      : "Its exact coordinates are not yet verified."} The list view provides the same place and
+    story links as the map.
   </p>
 </section>
 
@@ -82,12 +105,16 @@ const storyCount = 1;
     if (!(element instanceof HTMLElement) || element.dataset.mapReady) continue;
     element.dataset.mapReady = "true";
 
+    const latitude = Number(element.dataset.latitude);
+    const longitude = Number(element.dataset.longitude);
+    const hasExactLocation = Number.isFinite(latitude) && Number.isFinite(longitude);
     const aucklandOverview = L.latLng(-36.85, 174.76);
+    const markerPosition = hasExactLocation ? L.latLng(latitude, longitude) : aucklandOverview;
     const map = L.map(element, {
       keyboard: true,
       scrollWheelZoom: false,
       zoomControl: true,
-    }).setView(aucklandOverview, 10);
+    }).setView(markerPosition, hasExactLocation ? 15 : 10);
 
     L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution:
@@ -95,29 +122,35 @@ const storyCount = 1;
       maxZoom: 19,
     }).addTo(map);
 
-    const areaMarker = L.circleMarker(aucklandOverview, {
-      className: "area-story-marker",
+    const areaMarker = L.circleMarker(markerPosition, {
+      className: hasExactLocation ? "place-story-marker" : "area-story-marker",
       color: "#753225",
-      dashArray: "6 4",
+      dashArray: hasExactLocation ? undefined : "6 4",
       fillColor: "#fffdf7",
       fillOpacity: 0.88,
-      radius: 18,
-      weight: 4,
+      radius: hasExactLocation ? 10 : 18,
+      weight: hasExactLocation ? 3 : 4,
     }).addTo(map);
 
     const popup = document.createElement("div");
     const title = document.createElement("strong");
-    title.textContent = "Auckland area";
+    title.textContent = hasExactLocation ? (element.dataset.placeName ?? "Visit location") : "Auckland area";
     const summary = document.createElement("p");
-    summary.textContent = "1 published visit. Exact Sandy Beach coordinates are pending.";
+    summary.textContent = hasExactLocation
+      ? "1 published visit at this verified location."
+      : "1 published visit. Exact Sandy Beach coordinates are pending.";
     const link = document.createElement("a");
-    link.href = element.dataset.areaUrl ?? "/areas/auckland";
-    link.textContent = "Explore Auckland stories";
+    link.href = hasExactLocation
+      ? (element.dataset.placeUrl ?? "/places/sandy-beach-auckland")
+      : (element.dataset.areaUrl ?? "/areas/auckland");
+    link.textContent = hasExactLocation ? "Open the Sandy Beach place page" : "Explore Auckland stories";
     popup.append(title, summary, link);
     areaMarker.bindPopup(popup);
 
     const label = document.createElement("span");
-    label.textContent = "Auckland · 1 story";
+    label.textContent = hasExactLocation
+      ? `${element.dataset.placeName ?? "Visit"} · 1 story`
+      : "Auckland · 1 story";
     areaMarker.bindTooltip(label, {
       className: "area-story-label",
       direction: "top",
@@ -128,7 +161,9 @@ const storyCount = 1;
     const markerElement = areaMarker.getElement();
     markerElement?.setAttribute(
       "aria-label",
-      "Auckland area, one published visit. Press Enter for details.",
+      hasExactLocation
+        ? `${element.dataset.placeName ?? "Visit location"}, one published visit. Press Enter for details.`
+        : "Auckland area, one published visit. Press Enter for details.",
     );
     element.querySelector(".map-loading")?.remove();
   }

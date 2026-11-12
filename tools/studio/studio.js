@@ -507,10 +507,12 @@ function loadStory(storyId) {
       id: item.id,
       kind: item.kind,
       src: item.src,
+      poster: item.poster,
       altText: item.altText,
       caption: item.caption ?? "",
       width: item.width,
       height: item.height,
+      variants: item.variants,
     }));
   coverMediaId = story.coverMediaId;
   toggleConditionalFields();

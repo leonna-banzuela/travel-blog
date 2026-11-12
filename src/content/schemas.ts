@@ -179,6 +179,14 @@ const mediaSourceSchema = z.string().refine(isSafeMediaSource, {
   error: "Media source must be an HTTPS URL or a safe path below /media/.",
 });
 
+const imageVariantSchema = z
+  .object({
+    src: mediaSourceSchema,
+    width: z.number().int().positive(),
+    type: z.enum(["image/avif", "image/webp", "image/jpeg"]),
+  })
+  .strict();
+
 const allowedEmbedHosts = new Set([
   "www.youtube.com",
   "youtube.com",
@@ -197,6 +205,7 @@ export const mediaSchema = z
     poster: mediaSourceSchema.optional(),
     width: z.number().int().positive().optional(),
     height: z.number().int().positive().optional(),
+    variants: z.array(imageVariantSchema).max(12).optional(),
     updatedAt: isoDateTimeSchema,
   })
   .strict()
@@ -225,6 +234,28 @@ export const mediaSchema = z
         path: ["width"],
         message: "Images require width and height to prevent layout shift.",
       });
+    }
+
+    if (media.kind !== "image" && media.variants !== undefined) {
+      context.addIssue({
+        code: "custom",
+        path: ["variants"],
+        message: "Responsive image variants are allowed only on images.",
+      });
+    }
+
+    if (media.variants) {
+      const variantKeys = media.variants.map(
+        (variant) => `${variant.type}:${variant.width}`,
+      );
+      if (new Set(variantKeys).size !== variantKeys.length) {
+        context.addIssue({
+          code: "custom",
+          path: ["variants"],
+          message:
+            "Responsive image variants must use unique type and width pairs.",
+        });
+      }
     }
   });
 

@@ -101,3 +101,15 @@
 - Decision: Bind the owner studio to IPv4 loopback only and combine exact host checks, same-origin mutation checks, an unpredictable process token, an HttpOnly SameSite cookie, restrictive response headers, content-sniffed uploads, safe filenames, and explicit public-bundle scanning.
 - Rationale: Localhost is the primary boundary, but layered controls reduce the risk of DNS rebinding, cross-site requests, malicious uploads, traversal, and accidental deployment.
 - Consequence: The first release has no remote editing or public write route. Remote authoring requires a separately designed authenticated and authorized service.
+
+## 2026-11-12 — Use visit-media metadata for the Sandy Beach marker
+
+- Decision: Publish the Sandy Beach visit marker at rounded coordinates `-36.9750, 174.6200`, supported by repeated GPS metadata across the supplied visit media.
+- Rationale: Multiple files captured on the required visit date agree closely enough to identify the visit location without guessing or sending private source metadata to an external reverse-geocoding service.
+- Consequence: The marker represents this recorded visit location, not a surveyed boundary. Source metadata stays outside the public bundle and the published coordinates are rounded rather than copied at maximum precision.
+
+## 2026-11-12 — Publish a privacy-conscious derivative set
+
+- Decision: Use two landscape-focused photos and one four-second silent video; exclude the long clip and people-focused frames. Generate AVIF/WebP sizes, an H.264 fast-start MP4, and a WebP poster without source metadata.
+- Rationale: The selected set communicates the place while reducing identifiable-person exposure, download weight, autoplay/audio risk, and accidental GPS or camera-data disclosure.
+- Consequence: Originals remain unchanged in `blog_assets/sandy_beach/`. Public pages use responsive variants and controls-only video; future media additions must follow the same review and metadata-removal workflow.

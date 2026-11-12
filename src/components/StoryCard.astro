@@ -1,12 +1,27 @@
 ---
 import { formatVisitDate } from "../content/public-content";
+import ResponsiveImage from "./ResponsiveImage.astro";
 
 const { view, compact = false } = Astro.props;
+let cover;
+for (const item of view.media) {
+  if (item.id === view.story.coverMediaId && item.kind === "image") cover = item;
+}
 ---
 
 <article class:list={["story-card", { "story-card--compact": compact }] }>
   <a class="story-card-link" href={`/stories/${view.story.slug}`}>
-    <div class="card-image-placeholder" aria-hidden="true"><span>Trip media arriving next</span></div>
+    {
+      cover ? (
+        <div class="card-image">
+          <ResponsiveImage media={cover} sizes="(max-width: 700px) 100vw, 32rem" />
+        </div>
+      ) : (
+        <div class="card-image-placeholder" aria-hidden="true">
+          <span>Trip media arriving next</span>
+        </div>
+      )
+    }
     <div class="card-body">
       <p class="card-kicker">
         {view.area.name} · {formatVisitDate(view.story.visitDate)}

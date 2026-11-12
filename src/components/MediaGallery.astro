@@ -1,6 +1,7 @@
 ---
 import { toSafeEmbedUrl } from "../content/public-content";
 import { mediaSchema } from "../content/schemas";
+import ResponsiveImage from "./ResponsiveImage.astro";
 
 const media = mediaSchema.array().parse(Astro.props.media);
 ---
@@ -18,12 +19,9 @@ const media = mediaSchema.array().parse(Astro.props.media);
         {media.map((item) => (
           <figure class:list={["media-item", `media-item--${item.kind}`]}>
             {item.kind === "image" && (
-              <img
-                src={item.src}
-                alt={item.altText}
-                width={item.width}
-                height={item.height}
-                loading="lazy"
+              <ResponsiveImage
+                media={item}
+                sizes="(max-width: 700px) 100vw, 50vw"
               />
             )}
             {item.kind === "video" && (

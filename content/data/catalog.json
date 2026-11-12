@@ -42,12 +42,89 @@
       "slug": "sandy-beach-auckland",
       "name": "Sandy Beach",
       "areaId": "auckland",
-      "coordinates": null,
+      "coordinates": {
+        "latitude": -36.975,
+        "longitude": 174.62
+      },
       "addressSummary": "Auckland, New Zealand",
-      "updatedAt": "2026-11-12T11:00:00+13:00"
+      "updatedAt": "2026-11-12T17:40:00+13:00"
     }
   ],
-  "media": [],
+  "media": [
+    {
+      "id": "sandy-beach-pohutukawa",
+      "kind": "image",
+      "src": "/media/sandy-beach/pohutukawa-and-water-1280.webp",
+      "altText": "A broad-canopied tree beside a green lawn overlooking calm blue water at Sandy Beach.",
+      "caption": "A quiet water view from beneath the trees.",
+      "width": 1280,
+      "height": 960,
+      "variants": [
+        {
+          "src": "/media/sandy-beach/pohutukawa-and-water-640.avif",
+          "width": 640,
+          "type": "image/avif"
+        },
+        {
+          "src": "/media/sandy-beach/pohutukawa-and-water-1280.avif",
+          "width": 1280,
+          "type": "image/avif"
+        },
+        {
+          "src": "/media/sandy-beach/pohutukawa-and-water-640.webp",
+          "width": 640,
+          "type": "image/webp"
+        },
+        {
+          "src": "/media/sandy-beach/pohutukawa-and-water-1280.webp",
+          "width": 1280,
+          "type": "image/webp"
+        }
+      ],
+      "updatedAt": "2026-11-12T04:40:18.657Z"
+    },
+    {
+      "id": "sandy-beach-rocky-shoreline",
+      "kind": "image",
+      "src": "/media/sandy-beach/rocky-shoreline-960.webp",
+      "altText": "Clear shallow water meets a rocky shoreline below trees at Sandy Beach.",
+      "caption": "Clear water along the tree-lined edge of the beach.",
+      "width": 960,
+      "height": 1280,
+      "variants": [
+        {
+          "src": "/media/sandy-beach/rocky-shoreline-480.avif",
+          "width": 480,
+          "type": "image/avif"
+        },
+        {
+          "src": "/media/sandy-beach/rocky-shoreline-960.avif",
+          "width": 960,
+          "type": "image/avif"
+        },
+        {
+          "src": "/media/sandy-beach/rocky-shoreline-480.webp",
+          "width": 480,
+          "type": "image/webp"
+        },
+        {
+          "src": "/media/sandy-beach/rocky-shoreline-960.webp",
+          "width": 960,
+          "type": "image/webp"
+        }
+      ],
+      "updatedAt": "2026-11-12T04:40:18.657Z"
+    },
+    {
+      "id": "sandy-beach-beach-and-lawn-video",
+      "kind": "video",
+      "src": "/media/sandy-beach/beach-and-lawn.mp4",
+      "altText": "A short silent vertical video looking from a white canopy across the grass toward Sandy Beach.",
+      "caption": "A four-second view from the lawn toward the beach.",
+      "poster": "/media/sandy-beach/beach-and-lawn-poster.webp",
+      "updatedAt": "2026-11-12T04:40:18.657Z"
+    }
+  ],
   "stories": [
     {
       "id": "sandy-beach-2026-11-01-leonna-banzuela",
@@ -55,24 +132,28 @@
       "placeId": "sandy-beach-auckland",
       "authorId": "leonna-banzuela",
       "title": "A nice day at Sandy Beach",
-      "summary": "A quiet visit to Sandy Beach, with inviting water and one important thing left at home.",
-      "bodyMarkdown": "Sandy Beach was a really nice place to visit. The water looked so inviting that I wanted to go for a swim. I had not brought my swimsuit, though, so I could not get in. Next time, I will come prepared.",
+      "summary": "A lovely Auckland coast visit, inviting water, and one important thing left at home.",
+      "bodyMarkdown": "Sandy Beach was a lovely place to slow down and enjoy the Auckland coast. The water looked so inviting that I really wanted to go for a swim. Unfortunately, I had not brought my swimsuit, so I could not get in. I still had a nice time taking in the view and would happily return better prepared.",
       "visitDate": "2026-11-01",
       "authorRating": 4,
       "tips": [
         {
-          "id": "bring-swimsuit",
+          "id": "tip-01",
           "perspective": "subjective",
           "text": "Bring a swimsuit if you think you might want to get in the water."
         }
       ],
       "externalLinks": [],
-      "mediaIds": [],
-      "coverMediaId": null,
+      "mediaIds": [
+        "sandy-beach-pohutukawa",
+        "sandy-beach-rocky-shoreline",
+        "sandy-beach-beach-and-lawn-video"
+      ],
+      "coverMediaId": "sandy-beach-pohutukawa",
       "tags": ["beach", "relaxing", "outdoor"],
       "publicationStatus": "published",
       "publishedAt": "2026-11-12T11:00:00+13:00",
-      "updatedAt": "2026-11-12T11:00:00+13:00"
+      "updatedAt": "2026-11-12T04:40:18.657Z"
     }
   ]
 }

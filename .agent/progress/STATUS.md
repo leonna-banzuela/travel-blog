@@ -2,9 +2,9 @@
 
 Last updated: 12 November 2026 (Pacific/Auckland)
 
-Overall status: Secure local owner authoring is complete; Sandy Beach media processing is next.
+Overall status: The first real Sandy Beach story is published locally; discovery and sharing improvements are next.
 
-Next task: `07-sandy-beach-story-and-media.md`
+Next task: `08-discovery-sharing-and-related-content.md`
 
 ## Task tracker
 
@@ -17,7 +17,7 @@ Next task: `07-sandy-beach-story-and-media.md`
 | 04 Public reading experience                              | Complete    | Static story/list, place, area, creator, and 404 routes; Sandy Beach seed story; safe optional sections; sharing; and core reading tests verified.                                                              | Local commit `ef7ac6d`; GitHub repository creation unavailable through the connected GitHub app |
 | 05 Map and geographic discovery                           | Complete    | Attributed Auckland map, area-level story cue, geographic navigation, keyboard/screen-reader support, list parity, and tile-failure fallback verified.                                                          | Local commit `a69d38e`; GitHub repository creation unavailable through the connected GitHub app |
 | 06 Owner authoring studio                                 | Complete    | Loopback-only CMS, schema-validated deterministic saves, inspected media uploads, safe preview, autosave/recovery, and public-build exclusion verified.                                                         | Local commit `9e46248`; GitHub repository creation unavailable through the connected GitHub app |
-| 07 Sandy Beach story and media                            | Not started | Source media exists in `blog_assets/sandy_beach/`.                                                                                                                                                              | —                                                                                               |
+| 07 Sandy Beach story and media                            | Complete    | Exact four-sentence story, verified map point, responsive metadata-free photos, silent short video, cover cards, and social image metadata verified.                                                            | Local commit pending; GitHub repository creation unavailable through the connected GitHub app   |
 | 08 Filters, search, related content, and sharing          | Not started | —                                                                                                                                                                                                               | —                                                                                               |
 | 09 Quality, accessibility, SEO, performance, and security | Not started | —                                                                                                                                                                                                               | —                                                                                               |
 | 10 GitHub CI and deployment                               | Not started | —                                                                                                                                                                                                               | —                                                                                               |
@@ -93,6 +93,18 @@ Next task: `07-sandy-beach-story-and-media.md`
 - Browser QA: created a temporary complete draft, uploaded a PNG, previewed it, saved and reloaded it, found and fixed tag state loss after save, then confirmed tags, tips, media, cover choice, date, rating, and copy survive a second save.
 - Automated checks: `npm run verify` passed formatting, linting, strict type checks, 24 unit tests, the 10-page static build, the public-boundary scan across 13 generated files, and 8 Chromium tests.
 - Security: `npm audit --audit-level=low` reported 0 vulnerabilities; the temporary verification story was removed from canonical content before committing.
+
+## Task 07 verification
+
+- Source integrity: all five HEIC photos and three MOV videos were inventoried and visually reviewed; all 8 post-task SHA-256 hashes match the pre-task inventory.
+- Location evidence: five photo records and three video records cluster around `-36.9750, 174.6200` on 1 November 2026; the public marker uses the rounded coordinates and no third-party reverse-geocoder received the originals' precise metadata.
+- Privacy selection: published `IMG_0237`, `IMG_0216`, and the short `IMG_0214` clip; excluded the long video and people-focused frames, and removed the selected video's audio.
+- Efficient media: generated two-width AVIF/WebP photo sets, a 720-pixel H.264 fast-start MP4, and a WebP poster; public files range from about 40 KB to 1.33 MB.
+- Metadata: inspected every public image derivative and found no EXIF/ICC payload; the MP4 contains no location, camera creation time, audio, or source data streams.
+- Authoring: reopened and saved the published record through the loopback studio with exact copy, date, rating, tags, tips, three ordered media records, responsive variants, poster, and cover preserved.
+- Public experience: cover photos now appear on cards; the story exposes responsive image sources, controls-only silent video, exact four-sentence copy, Open Graph/Twitter image metadata, and verified map/list discovery.
+- Visual QA: built-in browser checks at mobile, tablet, and desktop sizes found no horizontal overflow; inspected story media, portrait video proportions, cover card, exact marker, accessible list, and map popup.
+- Automated checks: `npm run verify` passed formatting, linting, strict type checks, 24 unit tests, a 10-page static build, boundary scanning across 23 generated files, and 8 Chromium tests; `npm audit --audit-level=low` reported 0 vulnerabilities.
 
 ## Current blockers
 
