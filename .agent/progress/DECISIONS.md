@@ -113,3 +113,9 @@
 - Decision: Use two landscape-focused photos and one four-second silent video; exclude the long clip and people-focused frames. Generate AVIF/WebP sizes, an H.264 fast-start MP4, and a WebP poster without source metadata.
 - Rationale: The selected set communicates the place while reducing identifiable-person exposure, download weight, autoplay/audio risk, and accidental GPS or camera-data disclosure.
 - Consequence: Originals remain unchanged in `blog_assets/sandy_beach/`. Public pages use responsive variants and controls-only video; future media additions must follow the same review and metadata-removal workflow.
+
+## 2026-11-12 — Keep discovery state shareable and saves local
+
+- Decision: Encode supported discovery controls in validated URL parameters, preserve them through place/area/story exploration, keep canonical story URLs query-free, and store saved place IDs only in browser local storage.
+- Rationale: Readers can share or revisit a precise discovery view without accounts, cookies, cloud profiles, or ambiguous related-content guesses.
+- Consequence: New discovery controls must be allowlisted before entering URLs. Saved places are device/browser-specific, and relationship-based recommendations must continue to use catalog IDs and geographic links.

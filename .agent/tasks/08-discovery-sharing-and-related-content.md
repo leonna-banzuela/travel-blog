@@ -1,6 +1,6 @@
 # Task 08 — Filters, search, related content, and sharing
 
-Status: Not started
+Status: Complete
 
 Depends on: Tasks 05 and 07
 

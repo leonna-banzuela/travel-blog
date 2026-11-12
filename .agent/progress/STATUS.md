@@ -2,9 +2,9 @@
 
 Last updated: 12 November 2026 (Pacific/Auckland)
 
-Overall status: The first real Sandy Beach story is published locally; discovery and sharing improvements are next.
+Overall status: The first real Sandy Beach story now has URL-shareable discovery, local saved places, relationship-based related reading, and canonical sharing; production hardening is next.
 
-Next task: `08-discovery-sharing-and-related-content.md`
+Next task: `09-production-hardening.md`
 
 ## Task tracker
 
@@ -18,7 +18,7 @@ Next task: `08-discovery-sharing-and-related-content.md`
 | 05 Map and geographic discovery                           | Complete    | Attributed Auckland map, area-level story cue, geographic navigation, keyboard/screen-reader support, list parity, and tile-failure fallback verified.                                                          | Local commit `a69d38e`; GitHub repository creation unavailable through the connected GitHub app |
 | 06 Owner authoring studio                                 | Complete    | Loopback-only CMS, schema-validated deterministic saves, inspected media uploads, safe preview, autosave/recovery, and public-build exclusion verified.                                                         | Local commit `9e46248`; GitHub repository creation unavailable through the connected GitHub app |
 | 07 Sandy Beach story and media                            | Complete    | Exact four-sentence story, verified map point, responsive metadata-free photos, silent short video, cover cards, and social image metadata verified.                                                            | Local commit `b3a3521`; GitHub repository creation unavailable through the connected GitHub app |
-| 08 Filters, search, related content, and sharing          | Not started | —                                                                                                                                                                                                               | —                                                                                               |
+| 08 Filters, search, related content, and sharing          | Complete    | Combinable URL filters, synchronized map/list results, search/sort, local-only saves, canonical sharing, and relationship-based related reading verified.                                                       | Local commit `9404c71`; GitHub repository creation unavailable through the connected GitHub app |
 | 09 Quality, accessibility, SEO, performance, and security | Not started | —                                                                                                                                                                                                               | —                                                                                               |
 | 10 GitHub CI and deployment                               | Not started | —                                                                                                                                                                                                               | —                                                                                               |
 | 11 Soft launch and feedback                               | Not started | —                                                                                                                                                                                                               | —                                                                                               |
@@ -106,7 +106,17 @@ Next task: `08-discovery-sharing-and-related-content.md`
 - Visual QA: built-in browser checks at mobile, tablet, and desktop sizes found no horizontal overflow; inspected story media, portrait video proportions, cover card, exact marker, accessible list, and map popup.
 - Automated checks: `npm run verify` passed formatting, linting, strict type checks, 24 unit tests, a 10-page static build, boundary scanning across 23 generated files, and 8 Chromium tests; `npm audit --audit-level=low` reported 0 vulnerabilities.
 
+## Task 08 verification
+
+- Discovery: search, newest/oldest/rating sort, and controlled category, setting, experience, climate, practical-needs, and facilities filters combine through validated URL parameters.
+- Map/list parity: filtering hides and restores the matching accessible place card and Leaflet marker together; the empty state and result count update without a reload.
+- Context: story, place, and area routes retain active discovery parameters, while canonical metadata and copied story links deliberately remain query-free.
+- Relationships: unit tests prove `More at this place` uses shared place IDs and `More in this area` uses catalog geography while excluding the current story and place.
+- Privacy: saved place IDs remain in browser local storage with explicit no-account/no-cloud copy; no personal data or public write endpoint was introduced.
+- Accessibility and responsive QA: direct URL restoration, keyboard form submission, clear-filter recovery, mobile 320-pixel reflow, and simulated 200% text sizing pass browser tests.
+- Visual QA: inspected combined and empty filter states at mobile size, saved results at tablet size, and canonical sharing at desktop size in the built-in browser.
+- Automated checks: `npm run verify` passed formatting, linting, strict type checks, 25 unit tests, a 10-page static build, media verification, boundary scanning across 23 generated files, and 11 Chromium tests; `npm audit --audit-level=high` reported 0 vulnerabilities.
+
 ## Current blockers
 
 - Publishing remains blocked until an empty GitHub repository is created under `leonna-banzuela` or the built-in GitHub browser is signed in. Local commits remain recoverable meanwhile.
-- Exact Sandy Beach coordinates remain unverified and must not be guessed.
