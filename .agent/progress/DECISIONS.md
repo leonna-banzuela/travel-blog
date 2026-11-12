@@ -125,3 +125,9 @@
 - Decision: Make accessibility, crawler metadata, broken links, file-size budgets, public-boundary checks, media integrity, CSP compatibility, secret scanning, and Chromium/Firefox/WebKit behavior part of `npm run verify`.
 - Rationale: Release quality is more reliable when the same command enforces measurable budgets and high-risk boundaries instead of depending on a launch-day checklist alone.
 - Consequence: New pages and assets must stay within the documented budgets and pass all three browser engines. The deployment build must set `SITE_URL` to its verified HTTPS origin before Task 10 can call the release public.
+
+## 2026-11-13 — Gate Workers deployment behind verified GitHub environments
+
+- Decision: Use pinned Wrangler static-assets configuration and one GitHub workflow whose preview and production jobs depend on the full verification job. Keep Cloudflare credentials in separate GitHub environments and never deploy forked pull requests.
+- Rationale: The official Cloudflare Workers workflow supports preview deployments through `cloudflare/wrangler-action@v4`, while environment boundaries prevent unverified code and forked contributions from receiving deployment credentials.
+- Consequence: Task 10 remains incomplete until a dedicated repository and scoped Cloudflare credentials exist, the real `SITE_URL` is configured, preview and production runs succeed, and rollback is observed. Unrelated repositories must not be reused merely because they are empty.

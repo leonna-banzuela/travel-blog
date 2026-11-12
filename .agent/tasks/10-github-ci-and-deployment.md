@@ -1,6 +1,6 @@
 # Task 10 — GitHub CI and deployment
 
-Status: Not started
+Status: In progress — local CI/Workers configuration verified; GitHub repository and Cloudflare credentials are unavailable
 
 Depends on: Task 09
 
