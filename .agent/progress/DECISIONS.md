@@ -119,3 +119,9 @@
 - Decision: Encode supported discovery controls in validated URL parameters, preserve them through place/area/story exploration, keep canonical story URLs query-free, and store saved place IDs only in browser local storage.
 - Rationale: Readers can share or revisit a precise discovery view without accounts, cookies, cloud profiles, or ambiguous related-content guesses.
 - Consequence: New discovery controls must be allowlisted before entering URLs. Saved places are device/browser-specific, and relationship-based recommendations must continue to use catalog IDs and geographic links.
+
+## 2026-11-12 — Enforce production quality in the normal verification chain
+
+- Decision: Make accessibility, crawler metadata, broken links, file-size budgets, public-boundary checks, media integrity, CSP compatibility, secret scanning, and Chromium/Firefox/WebKit behavior part of `npm run verify`.
+- Rationale: Release quality is more reliable when the same command enforces measurable budgets and high-risk boundaries instead of depending on a launch-day checklist alone.
+- Consequence: New pages and assets must stay within the documented budgets and pass all three browser engines. The deployment build must set `SITE_URL` to its verified HTTPS origin before Task 10 can call the release public.

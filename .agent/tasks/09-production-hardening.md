@@ -1,6 +1,6 @@
 # Task 09 — Production hardening
 
-Status: Not started
+Status: Complete
 
 Depends on: Tasks 03–08
 

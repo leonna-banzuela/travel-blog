@@ -2,9 +2,9 @@
 
 Last updated: 12 November 2026 (Pacific/Auckland)
 
-Overall status: The first real Sandy Beach story now has URL-shareable discovery, local saved places, relationship-based related reading, and canonical sharing; production hardening is next.
+Overall status: The first release is locally production-hardened across accessibility, SEO, performance, privacy, recovery, and security; GitHub CI and deployment are next.
 
-Next task: `09-production-hardening.md`
+Next task: `10-github-ci-and-deployment.md`
 
 ## Task tracker
 
@@ -19,7 +19,7 @@ Next task: `09-production-hardening.md`
 | 06 Owner authoring studio                                 | Complete    | Loopback-only CMS, schema-validated deterministic saves, inspected media uploads, safe preview, autosave/recovery, and public-build exclusion verified.                                                         | Local commit `9e46248`; GitHub repository creation unavailable through the connected GitHub app |
 | 07 Sandy Beach story and media                            | Complete    | Exact four-sentence story, verified map point, responsive metadata-free photos, silent short video, cover cards, and social image metadata verified.                                                            | Local commit `b3a3521`; GitHub repository creation unavailable through the connected GitHub app |
 | 08 Filters, search, related content, and sharing          | Complete    | Combinable URL filters, synchronized map/list results, search/sort, local-only saves, canonical sharing, and relationship-based related reading verified.                                                       | Local commit `9404c71`; GitHub repository creation unavailable through the connected GitHub app |
-| 09 Quality, accessibility, SEO, performance, and security | Not started | —                                                                                                                                                                                                               | —                                                                                               |
+| 09 Quality, accessibility, SEO, performance, and security | Complete    | Cross-browser axe coverage, crawler/social metadata, feed/sitemap, CSP/headers, production budgets, secret scanning, and recovery instructions verified.                                                        | Local commit `d2889a4`; GitHub repository creation unavailable through the connected GitHub app |
 | 10 GitHub CI and deployment                               | Not started | —                                                                                                                                                                                                               | —                                                                                               |
 | 11 Soft launch and feedback                               | Not started | —                                                                                                                                                                                                               | —                                                                                               |
 | 12 Creator pilot                                          | Not started | Later phase; not first release.                                                                                                                                                                                 | —                                                                                               |
@@ -116,6 +116,18 @@ Next task: `09-production-hardening.md`
 - Accessibility and responsive QA: direct URL restoration, keyboard form submission, clear-filter recovery, mobile 320-pixel reflow, and simulated 200% text sizing pass browser tests.
 - Visual QA: inspected combined and empty filter states at mobile size, saved results at tablet size, and canonical sharing at desktop size in the built-in browser.
 - Automated checks: `npm run verify` passed formatting, linting, strict type checks, 25 unit tests, a 10-page static build, media verification, boundary scanning across 23 generated files, and 11 Chromium tests; `npm audit --audit-level=high` reported 0 vulnerabilities.
+
+## Task 09 verification
+
+- Accessibility: axe found no serious or critical findings on the home/map, story list, story, place, 404, or owner studio flows in Chromium, Firefox, and WebKit; the map marker and studio repeat groups received valid roles.
+- SEO and sharing: every public HTML page has title, description, robots policy, canonical link, Open Graph, Twitter, feed discovery, and parseable JSON-LD; story pages publish `BlogPosting` data.
+- Crawlers: static Atom feed, sitemap, and robots routes are generated and browser-tested; utility and missing pages are explicitly excluded from indexing.
+- Security: Cloudflare-compatible headers set a restrictive CSP, frame/object/form boundaries, permissions policy, referrer policy, and MIME sniffing protection; executable scripts are emitted as external assets so CSP does not require `unsafe-inline`.
+- Performance: the production verifier passed 10 HTML pages, 5 JavaScript files, 2 CSS files, and 13 media assets against recorded per-page, per-asset, and total budgets; immutable hashed-asset and revalidating media cache rules are present.
+- Recovery and privacy: documentation covers real-origin builds, release checks, failure behavior, privacy-safe logging, Git restore, source-media restoration, regeneration, and studio validation. No analytics, cloud profile, public mutation endpoint, or service worker was added.
+- Browser coverage: 60 Playwright checks passed across Chromium, Firefox, and WebKit, including direct URLs, map failure, URL filters, saved places, clipboard behavior where supported, metadata, and axe scans.
+- Visual QA: inspected the production build in the built-in browser at mobile home, tablet studio, and desktop story sizes; layout, focusable controls, media, and recovery paths remained usable.
+- Automated checks: `npm run verify` passed formatting, linting, strict type checks, 27 unit tests, the 10-page static build, public-media integrity, boundary scanning across 34 files, production/broken-link budgets, a 94-file secret scan, and 60 browser tests; `npm audit --audit-level=high` reported 0 vulnerabilities.
 
 ## Current blockers
 
