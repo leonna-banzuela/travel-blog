@@ -1,0 +1,27 @@
+---
+import SiteHeader from "../../components/SiteHeader.astro";
+import StoryCard from "../../components/StoryCard.astro";
+import { storyViews } from "../../content/public-content";
+import { siteCatalog } from "../../content/site-data";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const views = storyViews(siteCatalog);
+---
+
+<BaseLayout
+  title="Travel stories · Leonna Banzuela"
+  description="Browse Leonna Banzuela’s dated travel stories by place."
+>
+  <SiteHeader active="stories" />
+  <main id="main-content" class="collection-page">
+    <header class="collection-heading">
+      <p class="eyebrow">Travel journal</p>
+      <h1>Stories, one visit at a time.</h1>
+      <p>Each entry keeps its own visit date, even when a place is visited more than once.</p>
+    </header>
+
+    <div class="story-list" aria-label="Published travel stories">
+      {views.map((view) => <StoryCard view={view} />)}
+    </div>
+  </main>
+</BaseLayout>

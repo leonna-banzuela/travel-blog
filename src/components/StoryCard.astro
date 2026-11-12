@@ -1,0 +1,22 @@
+---
+import { formatVisitDate } from "../content/public-content";
+
+const { view, compact = false } = Astro.props;
+---
+
+<article class:list={["story-card", { "story-card--compact": compact }] }>
+  <a class="story-card-link" href={`/stories/${view.story.slug}`}>
+    <div class="card-image-placeholder" aria-hidden="true"><span>Trip media arriving next</span></div>
+    <div class="card-body">
+      <p class="card-kicker">
+        {view.area.name} · {formatVisitDate(view.story.visitDate)}
+      </p>
+      <h3>{view.story.title}</h3>
+      <p>{view.story.summary}</p>
+      <div class="card-meta">
+        <span>By {view.author.name}</span>
+        <span>Read story →</span>
+      </div>
+    </div>
+  </a>
+</article>

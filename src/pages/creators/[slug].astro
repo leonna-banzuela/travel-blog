@@ -1,0 +1,48 @@
+---
+import SiteHeader from "../../components/SiteHeader.astro";
+import StoryCard from "../../components/StoryCard.astro";
+import { findStories } from "../../content/catalog";
+import { resolveStoryView } from "../../content/public-content";
+import { siteCatalog } from "../../content/site-data";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+export function getStaticPaths() {
+  return siteCatalog.authors.map((author) => {
+    const views = findStories(siteCatalog, { authorId: author.id })
+      .filter((story) => story.publicationStatus === "published")
+      .map((story) => resolveStoryView(siteCatalog, story));
+    return { params: { slug: author.slug }, props: { author, views } };
+  });
+}
+
+const { author, views } = Astro.props;
+---
+
+<BaseLayout
+  title={`${author.name} · Travel story creator`}
+  description={author.bio ?? `Travel stories by ${author.name}.`}
+>
+  <SiteHeader active="stories" />
+  <main id="main-content" class="collection-page">
+    <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/stories">Stories</a></nav>
+    <header class="creator-heading">
+      <div class="creator-monogram" aria-hidden="true">LB</div>
+      <div>
+        <p class="eyebrow">Creator</p>
+        <h1>{author.name}</h1>
+        {author.bio && <p>{author.bio}</p>}
+      </div>
+    </header>
+    <section class="creator-stories" aria-labelledby="creator-stories-title">
+      <div class="section-heading reading-heading">
+        <div>
+          <p class="eyebrow">Published journal</p>
+          <h2 id="creator-stories-title">Stories by {author.name}</h2>
+        </div>
+      </div>
+      <div class="story-list">
+        {views.map((view) => <StoryCard view={view} />)}
+      </div>
+    </section>
+  </main>
+</BaseLayout>

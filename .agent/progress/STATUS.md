@@ -2,9 +2,9 @@
 
 Last updated: 12 November 2026 (Pacific/Auckland)
 
-Overall status: Editorial design system complete locally; the public reading experience is next.
+Overall status: Public reading experience complete locally; geographic map discovery is next.
 
-Next task: `04-public-reading-experience.md`
+Next task: `05-map-and-geographic-discovery.md`
 
 ## Task tracker
 
@@ -14,7 +14,7 @@ Next task: `04-public-reading-experience.md`
 | 01 Repository foundation                                  | Complete    | Static Astro/TypeScript app, strict checks, unit and browser tests, local studio boundary, clean dependency audit, and responsive visual QA completed.                                                          | Local commit `6b74484`; GitHub repository creation unavailable through the connected GitHub app |
 | 02 Content and location model                             | Complete    | Strict record schemas, safe content rules, relationship validation, repeated-visit fixtures, geographic filtering, and documentation verified.                                                                  | Local commit `4870169`; GitHub repository creation unavailable through the connected GitHub app |
 | 03 Editorial design system                                | Complete    | Map-first responsive shell, shared controls/cards/states, component preview, accessibility reflow checks, and three viewport screenshots verified.                                                              | Local commit `a5e420f`; GitHub repository creation unavailable through the connected GitHub app |
-| 04 Public reading experience                              | Not started | —                                                                                                                                                                                                               | —                                                                                               |
+| 04 Public reading experience                              | Complete    | Static story/list, place, area, creator, and 404 routes; Sandy Beach seed story; safe optional sections; sharing; and core reading tests verified.                                                              | Local commit pending; GitHub repository creation unavailable through the connected GitHub app   |
 | 05 Map and geographic discovery                           | Not started | —                                                                                                                                                                                                               | —                                                                                               |
 | 06 Owner authoring studio                                 | Not started | —                                                                                                                                                                                                               | —                                                                                               |
 | 07 Sandy Beach story and media                            | Not started | Source media exists in `blog_assets/sandy_beach/`.                                                                                                                                                              | —                                                                                               |
@@ -62,6 +62,16 @@ Next task: `04-public-reading-experience.md`
 - Accessibility: interactive controls use 44-pixel minimum heights, keyboard focus is visibly outlined, reduced-motion and forced-colour media queries are present, and the sticky note loses rotation on small screens.
 - Visual QA: inspected the live site in the app's built-in browser and corrected a stretched side-rail layout found during review.
 - Screenshot records: full-page mobile (390 × 844), tablet (768 × 1024), and desktop (1440 × 1000) captures are stored in `docs/screenshots/`.
+
+## Task 04 verification
+
+- Static routes: the production build generated 10 pages, including the story list/detail, Sandy Beach place, Auckland and parent-area collections, Leonna's creator profile, and 404 page.
+- First story: Leonna Banzuela's supplied four-sentence Sandy Beach note is published with `Visited on 1 November 2026`; exact coordinates and media remain deliberately unset.
+- Reading features: story pages include attribution, personal rating, tips, progressive sharing, connected place/area navigation, safe optional media/links, and a labelled unloaded future sponsor position.
+- Optional content: browser tests confirm that empty media and external-link collections produce no orphan headings.
+- Automated checks: 16 unit tests and 6 Chromium tests pass, including repeat-visit ordering, discovery-to-story navigation, direct metadata, related routes, unknown-route handling, 320-pixel reflow, and simulated 200% text sizing.
+- Visual QA: inspected the live Sandy Beach story in the app's built-in browser at its compact viewport; content and navigation remain readable without horizontal overflow.
+- Security: content is catalog-validated before build, story copy renders as text rather than executable markup, external links remain HTTPS-only, and the public output has no mutation endpoint.
 
 ## Current blockers
 

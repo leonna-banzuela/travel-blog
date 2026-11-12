@@ -1,0 +1,83 @@
+import { createTravelCatalog } from "./catalog";
+
+const updatedAt = "2026-11-12T11:00:00+13:00";
+
+export const siteCatalog = createTravelCatalog({
+  areas: [
+    {
+      id: "world",
+      slug: "world",
+      name: "World",
+      kind: "world",
+      parentAreaId: null,
+      updatedAt,
+    },
+    {
+      id: "new-zealand",
+      slug: "new-zealand",
+      name: "New Zealand",
+      kind: "country",
+      parentAreaId: "world",
+      countryCode: "NZ",
+      updatedAt,
+    },
+    {
+      id: "auckland",
+      slug: "auckland",
+      name: "Auckland",
+      kind: "region",
+      parentAreaId: "new-zealand",
+      updatedAt,
+    },
+  ],
+  authors: [
+    {
+      id: "leonna-banzuela",
+      slug: "leonna-banzuela",
+      name: "Leonna Banzuela",
+      bio: "Leonna keeps a dated journal of the places she visits, the details she wants to remember, and the things she would do differently next time.",
+      socialLinks: [],
+      updatedAt,
+    },
+  ],
+  places: [
+    {
+      id: "sandy-beach-auckland",
+      slug: "sandy-beach-auckland",
+      name: "Sandy Beach",
+      areaId: "auckland",
+      coordinates: null,
+      addressSummary: "Auckland, New Zealand",
+      updatedAt,
+    },
+  ],
+  media: [],
+  stories: [
+    {
+      id: "sandy-beach-2026-11-01-leonna-banzuela",
+      slug: "sandy-beach-2026-11-01-leonna-banzuela",
+      placeId: "sandy-beach-auckland",
+      authorId: "leonna-banzuela",
+      title: "A nice day at Sandy Beach",
+      summary:
+        "A quiet visit to Sandy Beach, with inviting water and one important thing left at home.",
+      bodyMarkdown:
+        "Sandy Beach was a really nice place to visit. The water looked so inviting that I wanted to go for a swim. I had not brought my swimsuit, though, so I could not get in. Next time, I will come prepared.",
+      visitDate: "2026-11-01",
+      authorRating: 4,
+      tips: [
+        {
+          id: "bring-swimsuit",
+          perspective: "subjective",
+          text: "Bring a swimsuit if you think you might want to get in the water.",
+        },
+      ],
+      externalLinks: [],
+      mediaIds: [],
+      tags: ["beach", "relaxing", "outdoor"],
+      publicationStatus: "published",
+      publishedAt: updatedAt,
+      updatedAt,
+    },
+  ],
+});

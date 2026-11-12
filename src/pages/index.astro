@@ -1,7 +1,13 @@
 ---
 import DiscoveryControls from "../components/DiscoveryControls.astro";
 import SiteHeader from "../components/SiteHeader.astro";
+import StoryCard from "../components/StoryCard.astro";
+import { storyViews } from "../content/public-content";
+import { siteCatalog } from "../content/site-data";
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+const firstStory = storyViews(siteCatalog)[0];
+if (!firstStory) throw new Error("The public journal needs one published story.");
 ---
 
 <BaseLayout
@@ -26,8 +32,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           <h1 id="page-title">Every place holds a dated story.</h1>
         </div>
         <p>
-          Browse Leonna’s travel notes by map, place, and visit date. The first story is being
-          prepared from Sandy Beach.
+          Browse Leonna’s travel notes by map, place, and visit date. The first published entry is
+          a sunny memory from Sandy Beach.
         </p>
       </section>
 
@@ -37,7 +43,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         <div class="map-copy">
           <p class="eyebrow">Map journal</p>
           <h2 id="map-title">Auckland stories</h2>
-          <p>Map markers and verified locations arrive with the first published story.</p>
+          <p>The Sandy Beach marker will appear after its exact location is verified.</p>
         </div>
         <div class="map-marker map-marker--one" aria-hidden="true"><span>1</span></div>
         <div class="map-marker map-marker--two" aria-hidden="true"><span>+</span></div>
@@ -48,21 +54,13 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         <div class="section-heading">
           <div>
             <p class="eyebrow">From the notebook</p>
-            <h2 id="stories-title">Stories in progress</h2>
+          <h2 id="stories-title">Latest story</h2>
           </div>
           <a class="text-link" href="/design-system">View component preview <span>→</span></a>
         </div>
 
         <div class="card-grid">
-          <article class="story-card story-card--feature">
-            <div class="card-image-placeholder" aria-hidden="true"><span>Photo coming soon</span></div>
-            <div class="card-body">
-              <p class="card-kicker">Auckland · 1 November 2026</p>
-              <h3>Sandy Beach</h3>
-              <p>A first beach note by Leonna Banzuela is being prepared from the original trip media.</p>
-              <span class="status-pill">Draft</span>
-            </div>
-          </article>
+          <StoryCard view={firstStory} />
 
           <article class="sticky-note" aria-label="Journal note">
             <p class="handwritten">A note for later</p>

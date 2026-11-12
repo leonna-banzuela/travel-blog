@@ -1,0 +1,50 @@
+---
+import { toSafeEmbedUrl } from "../content/public-content";
+import { mediaSchema } from "../content/schemas";
+
+const media = mediaSchema.array().parse(Astro.props.media);
+---
+
+{
+  media.length > 0 && (
+    <section class="story-section" aria-labelledby="gallery-title">
+      <div class="section-heading reading-heading">
+        <div>
+          <p class="eyebrow">From the visit</p>
+          <h2 id="gallery-title">Photos and videos</h2>
+        </div>
+      </div>
+      <div class="media-gallery">
+        {media.map((item) => (
+          <figure class:list={["media-item", `media-item--${item.kind}`]}>
+            {item.kind === "image" && (
+              <img
+                src={item.src}
+                alt={item.altText}
+                width={item.width}
+                height={item.height}
+                loading="lazy"
+              />
+            )}
+            {item.kind === "video" && (
+              <video controls preload="metadata" poster={item.poster} aria-label={item.altText}>
+                <source src={item.src} />
+              </video>
+            )}
+            {item.kind === "video-embed" && (
+              <iframe
+                src={toSafeEmbedUrl(item.src)}
+                title={item.altText}
+                loading="lazy"
+                allow="accelerometer; autoplay; encrypted-media; picture-in-picture"
+                allowfullscreen
+                referrerpolicy="strict-origin-when-cross-origin"
+              />
+            )}
+            {item.caption && <figcaption>{item.caption}</figcaption>}
+          </figure>
+        ))}
+      </div>
+    </section>
+  )
+}

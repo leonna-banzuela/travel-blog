@@ -1,0 +1,20 @@
+---
+import SiteHeader from "../components/SiteHeader.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Page not found · Leonna’s journal"
+  description="This travel journal page could not be found."
+>
+  <SiteHeader />
+  <main id="main-content" class="not-found-page">
+    <p class="eyebrow">404 · Wrong turn</p>
+    <h1>This page is not on the map.</h1>
+    <p>The link may be old, or the story may not be published yet.</p>
+    <div class="component-row">
+      <a class="button button--ink" href="/stories">Browse stories</a>
+      <a class="button button--paper" href="/">Back to the map</a>
+    </div>
+  </main>
+</BaseLayout>

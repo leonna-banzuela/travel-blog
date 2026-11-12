@@ -1,0 +1,57 @@
+---
+import SiteHeader from "../../components/SiteHeader.astro";
+import StoryCard from "../../components/StoryCard.astro";
+import { findStories } from "../../content/catalog";
+import { resolveStoryView } from "../../content/public-content";
+import { siteCatalog } from "../../content/site-data";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+export function getStaticPaths() {
+  return siteCatalog.places.map((place) => {
+    const area = siteCatalog.areas.find((item) => item.id === place.areaId);
+    if (!area) throw new Error(`Place ${place.id} has no area.`);
+    const views = findStories(siteCatalog, { placeId: place.id })
+      .filter((story) => story.publicationStatus === "published")
+      .map((story) => resolveStoryView(siteCatalog, story));
+    return { params: { slug: place.slug }, props: { place, area, views } };
+  });
+}
+
+const { place, area, views } = Astro.props;
+---
+
+<BaseLayout
+  title={`${place.name} travel stories · Leonna’s journal`}
+  description={`Read dated travel stories from ${place.name}, ${area.name}.`}
+>
+  <SiteHeader active="stories" />
+  <main id="main-content" class="collection-page">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="/stories">Stories</a><span aria-hidden="true">/</span>
+      <a href={`/areas/${area.slug}`}>{area.name}</a>
+    </nav>
+    <header class="collection-heading">
+      <p class="eyebrow">Place · {area.name}</p>
+      <h1>{place.name}</h1>
+      {place.addressSummary && <p>{place.addressSummary}</p>}
+      {
+        !place.coordinates && (
+          <p class="location-note">Exact map position is awaiting verification.</p>
+        )
+      }
+    </header>
+    {
+      views.length > 0 ? (
+        <div class="story-list" aria-label={`Stories from ${place.name}`}>
+          {views.map((view) => <StoryCard view={view} />)}
+        </div>
+      ) : (
+        <section class="state-panel collection-empty">
+          <h2>No published stories here yet</h2>
+          <p>Return to all stories to keep exploring.</p>
+          <a class="button button--paper" href="/stories">All stories</a>
+        </section>
+      )
+    }
+  </main>
+</BaseLayout>

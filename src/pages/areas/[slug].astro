@@ -1,0 +1,48 @@
+---
+import SiteHeader from "../../components/SiteHeader.astro";
+import StoryCard from "../../components/StoryCard.astro";
+import { findStories } from "../../content/catalog";
+import { resolveStoryView } from "../../content/public-content";
+import { siteCatalog } from "../../content/site-data";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+export function getStaticPaths() {
+  return siteCatalog.areas.map((area) => {
+    const views = findStories(siteCatalog, { areaId: area.id })
+      .filter((story) => story.publicationStatus === "published")
+      .map((story) => resolveStoryView(siteCatalog, story));
+    return { params: { slug: area.slug }, props: { area, views } };
+  });
+}
+
+const { area, views } = Astro.props;
+const places = new Set(views.map((view) => view.place.id)).size;
+---
+
+<BaseLayout
+  title={`${area.name} travel stories · Leonna’s journal`}
+  description={`Explore Leonna Banzuela’s dated travel stories from ${area.name}.`}
+>
+  <SiteHeader active="stories" />
+  <main id="main-content" class="collection-page">
+    <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/stories">Stories</a></nav>
+    <header class="collection-heading">
+      <p class="eyebrow">{area.kind}</p>
+      <h1>{area.name}</h1>
+      <p>{views.length} {views.length === 1 ? "story" : "stories"} across {places} {places === 1 ? "place" : "places"}.</p>
+    </header>
+    {
+      views.length > 0 ? (
+        <div class="story-list" aria-label={`Stories from ${area.name}`}>
+          {views.map((view) => <StoryCard view={view} />)}
+        </div>
+      ) : (
+        <section class="state-panel collection-empty">
+          <h2>No published stories in this area yet</h2>
+          <p>Return to all stories to keep exploring.</p>
+          <a class="button button--paper" href="/stories">All stories</a>
+        </section>
+      )
+    }
+  </main>
+</BaseLayout>

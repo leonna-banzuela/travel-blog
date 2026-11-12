@@ -65,3 +65,15 @@
 - Decision: Build the interface from warm paper surfaces, dark ink, pale map lines, restrained terracotta/sea/yellow accents, a system serif editorial face, and a system sans-serif control face.
 - Rationale: The visual language should feel personal and travel-journal-like without loading third-party fonts or competing with photographs, maps, and story text.
 - Consequence: Future components should reuse the central tokens and preview route. Decorative rotation stays subtle and is removed on small screens; motion and colour must retain accessible fallbacks.
+
+## 2026-11-12 — Publish validated static reading routes
+
+- Decision: Generate story, place, area, and creator pages from the validated catalog at build time; render story Markdown as text paragraphs until a reviewed Markdown renderer is introduced.
+- Rationale: Readers receive direct, fast, shareable URLs while untrusted stored markup cannot execute and no public mutation surface is added.
+- Consequence: Every published record must pass catalog validation before the build. Empty optional media and link collections omit their sections rather than leaving broken headings.
+
+## 2026-11-12 — Seed Sandy Beach without inventing location data
+
+- Decision: Publish the supplied author, visit date, and four-sentence Sandy Beach note now, use a modest 4/5 personal rating inferred from “nice,” and leave coordinates and media empty until Task 07.
+- Rationale: This makes the real first reading path testable while preserving the rule against guessed real-world coordinates and unprocessed originals.
+- Consequence: The owner can revise the inferred rating later. Task 07 must verify the place identity, process the source media, and attach the final gallery without rewriting the dated visit.
