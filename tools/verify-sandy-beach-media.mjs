@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { readdir, readFile, stat } from "node:fs/promises";
+import { access, readdir, readFile, stat } from "node:fs/promises";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 
@@ -61,9 +61,14 @@ function sha256(buffer) {
   return createHash("sha256").update(buffer).digest("hex").toUpperCase();
 }
 
-for (const [name, expected] of originalHashes) {
-  const actual = sha256(await readFile(join(sourceDirectory, name)));
-  if (actual !== expected) throw new Error(`Original media changed: ${name}`);
+const sourceAvailable = await access(sourceDirectory)
+  .then(() => true)
+  .catch(() => false);
+if (sourceAvailable) {
+  for (const [name, expected] of originalHashes) {
+    const actual = sha256(await readFile(join(sourceDirectory, name)));
+    if (actual !== expected) throw new Error(`Original media changed: ${name}`);
+  }
 }
 
 const actualPublicFiles = (await readdir(publicDirectory)).sort();
@@ -129,4 +134,8 @@ if (
   throw new Error("The public video is unexpectedly large.");
 }
 
-console.log("Sandy Beach originals and public derivatives verified.");
+console.log(
+  sourceAvailable
+    ? "Sandy Beach originals and public derivatives verified."
+    : "Sandy Beach public derivatives verified; private originals are not present in this clean checkout.",
+);
