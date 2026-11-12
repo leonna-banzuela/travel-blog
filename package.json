@@ -25,6 +25,7 @@
     "verify:boundary": "node tools/verify-public-boundary.mjs",
     "verify:production": "node tools/verify-production-build.mjs",
     "security:secrets": "node tools/scan-secrets.mjs",
+    "deploy:dry-run": "npm run build && wrangler deploy --dry-run --outdir .wrangler/dry-run",
     "verify": "npm run format && npm run lint && npm run typecheck && npm run test:unit && npm run build && npm run verify:media && npm run verify:boundary && npm run verify:production && npm run security:secrets && npm run test:e2e"
   },
   "dependencies": {
@@ -49,6 +50,7 @@
     "sharp": "0.35.5",
     "tsx": "4.23.15",
     "typescript": "6.0.3",
-    "vitest": "5.1.0"
+    "vitest": "5.1.0",
+    "wrangler": "^4.160.1"
   }
 }
