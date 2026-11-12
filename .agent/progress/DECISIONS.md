@@ -77,3 +77,15 @@
 - Decision: Publish the supplied author, visit date, and four-sentence Sandy Beach note now, use a modest 4/5 personal rating inferred from “nice,” and leave coordinates and media empty until Task 07.
 - Rationale: This makes the real first reading path testable while preserving the rule against guessed real-world coordinates and unprocessed originals.
 - Consequence: The owner can revise the inferred rating later. Task 07 must verify the place identity, process the source media, and attach the final gallery without rewriting the dated visit.
+
+## 2026-11-12 — Use Leaflet with policy-compliant OpenStreetMap tiles
+
+- Decision: Use pinned Leaflet `1.9.4` with the official OpenStreetMap Standard HTTPS tile endpoint for the small first release, preserve visible attribution, and prohibit prefetching or offline tile downloads.
+- Rationale: This provides a familiar interactive Auckland overview with a permissively licensed client library while keeping the tile-provider obligations explicit and reviewable.
+- Consequence: Reassess the tile provider before meaningful traffic or commercial use because the community service is best-effort. Normal browser caching/referrer behaviour and the exact required tile URL must remain intact.
+
+## 2026-11-12 — Represent verified area context, not guessed place precision
+
+- Decision: Show an editorial area-level Auckland symbol and an always-visible list while Sandy Beach coordinates are unverified; do not draw a false Auckland boundary or place marker.
+- Rationale: The map should communicate that a published visit exists in the area without implying that the entire region was explored or that the beach location is known precisely.
+- Consequence: Task 07 may replace the pending state with a verified place marker. Map failure must never block the geographic breadcrumb, place page, or story link.

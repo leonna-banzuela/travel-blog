@@ -8,7 +8,7 @@ test("renders the read-only travel journal foundation", async ({ page }) => {
     "Every place holds a dated story.",
   );
   await expect(
-    page.getByRole("heading", { name: "Auckland stories" }),
+    page.getByRole("heading", { name: "Explore Auckland" }),
   ).toBeVisible();
   await expect(
     page.getByRole("link", { name: /travel journal home/i }),
@@ -49,7 +49,7 @@ test("layout reflows at 200 percent text zoom", async ({ page }) => {
   }));
   expect(layout.bodyWidth).toBeLessThanOrEqual(layout.viewportWidth);
   await expect(
-    page.getByRole("heading", { name: "Auckland stories" }),
+    page.getByRole("heading", { name: "Explore Auckland" }),
   ).toBeVisible();
 });
 
@@ -116,4 +116,46 @@ test("unknown direct routes show a useful not-found page", async ({ page }) => {
   await expect(
     page.getByRole("link", { name: "Browse stories" }),
   ).toBeVisible();
+});
+
+test("map and accessible list provide the same discovery path", async ({
+  page,
+}) => {
+  await page.goto("/");
+
+  const map = page.getByRole("region", {
+    name: /interactive map centered on the Auckland area/i,
+  });
+  await expect(map).toBeVisible();
+  await expect(
+    page.getByRole("link", { name: "OpenStreetMap contributors" }).first(),
+  ).toBeVisible();
+  await expect(page.getByRole("link", { name: "World" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "New Zealand" })).toBeVisible();
+  await expect(
+    page.getByText("Area contains a published visit", { exact: true }),
+  ).toBeVisible();
+
+  await page.getByRole("link", { name: "Read story →", exact: true }).click();
+  await expect(
+    page.getByRole("heading", { level: 1, name: "A nice day at Sandy Beach" }),
+  ).toBeVisible();
+});
+
+test("map failure leaves the list route available", async ({ page }) => {
+  await page.route("https://tile.openstreetmap.org/**", (route) =>
+    route.abort(),
+  );
+  await page.goto("/");
+
+  await expect(
+    page.getByRole("heading", { name: "1 place with a story" }),
+  ).toBeVisible();
+  await expect(page.getByRole("link", { name: "Place page" })).toHaveAttribute(
+    "href",
+    "/places/sandy-beach-auckland",
+  );
+  await expect(
+    page.getByText(/exact coordinates are not yet verified/i),
+  ).toBeAttached();
 });

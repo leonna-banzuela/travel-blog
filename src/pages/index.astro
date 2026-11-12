@@ -1,5 +1,6 @@
 ---
 import DiscoveryControls from "../components/DiscoveryControls.astro";
+import MapDiscovery from "../components/MapDiscovery.astro";
 import SiteHeader from "../components/SiteHeader.astro";
 import StoryCard from "../components/StoryCard.astro";
 import { storyViews } from "../content/public-content";
@@ -19,7 +20,7 @@ if (!firstStory) throw new Error("The public journal needs one published story."
   <main id="main-content" class="app-shell">
     <aside class="side-rail" aria-label="Journal sections">
       <p class="rail-label">Explore</p>
-      <a class="is-active" href="#map">Latest map</a>
+      <a class="is-active" href="#map-discovery">Latest map</a>
       <a href="#stories">Recent stories</a>
       <a href="/design-system">UI preview</a>
       <p class="rail-note">A quiet record of where I went and when.</p>
@@ -39,16 +40,7 @@ if (!firstStory) throw new Error("The public journal needs one published story."
 
       <DiscoveryControls />
 
-      <section id="map" class="map-panel" aria-labelledby="map-title">
-        <div class="map-copy">
-          <p class="eyebrow">Map journal</p>
-          <h2 id="map-title">Auckland stories</h2>
-          <p>The Sandy Beach marker will appear after its exact location is verified.</p>
-        </div>
-        <div class="map-marker map-marker--one" aria-hidden="true"><span>1</span></div>
-        <div class="map-marker map-marker--two" aria-hidden="true"><span>+</span></div>
-        <p class="map-caption">Read-only public preview · no account required</p>
-      </section>
+      <MapDiscovery view={firstStory} />
 
       <section id="stories" class="section-block" aria-labelledby="stories-title">
         <div class="section-heading">

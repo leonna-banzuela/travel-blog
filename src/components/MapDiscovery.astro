@@ -1,0 +1,135 @@
+---
+import "leaflet/dist/leaflet.css";
+
+const { view } = Astro.props;
+const storyCount = 1;
+---
+
+<section id="map-discovery" class="map-discovery" aria-labelledby="map-title">
+  <div class="map-discovery-heading">
+    <div>
+      <p class="eyebrow">Map journal</p>
+      <h2 id="map-title">Explore Auckland</h2>
+      <p>
+        The outlined area contains a published visit. It does not mean every part of Auckland has
+        been explored.
+      </p>
+    </div>
+    <div class="view-jumps" aria-label="Choose a discovery view">
+      <a class="chip is-active" href="#interactive-map">Map view</a>
+      <a class="chip" href="#place-list">List view</a>
+    </div>
+  </div>
+
+  <nav class="geo-trail" aria-label="Geographic levels">
+    <a href="/areas/world">World</a><span aria-hidden="true">›</span>
+    <a href="/areas/new-zealand">New Zealand</a><span aria-hidden="true">›</span>
+    <a class="is-active" href="/areas/auckland" aria-current="location">Auckland</a>
+  </nav>
+
+  <div class="map-and-list">
+    <div class="interactive-map-panel">
+      <div
+        id="interactive-map"
+        class="leaflet-map"
+        data-travel-map
+        data-story-count={storyCount}
+        data-area-url="/areas/auckland"
+        role="region"
+        aria-label="Interactive map centered on the Auckland area. The outlined Auckland marker represents one published visit; Sandy Beach's exact position is pending verification."
+      >
+        <p class="map-loading">Loading the Auckland map…</p>
+      </div>
+      <p class="map-help">
+        Use the zoom buttons or <kbd>+</kbd> and <kbd>−</kbd>. Map data ©
+        <a href="https://www.openstreetmap.org/copyright" rel="noreferrer">OpenStreetMap contributors</a>.
+      </p>
+    </div>
+
+    <aside id="place-list" class="map-list-panel" aria-labelledby="place-list-title">
+      <p class="eyebrow">Accessible list view</p>
+      <h3 id="place-list-title">1 place with a story</h3>
+      <article class="map-place-card">
+        <div>
+          <p class="card-kicker">Auckland · location pending</p>
+          <h4>{view.place.name}</h4>
+          <p>
+            The story is published, but the exact map marker will wait for verified coordinates.
+          </p>
+        </div>
+        <div class="map-place-actions">
+          <a class="button button--paper" href={`/places/${view.place.slug}`}>Place page</a>
+          <a class="text-link" href={`/stories/${view.story.slug}`}>Read story <span>→</span></a>
+        </div>
+      </article>
+    </aside>
+  </div>
+
+  <div class="map-legend" aria-label="Map legend">
+    <span><i class="legend-swatch legend-swatch--story" aria-hidden="true"></i>Area contains a published visit</span>
+    <span><i class="legend-swatch" aria-hidden="true"></i>No published visit recorded</span>
+  </div>
+  <p class="sr-only" aria-live="polite">
+    Auckland contains one published visit at Sandy Beach. Its exact coordinates are not yet
+    verified. The list view provides the same place and story links as the map.
+  </p>
+</section>
+
+<script>
+  import L from "leaflet";
+
+  for (const element of document.querySelectorAll("[data-travel-map]")) {
+    if (!(element instanceof HTMLElement) || element.dataset.mapReady) continue;
+    element.dataset.mapReady = "true";
+
+    const aucklandOverview = L.latLng(-36.85, 174.76);
+    const map = L.map(element, {
+      keyboard: true,
+      scrollWheelZoom: false,
+      zoomControl: true,
+    }).setView(aucklandOverview, 10);
+
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>',
+      maxZoom: 19,
+    }).addTo(map);
+
+    const areaMarker = L.circleMarker(aucklandOverview, {
+      className: "area-story-marker",
+      color: "#753225",
+      dashArray: "6 4",
+      fillColor: "#fffdf7",
+      fillOpacity: 0.88,
+      radius: 18,
+      weight: 4,
+    }).addTo(map);
+
+    const popup = document.createElement("div");
+    const title = document.createElement("strong");
+    title.textContent = "Auckland area";
+    const summary = document.createElement("p");
+    summary.textContent = "1 published visit. Exact Sandy Beach coordinates are pending.";
+    const link = document.createElement("a");
+    link.href = element.dataset.areaUrl ?? "/areas/auckland";
+    link.textContent = "Explore Auckland stories";
+    popup.append(title, summary, link);
+    areaMarker.bindPopup(popup);
+
+    const label = document.createElement("span");
+    label.textContent = "Auckland · 1 story";
+    areaMarker.bindTooltip(label, {
+      className: "area-story-label",
+      direction: "top",
+      offset: [0, -14],
+      permanent: true,
+    });
+
+    const markerElement = areaMarker.getElement();
+    markerElement?.setAttribute(
+      "aria-label",
+      "Auckland area, one published visit. Press Enter for details.",
+    );
+    element.querySelector(".map-loading")?.remove();
+  }
+</script>

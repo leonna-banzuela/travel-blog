@@ -2,9 +2,9 @@
 
 Last updated: 12 November 2026 (Pacific/Auckland)
 
-Overall status: Public reading experience complete locally; geographic map discovery is next.
+Overall status: Accessible geographic discovery complete locally; the owner authoring studio is next.
 
-Next task: `05-map-and-geographic-discovery.md`
+Next task: `06-owner-authoring-studio.md`
 
 ## Task tracker
 
@@ -15,7 +15,7 @@ Next task: `05-map-and-geographic-discovery.md`
 | 02 Content and location model                             | Complete    | Strict record schemas, safe content rules, relationship validation, repeated-visit fixtures, geographic filtering, and documentation verified.                                                                  | Local commit `4870169`; GitHub repository creation unavailable through the connected GitHub app |
 | 03 Editorial design system                                | Complete    | Map-first responsive shell, shared controls/cards/states, component preview, accessibility reflow checks, and three viewport screenshots verified.                                                              | Local commit `a5e420f`; GitHub repository creation unavailable through the connected GitHub app |
 | 04 Public reading experience                              | Complete    | Static story/list, place, area, creator, and 404 routes; Sandy Beach seed story; safe optional sections; sharing; and core reading tests verified.                                                              | Local commit `ef7ac6d`; GitHub repository creation unavailable through the connected GitHub app |
-| 05 Map and geographic discovery                           | Not started | —                                                                                                                                                                                                               | —                                                                                               |
+| 05 Map and geographic discovery                           | Complete    | Attributed Auckland map, area-level story cue, geographic navigation, keyboard/screen-reader support, list parity, and tile-failure fallback verified.                                                          | Local commit pending; GitHub repository creation unavailable through the connected GitHub app   |
 | 06 Owner authoring studio                                 | Not started | —                                                                                                                                                                                                               | —                                                                                               |
 | 07 Sandy Beach story and media                            | Not started | Source media exists in `blog_assets/sandy_beach/`.                                                                                                                                                              | —                                                                                               |
 | 08 Filters, search, related content, and sharing          | Not started | —                                                                                                                                                                                                               | —                                                                                               |
@@ -72,6 +72,17 @@ Next task: `05-map-and-geographic-discovery.md`
 - Automated checks: 16 unit tests and 6 Chromium tests pass, including repeat-visit ordering, discovery-to-story navigation, direct metadata, related routes, unknown-route handling, 320-pixel reflow, and simulated 200% text sizing.
 - Visual QA: inspected the live Sandy Beach story in the app's built-in browser at its compact viewport; content and navigation remain readable without horizontal overflow.
 - Security: content is catalog-validated before build, story copy renders as text rather than executable markup, external links remain HTTPS-only, and the public output has no mutation endpoint.
+
+## Task 05 verification
+
+- Map stack: Leaflet `1.9.4` and its types are pinned; `npm audit --audit-level=low` remains clean.
+- Attribution/licensing: the map and adjacent help text visibly link `© OpenStreetMap contributors`; repository documentation records Leaflet's BSD-2-Clause licence and OpenStreetMap's tile usage restrictions.
+- Meaning: the dashed editorial marker is labelled as an Auckland-area cue for one published visit, not a boundary or a claim that all of Auckland was explored.
+- Geographic path: World → New Zealand → Auckland links connect to area pages; the map popup, place card, place page, and story page preserve the discovery path.
+- Accessibility: Leaflet keyboard navigation and zoom controls are enabled, the area symbol has a descriptive label, the map has a screen-reader summary and non-colour legend, and the same place/story actions are always present in the list.
+- Fallback: exact Sandy Beach coordinates remain unset; a browser test aborts all OpenStreetMap tile requests and still reaches the place and story through the list.
+- Automated checks: 16 unit tests and 8 Chromium tests pass, including 320-pixel and 200% text reflow coverage.
+- Visual QA: inspected live tiles, attribution, the map/list responsive layout, and the activated Auckland popup in the app's built-in browser.
 
 ## Current blockers
 
