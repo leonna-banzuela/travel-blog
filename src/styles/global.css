@@ -303,6 +303,179 @@ a {
   font-size: 0.9rem;
 }
 
+.discovery-controls {
+  display: grid;
+  gap: 0.8rem;
+  margin: 1rem 0;
+  padding: 0.85rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--paper-bright);
+  box-shadow: var(--shadow-sm);
+}
+
+.discovery-primary-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.28fr) auto auto;
+  gap: 0.65rem;
+  align-items: end;
+}
+
+.story-card-save {
+  padding: 0 1rem 1rem;
+}
+
+.discovery-controls label:not(.saved-filter),
+.share-fallback {
+  display: grid;
+  gap: 0.35rem;
+  color: var(--ink-soft);
+  font: 750 0.68rem/1.3 var(--font-ui);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.discovery-controls .search-field {
+  min-height: auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.search-input-wrap {
+  display: flex;
+  min-height: 2.75rem;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--paper);
+}
+
+.search-input-wrap:focus-within {
+  border-color: var(--sea);
+  outline: 0.15rem solid color-mix(in srgb, var(--sea) 30%, transparent);
+}
+
+.discovery-controls select,
+.share-fallback input {
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.55rem 2rem 0.55rem 0.65rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--paper);
+  color: var(--ink);
+  font: 700 0.78rem/1.3 var(--font-ui);
+  text-transform: none;
+}
+
+.filter-drawer {
+  border-top: 1px solid var(--line);
+  padding-top: 0.65rem;
+}
+
+.filter-drawer summary {
+  min-height: 2.75rem;
+  cursor: pointer;
+  color: var(--terracotta-dark);
+  font: 800 0.75rem/2.75rem var(--font-ui);
+}
+
+.filter-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  padding-bottom: 0.25rem;
+}
+
+.discovery-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.25rem;
+  border-top: 1px solid var(--line);
+  padding-top: 0.7rem;
+  color: var(--ink-soft);
+  font: 700 0.72rem/1.4 var(--font-ui);
+}
+
+.discovery-meta-row p,
+.filter-privacy,
+.save-place p {
+  margin: 0;
+}
+
+.saved-filter {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.saved-filter input {
+  width: 1.1rem;
+  height: 1.1rem;
+  accent-color: var(--terracotta-dark);
+}
+
+.text-button {
+  min-height: 2.75rem;
+  margin-left: auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--terracotta-dark);
+  cursor: pointer;
+  font: 800 0.72rem/1.4 var(--font-ui);
+  text-decoration: underline;
+  text-underline-offset: 0.2rem;
+}
+
+.filter-privacy {
+  color: var(--ink-soft);
+  font: 650 0.68rem/1.4 var(--font-ui);
+}
+
+.discovery-empty {
+  margin: 1rem 0;
+}
+
+.save-place {
+  display: grid;
+  gap: 0.35rem;
+  justify-items: start;
+  color: var(--ink-soft);
+  font: 650 0.68rem/1.4 var(--font-ui);
+}
+
+.save-place--compact .button {
+  min-height: 2.5rem;
+  padding: 0.55rem 0.8rem;
+}
+
+.share-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.share-status {
+  color: var(--ink-soft);
+  font: 700 0.7rem/1.4 var(--font-ui);
+}
+
+.share-fallback {
+  flex-basis: 100%;
+  min-width: min(20rem, 100%);
+}
+
+.share-fallback[hidden] {
+  display: none;
+}
+
 .control-group,
 .component-row,
 .tag-list {
@@ -1288,6 +1461,15 @@ a {
     grid-row: 2;
   }
 
+  .discovery-primary-row {
+    grid-template-columns: minmax(0, 1fr) minmax(9rem, 0.35fr) auto;
+  }
+
+  .discovery-primary-row > [data-clear-filters] {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+
   .card-grid--three,
   .state-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1376,6 +1558,36 @@ a {
   .control-bar > .button,
   .control-group {
     grid-column: 1;
+  }
+
+  .discovery-primary-row,
+  .filter-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .discovery-primary-row > [data-clear-filters] {
+    width: 100%;
+  }
+
+  .discovery-meta-row {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .text-button {
+    margin-left: 0;
+    text-align: left;
+  }
+
+  .story-actions .share-controls,
+  .story-actions .save-place {
+    flex-basis: 100%;
+  }
+
+  .share-controls > .button,
+  .save-place > .button {
+    flex: 1 1 auto;
+    width: 100%;
   }
 
   .control-group {

@@ -1,6 +1,7 @@
 ---
 import { formatVisitDate } from "../content/public-content";
 import ResponsiveImage from "./ResponsiveImage.astro";
+import SavePlaceButton from "./SavePlaceButton.astro";
 
 const { view, compact = false } = Astro.props;
 let cover;
@@ -9,8 +10,26 @@ for (const item of view.media) {
 }
 ---
 
-<article class:list={["story-card", { "story-card--compact": compact }] }>
-  <a class="story-card-link" href={`/stories/${view.story.slug}`}>
+<article
+  class:list={["story-card", { "story-card--compact": compact }]}
+  data-discovery-record
+  data-story-id={view.story.id}
+  data-place-id={view.place.id}
+  data-title={view.story.title}
+  data-summary={view.story.summary}
+  data-place={view.place.name}
+  data-area={view.area.name}
+  data-author={view.author.name}
+  data-tags={view.story.tags.join(" ")}
+  data-date={view.story.visitDate}
+  data-rating={view.story.authorRating}
+>
+  <a
+    class="story-card-link"
+    href={`/stories/${view.story.slug}`}
+    data-preserve-discovery
+    data-base-href={`/stories/${view.story.slug}`}
+  >
     {
       cover ? (
         <div class="card-image">
@@ -34,4 +53,7 @@ for (const item of view.media) {
       </div>
     </div>
   </a>
+  <div class="story-card-save">
+    <SavePlaceButton placeId={view.place.id} placeName={view.place.name} compact />
+  </div>
 </article>

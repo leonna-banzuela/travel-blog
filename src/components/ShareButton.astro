@@ -1,34 +1,71 @@
 ---
-const { title } = Astro.props;
+const { title, canonicalPath } = Astro.props;
 ---
 
-<button class="button button--paper share-button" type="button" data-share-button data-title={title}>
-  <span data-share-label>Share story</span>
-</button>
+<div class="share-controls" data-share-controls data-title={title} data-canonical-path={canonicalPath}>
+  <button class="button button--paper share-button" type="button" data-share-button>
+    Share story
+  </button>
+  <button class="button button--paper" type="button" data-copy-button>Copy link</button>
+  <span class="share-status" data-share-status role="status" aria-live="polite"></span>
+  <label class="share-fallback" data-share-fallback hidden>
+    <span>Copy this address</span>
+    <input type="text" readonly data-share-url />
+  </label>
+</div>
 
 <script>
-  for (const element of document.querySelectorAll("[data-share-button]")) {
-    if (!(element instanceof HTMLButtonElement)) continue;
-    const button = element;
-    button.addEventListener("click", async () => {
-      const label = button.querySelector("[data-share-label]");
-      const shareData = {
-        title: button.dataset.title ?? document.title,
-        url: window.location.href,
-      };
+  for (const controls of document.querySelectorAll("[data-share-controls]")) {
+    if (!(controls instanceof HTMLElement)) continue;
+    const shareButton = controls.querySelector("[data-share-button]");
+    const copyButton = controls.querySelector("[data-copy-button]");
+    const status = controls.querySelector("[data-share-status]");
+    const fallback = controls.querySelector("[data-share-fallback]");
+    const fallbackInput = controls.querySelector("[data-share-url]");
+    const canonicalUrl = new URL(
+      controls.dataset.canonicalPath ?? window.location.pathname,
+      window.location.origin,
+    ).href;
 
-      try {
-        if (navigator.share) {
-          await navigator.share(shareData);
-          return;
-        }
-        await navigator.clipboard.writeText(shareData.url);
-        if (label instanceof HTMLElement) label.textContent = "Link copied";
-      } catch (error) {
-        if (error instanceof DOMException && error.name === "AbortError") return;
-        if (label instanceof HTMLElement)
-          label.textContent = "Copy the address above";
+    function showFallback() {
+      if (fallback instanceof HTMLElement) fallback.hidden = false;
+      if (fallbackInput instanceof HTMLInputElement) {
+        fallbackInput.value = canonicalUrl;
+        fallbackInput.focus();
+        fallbackInput.select();
       }
-    });
+      if (status instanceof HTMLElement) status.textContent = "Select and copy the address.";
+    }
+
+    async function copyCanonical() {
+      try {
+        await navigator.clipboard.writeText(canonicalUrl);
+        if (status instanceof HTMLElement) status.textContent = "Canonical link copied.";
+      } catch {
+        showFallback();
+      }
+    }
+
+    if (shareButton instanceof HTMLButtonElement) {
+      shareButton.addEventListener("click", async () => {
+        const shareData = {
+          title: controls.dataset.title ?? document.title,
+          url: canonicalUrl,
+        };
+
+        try {
+          if (!navigator.share) {
+            await copyCanonical();
+            return;
+          }
+          await navigator.share(shareData);
+          if (status instanceof HTMLElement) status.textContent = "Share sheet opened.";
+        } catch (error) {
+          if (error instanceof DOMException && error.name === "AbortError") return;
+          showFallback();
+        }
+      });
+    }
+    if (copyButton instanceof HTMLButtonElement) copyButton.addEventListener("click", copyCanonical);
   }
 </script>

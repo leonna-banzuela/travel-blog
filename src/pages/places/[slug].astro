@@ -1,4 +1,6 @@
 ---
+import DiscoveryControls from "../../components/DiscoveryControls.astro";
+import SavePlaceButton from "../../components/SavePlaceButton.astro";
 import SiteHeader from "../../components/SiteHeader.astro";
 import StoryCard from "../../components/StoryCard.astro";
 import { findStories } from "../../content/catalog";
@@ -39,10 +41,12 @@ const { place, area, views } = Astro.props;
           <p class="location-note">Exact map position is awaiting verification.</p>
         )
       }
+      <SavePlaceButton placeId={place.id} placeName={place.name} />
     </header>
+    {views.length > 0 && <DiscoveryControls />}
     {
       views.length > 0 ? (
-        <div class="story-list" aria-label={`Stories from ${place.name}`}>
+        <div class="story-list" aria-label={`Stories from ${place.name}`} data-discovery-list>
           {views.map((view) => <StoryCard view={view} />)}
         </div>
       ) : (

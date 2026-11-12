@@ -1,4 +1,5 @@
 ---
+import DiscoveryControls from "../../components/DiscoveryControls.astro";
 import SiteHeader from "../../components/SiteHeader.astro";
 import StoryCard from "../../components/StoryCard.astro";
 import { storyViews } from "../../content/public-content";
@@ -20,7 +21,9 @@ const views = storyViews(siteCatalog);
       <p>Each entry keeps its own visit date, even when a place is visited more than once.</p>
     </header>
 
-    <div class="story-list" aria-label="Published travel stories">
+    <DiscoveryControls />
+
+    <div class="story-list" aria-label="Published travel stories" data-discovery-list>
       {views.map((view) => <StoryCard view={view} />)}
     </div>
   </main>

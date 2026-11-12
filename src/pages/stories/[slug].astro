@@ -1,10 +1,14 @@
 ---
 import FutureAdSlot from "../../components/FutureAdSlot.astro";
 import MediaGallery from "../../components/MediaGallery.astro";
+import SavePlaceButton from "../../components/SavePlaceButton.astro";
 import ShareButton from "../../components/ShareButton.astro";
 import SiteHeader from "../../components/SiteHeader.astro";
+import StoryCard from "../../components/StoryCard.astro";
 import {
   formatVisitDate,
+  moreAtPlace,
+  moreInArea,
   splitStoryParagraphs,
   storyViews,
 } from "../../content/public-content";
@@ -24,11 +28,15 @@ const observedTips = view.story.tips.filter((tip) => tip.perspective === "observ
 const personalTips = view.story.tips.filter((tip) => tip.perspective === "subjective");
 const rating = `${view.story.authorRating} out of 5`;
 const cover = view.media.find((item) => item.id === view.story.coverMediaId);
+const placeStories = moreAtPlace(siteCatalog, view.story);
+const areaStories = moreInArea(siteCatalog, view.story);
+const storyPath = `/stories/${view.story.slug}`;
 ---
 
 <BaseLayout
   title={`${view.story.title} · Leonna’s journal`}
   description={view.story.summary}
+  canonicalPath={storyPath}
   image={cover?.kind === "image" ? cover.src : cover?.poster}
   imageAlt={cover?.altText}
 >
@@ -55,8 +63,20 @@ const cover = view.media.find((item) => item.id === view.story.coverMediaId);
       </header>
 
       <div class="story-actions">
-        <ShareButton title={view.story.title} />
-        <a class="button button--paper" href={`/places/${view.place.slug}`}>More at this place</a>
+        <ShareButton title={view.story.title} canonicalPath={storyPath} />
+        <a
+          class="button button--paper"
+          href={`/places/${view.place.slug}`}
+          data-preserve-discovery
+          data-base-href={`/places/${view.place.slug}`}>More at this place</a
+        >
+        <a
+          class="button button--paper"
+          href={`/areas/${view.area.slug}`}
+          data-preserve-discovery
+          data-base-href={`/areas/${view.area.slug}`}>More in this area</a
+        >
+        <SavePlaceButton placeId={view.place.id} placeName={view.place.name} />
       </div>
 
       <MediaGallery media={view.media} />
@@ -66,6 +86,38 @@ const cover = view.media.find((item) => item.id === view.story.coverMediaId);
         <h2 id="story-title" class="sr-only">{view.story.title}</h2>
         {paragraphs.map((paragraph) => <p>{paragraph}</p>)}
       </section>
+
+      {
+        placeStories.length > 0 && (
+          <section class="story-section" aria-labelledby="more-place-title">
+            <div class="section-heading reading-heading">
+              <div>
+                <p class="eyebrow">Shared place</p>
+                <h2 id="more-place-title">More at {view.place.name}</h2>
+              </div>
+            </div>
+            <div class="story-list" data-discovery-list>
+              {placeStories.map((related) => <StoryCard view={related} compact />)}
+            </div>
+          </section>
+        )
+      }
+
+      {
+        areaStories.length > 0 && (
+          <section class="story-section" aria-labelledby="more-area-title">
+            <div class="section-heading reading-heading">
+              <div>
+                <p class="eyebrow">Nearby journal</p>
+                <h2 id="more-area-title">More in {view.area.name}</h2>
+              </div>
+            </div>
+            <div class="story-list" data-discovery-list>
+              {areaStories.map((related) => <StoryCard view={related} compact />)}
+            </div>
+          </section>
+        )
+      }
 
       {
         (observedTips.length > 0 || personalTips.length > 0) && (
@@ -116,7 +168,12 @@ const cover = view.media.find((item) => item.id === view.story.coverMediaId);
 
       <footer class="story-footer">
         <p>Filed under {view.story.tags.join(" · ")}</p>
-        <a class="text-link" href={`/areas/${view.area.slug}`}>More from {view.area.name} <span>→</span></a>
+        <a
+          class="text-link"
+          href={`/areas/${view.area.slug}`}
+          data-preserve-discovery
+          data-base-href={`/areas/${view.area.slug}`}>More from {view.area.name} <span>→</span></a
+        >
       </footer>
     </article>
   </main>

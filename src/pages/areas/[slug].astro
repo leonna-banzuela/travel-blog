@@ -1,4 +1,5 @@
 ---
+import DiscoveryControls from "../../components/DiscoveryControls.astro";
 import SiteHeader from "../../components/SiteHeader.astro";
 import StoryCard from "../../components/StoryCard.astro";
 import { findStories } from "../../content/catalog";
@@ -31,9 +32,10 @@ const places = new Set(views.map((view) => view.place.id)).size;
       <h1>{area.name}</h1>
       <p>{views.length} {views.length === 1 ? "story" : "stories"} across {places} {places === 1 ? "place" : "places"}.</p>
     </header>
+    {views.length > 0 && <DiscoveryControls />}
     {
       views.length > 0 ? (
-        <div class="story-list" aria-label={`Stories from ${area.name}`}>
+        <div class="story-list" aria-label={`Stories from ${area.name}`} data-discovery-list>
           {views.map((view) => <StoryCard view={view} />)}
         </div>
       ) : (

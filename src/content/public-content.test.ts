@@ -3,6 +3,8 @@ import { describe, expect, it } from "vitest";
 import { createTravelCatalog } from "./catalog";
 import {
   formatVisitDate,
+  moreAtPlace,
+  moreInArea,
   publishedStories,
   splitStoryParagraphs,
   storyViews,
@@ -53,5 +55,42 @@ describe("public reading content", () => {
       "2027-01-15",
       "2026-11-01",
     ]);
+  });
+
+  it("derives related reading from place and area relationships", () => {
+    const firstStory = siteCatalog.stories[0];
+    const repeatedVisit = {
+      ...firstStory,
+      id: "sandy-beach-2027-01-15-leonna-banzuela",
+      slug: "sandy-beach-2027-01-15-leonna-banzuela",
+      title: "Back at Sandy Beach",
+      visitDate: "2027-01-15",
+    };
+    const neighbouringPlace = {
+      ...siteCatalog.places[0],
+      id: "neighbouring-beach-auckland",
+      slug: "neighbouring-beach-auckland",
+      name: "Neighbouring Beach",
+    };
+    const neighbouringStory = {
+      ...firstStory,
+      id: "neighbouring-beach-2027-02-01-leonna-banzuela",
+      slug: "neighbouring-beach-2027-02-01-leonna-banzuela",
+      placeId: neighbouringPlace.id,
+      title: "A nearby Auckland visit",
+      visitDate: "2027-02-01",
+    };
+    const catalog = createTravelCatalog({
+      ...siteCatalog,
+      places: [...siteCatalog.places, neighbouringPlace],
+      stories: [...siteCatalog.stories, repeatedVisit, neighbouringStory],
+    });
+
+    expect(
+      moreAtPlace(catalog, firstStory).map(({ story }) => story.id),
+    ).toEqual([repeatedVisit.id]);
+    expect(
+      moreInArea(catalog, firstStory).map(({ story }) => story.id),
+    ).toEqual([neighbouringStory.id]);
   });
 });

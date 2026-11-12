@@ -1,7 +1,7 @@
 ---
 import '../styles/global.css';
 
-const { title, description, image, imageAlt } = Astro.props;
+const { title, description, image, imageAlt, canonicalPath = Astro.url.pathname } = Astro.props;
 ---
 
 <!doctype html>
@@ -10,6 +10,7 @@ const { title, description, image, imageAlt } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalPath} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
@@ -23,5 +24,39 @@ const { title, description, image, imageAlt } = Astro.props;
   <body>
     <a class="skip-link" href="#main-content">Skip to main content</a>
     <slot />
+    <script>
+      const discoveryKeys = new Set([
+        "q",
+        "category",
+        "setting",
+        "experience",
+        "climate",
+        "practical",
+        "facilities",
+        "sort",
+        "saved",
+      ]);
+
+      function preserveDiscoveryContext(query = window.location.search.slice(1)) {
+        const source = new URLSearchParams(query);
+        const context = new URLSearchParams();
+        for (const [key, value] of source) {
+          if (discoveryKeys.has(key)) context.set(key, value);
+        }
+        for (const element of document.querySelectorAll("[data-preserve-discovery]")) {
+          if (!(element instanceof HTMLAnchorElement)) continue;
+          const base = element.dataset.baseHref ?? element.getAttribute("href") ?? "/";
+          const url = new URL(base, window.location.origin);
+          url.search = context.toString();
+          element.href = `${url.pathname}${url.search}${url.hash}`;
+        }
+      }
+
+      window.addEventListener("travel:discoverychange", (event) => {
+        if (!(event instanceof CustomEvent)) return;
+        preserveDiscoveryContext(typeof event.detail?.query === "string" ? event.detail.query : "");
+      });
+      preserveDiscoveryContext();
+    </script>
   </body>
 </html>

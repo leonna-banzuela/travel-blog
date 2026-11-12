@@ -176,3 +176,97 @@ test("map failure leaves the list route available", async ({ page }) => {
     page.getByText(/visit location is verified from the original media/i),
   ).toBeAttached();
 });
+
+test("combined discovery filters are URL-shareable and keep map and list in sync", async ({
+  page,
+}) => {
+  await page.goto("/?setting=beach&experience=relaxing");
+
+  await expect(page.getByLabel("Setting")).toHaveValue("beach");
+  await expect(page.getByLabel("Experience")).toHaveValue("relaxing");
+  await expect(page.getByText("1 story shown", { exact: true })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "1 place with a story" }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("link", { name: "Read story →", exact: true }),
+  ).toHaveAttribute(
+    "href",
+    /setting=beach.*experience=relaxing|experience=relaxing.*setting=beach/,
+  );
+
+  await page.getByText("More filters", { exact: true }).click();
+  await page.getByLabel("Experience").selectOption("adventure");
+  await expect(page).toHaveURL(/experience=adventure/);
+  await expect(
+    page.getByText("No stories match those filters", { exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "No matching places" }),
+  ).toBeVisible();
+
+  await page.getByRole("button", { name: "Clear filters" }).click();
+  await expect(page.getByText("1 story shown", { exact: true })).toBeVisible();
+  await expect(page).not.toHaveURL(/experience=/);
+});
+
+test("search and saved places work without an account", async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 800 });
+  await page.goto("/stories?q=Sandy&sort=oldest");
+
+  await expect(page.getByLabel("Search")).toHaveValue("Sandy");
+  await expect(page.getByLabel("Sort")).toHaveValue("oldest");
+  await expect(
+    page.getByRole("link", { name: /A nice day at Sandy Beach/i }),
+  ).toBeVisible();
+  await expect(
+    page.getByText(/saved places stay in this browser/i).first(),
+  ).toBeVisible();
+
+  await page.getByRole("button", { name: "Save Sandy Beach" }).click();
+  await expect(
+    page.getByRole("button", { name: "Saved: Sandy Beach" }),
+  ).toHaveAttribute("aria-pressed", "true");
+  expect(
+    await page.evaluate(() =>
+      localStorage.getItem("leonna-travel-blog:saved-places:v1"),
+    ),
+  ).toContain("sandy-beach-auckland");
+  await page.getByLabel("Saved places only").check();
+  await expect(page).toHaveURL(/saved=1/);
+  await expect(
+    page.getByRole("link", { name: /A nice day at Sandy Beach/i }),
+  ).toBeVisible();
+
+  const layout = await page.evaluate(() => ({
+    bodyWidth: document.body.scrollWidth,
+    viewportWidth: document.documentElement.clientWidth,
+  }));
+  expect(layout.bodyWidth).toBeLessThanOrEqual(layout.viewportWidth);
+});
+
+test("story sharing uses a canonical URL while related links preserve discovery context", async ({
+  page,
+  context,
+}) => {
+  await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+  await page.goto(
+    "/stories/sandy-beach-2026-11-01-leonna-banzuela?setting=beach&experience=relaxing",
+  );
+
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+    "href",
+    "/stories/sandy-beach-2026-11-01-leonna-banzuela",
+  );
+  await expect(
+    page.getByRole("link", { name: "More at this place" }),
+  ).toHaveAttribute(
+    "href",
+    /setting=beach.*experience=relaxing|experience=relaxing.*setting=beach/,
+  );
+  await page.getByRole("button", { name: "Copy link" }).click();
+  await expect(page.getByText("Canonical link copied.")).toBeVisible();
+  expect(await page.evaluate(() => navigator.clipboard.readText())).toMatch(
+    /\/stories\/sandy-beach-2026-11-01-leonna-banzuela\/?$/,
+  );
+});

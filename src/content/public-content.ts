@@ -53,6 +53,33 @@ export function storyViews(catalog: TravelCatalog): StoryView[] {
   );
 }
 
+export function moreAtPlace(
+  catalog: TravelCatalog,
+  currentStory: Story,
+): StoryView[] {
+  return findStories(catalog, { placeId: currentStory.placeId })
+    .filter(
+      (story) =>
+        story.id !== currentStory.id && story.publicationStatus === "published",
+    )
+    .map((story) => resolveStoryView(catalog, story));
+}
+
+export function moreInArea(
+  catalog: TravelCatalog,
+  currentStory: Story,
+): StoryView[] {
+  const current = resolveStoryView(catalog, currentStory);
+  return findStories(catalog, { areaId: current.area.id })
+    .filter(
+      (story) =>
+        story.id !== currentStory.id &&
+        story.placeId !== currentStory.placeId &&
+        story.publicationStatus === "published",
+    )
+    .map((story) => resolveStoryView(catalog, story));
+}
+
 export function formatVisitDate(value: string): string {
   return new Intl.DateTimeFormat("en-NZ", {
     day: "numeric",

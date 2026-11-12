@@ -1,5 +1,6 @@
 ---
 import "leaflet/dist/leaflet.css";
+import SavePlaceButton from "./SavePlaceButton.astro";
 
 const { view } = Astro.props;
 const storyCount = 1;
@@ -42,6 +43,7 @@ const hasExactLocation = coordinates !== null;
         class="leaflet-map"
         data-travel-map
         data-story-count={storyCount}
+        data-story-id={view.story.id}
         data-area-url="/areas/auckland"
         data-place-name={view.place.name}
         data-place-url={`/places/${view.place.slug}`}
@@ -63,8 +65,22 @@ const hasExactLocation = coordinates !== null;
 
     <aside id="place-list" class="map-list-panel" aria-labelledby="place-list-title">
       <p class="eyebrow">Accessible list view</p>
-      <h3 id="place-list-title">1 place with a story</h3>
-      <article class="map-place-card">
+      <h3 id="place-list-title" data-map-result-count>1 place with a story</h3>
+      <article
+        class="map-place-card"
+        data-discovery-record
+        data-map-record
+        data-story-id={view.story.id}
+        data-place-id={view.place.id}
+        data-title={view.story.title}
+        data-summary={view.story.summary}
+        data-place={view.place.name}
+        data-area={view.area.name}
+        data-author={view.author.name}
+        data-tags={view.story.tags.join(" ")}
+        data-date={view.story.visitDate}
+        data-rating={view.story.authorRating}
+      >
         <div>
           <p class="card-kicker">
             Auckland · {hasExactLocation ? "visit location verified" : "location pending"}
@@ -79,8 +95,19 @@ const hasExactLocation = coordinates !== null;
           }
         </div>
         <div class="map-place-actions">
-          <a class="button button--paper" href={`/places/${view.place.slug}`}>Place page</a>
-          <a class="text-link" href={`/stories/${view.story.slug}`}>Read story <span>→</span></a>
+          <a
+            class="button button--paper"
+            href={`/places/${view.place.slug}`}
+            data-preserve-discovery
+            data-base-href={`/places/${view.place.slug}`}>Place page</a
+          >
+          <a
+            class="text-link"
+            href={`/stories/${view.story.slug}`}
+            data-preserve-discovery
+            data-base-href={`/stories/${view.story.slug}`}>Read story <span>→</span></a
+          >
+          <SavePlaceButton placeId={view.place.id} placeName={view.place.name} compact />
         </div>
       </article>
     </aside>
@@ -165,6 +192,22 @@ const hasExactLocation = coordinates !== null;
         ? `${element.dataset.placeName ?? "Visit location"}, one published visit. Press Enter for details.`
         : "Auckland area, one published visit. Press Enter for details.",
     );
+    const storyId = element.dataset.storyId ?? "";
+    const countElement = document.querySelector("[data-map-result-count]");
+    const syncMarker = (visibleStoryIds = [""]) => {
+      const visible = visibleStoryIds.includes(storyId);
+      if (visible && !map.hasLayer(areaMarker)) areaMarker.addTo(map);
+      if (!visible && map.hasLayer(areaMarker)) areaMarker.remove();
+      if (countElement instanceof HTMLElement) {
+        countElement.textContent = visible ? "1 place with a story" : "No matching places";
+      }
+    };
+    window.addEventListener("travel:discoverychange", (event) => {
+      if (!(event instanceof CustomEvent) || !Array.isArray(event.detail?.visibleStoryIds)) return;
+      syncMarker(event.detail.visibleStoryIds);
+    });
+    const initialRecord = document.querySelector("[data-map-record]");
+    if (initialRecord instanceof HTMLElement && initialRecord.hidden) syncMarker([]);
     element.querySelector(".map-loading")?.remove();
   }
 </script>

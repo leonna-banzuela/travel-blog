@@ -1,15 +1,246 @@
-<form class="control-bar" role="search" aria-label="Filter travel stories">
-  <label class="search-field">
-    <span class="sr-only">Search stories</span>
-    <span aria-hidden="true">⌕</span>
-    <input type="search" name="query" placeholder="Search a place or story" />
-  </label>
+---
+import { controlledTagGroups } from "../content/tags";
 
-  <div class="control-group" aria-label="Quick filters">
-    <button class="chip is-active" type="button" aria-pressed="true">All stories</button>
-    <button class="chip" type="button" aria-pressed="false">Beach</button>
-    <button class="chip" type="button" aria-pressed="false">Auckland</button>
+const categoryTags = [...controlledTagGroups.foodAndDrink, ...controlledTagGroups.studyAndWork];
+const groups = [
+  { key: "category", label: "Category", tags: categoryTags },
+  { key: "setting", label: "Setting", tags: controlledTagGroups.setting },
+  { key: "experience", label: "Experience", tags: controlledTagGroups.experience },
+  { key: "climate", label: "Climate", tags: controlledTagGroups.climate },
+  { key: "practical", label: "Practical", tags: controlledTagGroups.practicalNeeds },
+  { key: "facilities", label: "Facilities", tags: controlledTagGroups.studyFacilities },
+];
+const { preview = false } = Astro.props;
+---
+
+<form
+  class="discovery-controls"
+  role="search"
+  aria-label="Filter travel stories"
+  data-discovery-form
+  data-discovery-preview={preview ? "true" : undefined}
+>
+  <div class="discovery-primary-row">
+    <label class="search-field">
+      <span>Search</span>
+      <span class="search-input-wrap">
+        <span aria-hidden="true">⌕</span>
+        <input type="search" name="q" placeholder="Place, story, creator, or tag" autocomplete="off" />
+      </span>
+    </label>
+
+    <label>
+      <span>Sort</span>
+      <select name="sort">
+        <option value="newest">Newest visit</option>
+        <option value="oldest">Oldest visit</option>
+        <option value="rating">Highest rating</option>
+      </select>
+    </label>
+
+    <button class="button button--ink" type="submit">Apply</button>
+    <button class="button button--paper" type="button" data-clear-filters>Clear</button>
   </div>
 
-  <button class="button button--ink" type="submit">Search</button>
+  <details class="filter-drawer">
+    <summary>More filters</summary>
+    <div class="filter-grid">
+      {
+        groups.map((group) => (
+          <label>
+            <span>{group.label}</span>
+            <select name={group.key}>
+              <option value="">Any</option>
+              {group.tags.map((tag) => (
+                <option value={tag}>{tag.replaceAll("-", " ")}</option>
+              ))}
+            </select>
+          </label>
+        ))
+      }
+    </div>
+  </details>
+
+  <div class="discovery-meta-row">
+    <label class="saved-filter">
+      <input type="checkbox" name="saved" value="1" />
+      <span>Saved places only</span>
+    </label>
+    <p data-discovery-count role="status" aria-live="polite">Showing all stories</p>
+    <button class="text-button" type="button" data-copy-discovery>Copy filtered link</button>
+  </div>
+  <p class="filter-privacy">Saved places stay in this browser. No account or cloud sync.</p>
 </form>
+
+<section class="state-panel discovery-empty" data-discovery-empty hidden aria-live="polite">
+  <h2>No stories match those filters</h2>
+  <p>Try clearing one filter or using a broader search.</p>
+  <button class="button button--paper" type="button" data-empty-clear>Clear filters</button>
+</section>
+
+<script>
+  const allowedSelects = new Map([
+    ["category", ["restaurant", "cafe", "bakery", "street-food", "study-spot", "laptop-friendly", "library", "coworking"]],
+    ["setting", ["nature", "beach", "forest", "mountains", "city"]],
+    ["experience", ["relaxing", "adventure", "adrenaline", "cultural"]],
+    ["climate", ["hot", "warm", "cool", "cold"]],
+    ["practical", ["free-entry", "budget-friendly", "family-friendly", "indoor", "outdoor"]],
+    ["facilities", ["wifi", "power-outlets", "quiet-space"]],
+    ["sort", ["newest", "oldest", "rating"]],
+  ]);
+  const storageKey = "leonna-travel-blog:saved-places:v1";
+
+  function savedPlaceIds() {
+    try {
+      const value = JSON.parse(localStorage.getItem(storageKey) ?? "[]");
+      return new Set(Array.isArray(value) ? value.filter((item) => typeof item === "string") : []);
+    } catch {
+      return new Set();
+    }
+  }
+
+  function normalizedText(value = "") {
+    return value.trim().toLocaleLowerCase("en-NZ");
+  }
+
+  for (const form of document.querySelectorAll("[data-discovery-form]")) {
+    if (!(form instanceof HTMLFormElement)) continue;
+    const discoveryForm = form;
+    if (discoveryForm.dataset.discoveryPreview === "true") continue;
+    const records = [...document.querySelectorAll("[data-discovery-record]")].filter(
+      (record) => record instanceof HTMLElement,
+    );
+    const count = discoveryForm.querySelector("[data-discovery-count]");
+    const empty = document.querySelector("[data-discovery-empty]");
+    const search = discoveryForm.elements.namedItem("q");
+
+    function selectElement(name = "") {
+      const control = discoveryForm.elements.namedItem(name);
+      return control instanceof HTMLSelectElement ? control : null;
+    }
+
+    function checkboxElement(name = "") {
+      const control = discoveryForm.elements.namedItem(name);
+      return control instanceof HTMLInputElement && control.type === "checkbox" ? control : null;
+    }
+
+    function restoreFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      if (search instanceof HTMLInputElement) search.value = params.get("q") ?? "";
+      for (const [name, allowed] of allowedSelects) {
+        const select = selectElement(name);
+        const value = params.get(name) ?? "";
+        if (select) select.value = allowed.includes(value) ? value : name === "sort" ? "newest" : "";
+      }
+      const saved = checkboxElement("saved");
+      if (saved) saved.checked = params.get("saved") === "1";
+    }
+
+    function currentParams() {
+      const params = new URLSearchParams();
+      const query = search instanceof HTMLInputElement ? search.value.trim() : "";
+      if (query) params.set("q", query);
+      for (const [name] of allowedSelects) {
+        const value = selectElement(name)?.value ?? "";
+        if (value && !(name === "sort" && value === "newest")) params.set(name, value);
+      }
+      if (checkboxElement("saved")?.checked) params.set("saved", "1");
+      return params;
+    }
+
+    function matches(record = document.createElement("article")) {
+      const query = normalizedText(search instanceof HTMLInputElement ? search.value : "");
+      const searchable = normalizedText(
+        [record.dataset.title, record.dataset.summary, record.dataset.place, record.dataset.area, record.dataset.author, record.dataset.tags].join(" "),
+      );
+      if (query && !searchable.includes(query)) return false;
+
+      const tags = new Set((record.dataset.tags ?? "").split(" ").filter(Boolean));
+      for (const [name] of allowedSelects) {
+        if (name === "sort") continue;
+        const value = selectElement(name)?.value;
+        if (value && !tags.has(value)) return false;
+      }
+
+      if (checkboxElement("saved")?.checked && !savedPlaceIds().has(record.dataset.placeId ?? "")) {
+        return false;
+      }
+      return true;
+    }
+
+    function sortLists() {
+      const mode = selectElement("sort")?.value ?? "newest";
+      for (const list of document.querySelectorAll("[data-discovery-list]")) {
+        if (!(list instanceof HTMLElement)) continue;
+        const cards = [...list.children].filter(
+          (child) => child instanceof HTMLElement && child.matches("[data-discovery-record]"),
+        );
+        if (cards.length < 2) continue;
+        cards.sort((left, right) => {
+          if (!(left instanceof HTMLElement) || !(right instanceof HTMLElement)) return 0;
+          if (mode === "rating") return Number(right.dataset.rating) - Number(left.dataset.rating);
+          const comparison = (right.dataset.date ?? "").localeCompare(left.dataset.date ?? "");
+          return mode === "oldest" ? -comparison : comparison;
+        });
+        for (const card of cards) list.append(card);
+      }
+    }
+
+    function apply({ updateUrl = true } = {}) {
+      const visibleIds = new Set();
+      for (const record of records) {
+        if (!(record instanceof HTMLElement)) continue;
+        const visible = matches(record);
+        record.hidden = !visible;
+        if (visible && record.dataset.storyId) visibleIds.add(record.dataset.storyId);
+      }
+      sortLists();
+      if (count instanceof HTMLElement) {
+        count.textContent = `${visibleIds.size} ${visibleIds.size === 1 ? "story" : "stories"} shown`;
+      }
+      if (empty instanceof HTMLElement) empty.hidden = visibleIds.size > 0;
+
+      const params = currentParams();
+      if (updateUrl) {
+        const query = params.toString();
+        history.replaceState(null, "", `${window.location.pathname}${query ? `?${query}` : ""}${window.location.hash}`);
+      }
+      window.dispatchEvent(
+        new CustomEvent("travel:discoverychange", {
+          detail: { visibleStoryIds: [...visibleIds], query: params.toString() },
+        }),
+      );
+    }
+
+    function clearFilters() {
+      discoveryForm.reset();
+      const sort = selectElement("sort");
+      if (sort) sort.value = "newest";
+      apply();
+    }
+
+    discoveryForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      apply();
+    });
+    discoveryForm.addEventListener("change", () => apply());
+    discoveryForm.querySelector("[data-clear-filters]")?.addEventListener("click", clearFilters);
+    document.querySelector("[data-empty-clear]")?.addEventListener("click", clearFilters);
+    discoveryForm
+      .querySelector("[data-copy-discovery]")
+      ?.addEventListener("click", async (event) => {
+      const button = event.currentTarget;
+      if (!(button instanceof HTMLButtonElement)) return;
+      apply();
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        button.textContent = "Filtered link copied";
+      } catch {
+        button.textContent = "Copy the address bar link";
+      }
+      });
+    window.addEventListener("travel:savedplaceschange", () => apply({ updateUrl: false }));
+    restoreFromUrl();
+    apply({ updateUrl: false });
+  }
+</script>

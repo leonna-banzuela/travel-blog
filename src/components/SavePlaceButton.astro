@@ -1,0 +1,66 @@
+---
+const { placeId, placeName, compact = false } = Astro.props;
+---
+
+<div class:list={["save-place", { "save-place--compact": compact }] }>
+  <button
+    class="button button--paper"
+    type="button"
+    data-save-place
+    data-place-id={placeId}
+    data-place-name={placeName}
+    aria-pressed="false"
+  >
+    Save {placeName}
+  </button>
+  {!compact && <p>Saved only in this browser. No account or cloud sync.</p>}
+</div>
+
+<script>
+  const storageKey = "leonna-travel-blog:saved-places:v1";
+
+  function readSaved() {
+    try {
+      const value = JSON.parse(localStorage.getItem(storageKey) ?? "[]");
+      const stringValues = Array.isArray(value) ? value.filter((item) => typeof item === "string").map(String) : [];
+      return new Set(stringValues);
+    } catch {
+      return new Set([""].filter(Boolean));
+    }
+  }
+
+  function writeSaved(saved = new Set([""])) {
+    localStorage.setItem(storageKey, JSON.stringify([...saved].sort()));
+  }
+
+  function refreshButtons() {
+    const saved = readSaved();
+    for (const element of document.querySelectorAll("[data-save-place]")) {
+      if (!(element instanceof HTMLButtonElement)) continue;
+      const placeId = element.dataset.placeId ?? "";
+      const placeName = element.dataset.placeName ?? "place";
+      const isSaved = saved.has(placeId);
+      element.setAttribute("aria-pressed", String(isSaved));
+      element.textContent = isSaved ? `Saved: ${placeName}` : `Save ${placeName}`;
+    }
+  }
+
+  for (const element of document.querySelectorAll("[data-save-place]")) {
+    if (!(element instanceof HTMLButtonElement) || element.dataset.saveReady) continue;
+    element.dataset.saveReady = "true";
+    element.addEventListener("click", () => {
+      try {
+        const saved = readSaved();
+        const placeId = element.dataset.placeId ?? "";
+        if (saved.has(placeId)) saved.delete(placeId);
+        else saved.add(placeId);
+        writeSaved(saved);
+        refreshButtons();
+        window.dispatchEvent(new CustomEvent("travel:savedplaceschange"));
+      } catch {
+        element.textContent = "Saving is unavailable in this browser";
+      }
+    });
+  }
+  refreshButtons();
+</script>
