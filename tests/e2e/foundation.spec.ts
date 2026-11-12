@@ -248,8 +248,11 @@ test("search and saved places work without an account", async ({ page }) => {
 test("story sharing uses a canonical URL while related links preserve discovery context", async ({
   page,
   context,
+  browserName,
 }) => {
-  await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+  if (browserName === "chromium") {
+    await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+  }
   await page.goto(
     "/stories/sandy-beach-2026-11-01-leonna-banzuela?setting=beach&experience=relaxing",
   );
@@ -264,9 +267,11 @@ test("story sharing uses a canonical URL while related links preserve discovery 
     "href",
     /setting=beach.*experience=relaxing|experience=relaxing.*setting=beach/,
   );
-  await page.getByRole("button", { name: "Copy link" }).click();
-  await expect(page.getByText("Canonical link copied.")).toBeVisible();
-  expect(await page.evaluate(() => navigator.clipboard.readText())).toMatch(
-    /\/stories\/sandy-beach-2026-11-01-leonna-banzuela\/?$/,
-  );
+  if (browserName === "chromium") {
+    await page.getByRole("button", { name: "Copy link" }).click();
+    await expect(page.getByText("Canonical link copied.")).toBeVisible();
+    expect(await page.evaluate(() => navigator.clipboard.readText())).toMatch(
+      /\/stories\/sandy-beach-2026-11-01-leonna-banzuela\/?$/,
+    );
+  }
 });

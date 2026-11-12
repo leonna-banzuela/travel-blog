@@ -31,6 +31,29 @@ const cover = view.media.find((item) => item.id === view.story.coverMediaId);
 const placeStories = moreAtPlace(siteCatalog, view.story);
 const areaStories = moreInArea(siteCatalog, view.story);
 const storyPath = `/stories/${view.story.slug}`;
+const storyUrl = Astro.site ? new URL(storyPath, Astro.site).href : storyPath;
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: view.story.title,
+  description: view.story.summary,
+  datePublished: view.story.publishedAt,
+  dateModified: view.story.updatedAt,
+  mainEntityOfPage: storyUrl,
+  url: storyUrl,
+  inLanguage: "en-NZ",
+  author: {
+    "@type": "Person",
+    name: view.author.name,
+    url: `/creators/${view.author.slug}`,
+  },
+  contentLocation: {
+    "@type": "Place",
+    name: view.place.name,
+    address: view.place.addressSummary,
+  },
+  image: cover?.kind === "image" ? cover.src : cover?.poster,
+};
 ---
 
 <BaseLayout
@@ -39,6 +62,8 @@ const storyPath = `/stories/${view.story.slug}`;
   canonicalPath={storyPath}
   image={cover?.kind === "image" ? cover.src : cover?.poster}
   imageAlt={cover?.altText}
+  socialType="article"
+  structuredData={structuredData}
 >
   <SiteHeader active="stories" />
   <main id="main-content" class="reading-page">

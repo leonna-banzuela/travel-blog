@@ -131,6 +131,7 @@ const hasExactLocation = coordinates !== null;
   for (const element of document.querySelectorAll("[data-travel-map]")) {
     if (!(element instanceof HTMLElement) || element.dataset.mapReady) continue;
     element.dataset.mapReady = "true";
+    try {
 
     const latitude = Number(element.dataset.latitude);
     const longitude = Number(element.dataset.longitude);
@@ -186,6 +187,7 @@ const hasExactLocation = coordinates !== null;
     });
 
     const markerElement = areaMarker.getElement();
+    markerElement?.setAttribute("role", "button");
     markerElement?.setAttribute(
       "aria-label",
       hasExactLocation
@@ -208,6 +210,14 @@ const hasExactLocation = coordinates !== null;
     });
     const initialRecord = document.querySelector("[data-map-record]");
     if (initialRecord instanceof HTMLElement && initialRecord.hidden) syncMarker([]);
-    element.querySelector(".map-loading")?.remove();
+      element.querySelector(".map-loading")?.remove();
+    } catch {
+      element.replaceChildren();
+      const message = document.createElement("p");
+      message.className = "map-loading";
+      message.setAttribute("role", "status");
+      message.textContent = "The interactive map is unavailable. Use the place list beside it to continue.";
+      element.append(message);
+    }
   }
 </script>

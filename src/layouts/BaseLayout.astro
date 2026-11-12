@@ -1,7 +1,27 @@
 ---
-import '../styles/global.css';
+import "../styles/global.css";
 
-const { title, description, image, imageAlt, canonicalPath = Astro.url.pathname } = Astro.props;
+const {
+  title,
+  description,
+  image,
+  imageAlt,
+  canonicalPath = Astro.url.pathname,
+  robots = "index, follow",
+  socialType = "website",
+  structuredData,
+} = Astro.props;
+const canonicalUrl = Astro.site ? new URL(canonicalPath, Astro.site).href : canonicalPath;
+const socialImage = image && Astro.site ? new URL(image, Astro.site).href : image;
+const defaultStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "Leonna’s travel journal",
+  description,
+  url: canonicalUrl,
+  inLanguage: "en-NZ",
+};
+const jsonLd = JSON.stringify(structuredData ?? defaultStructuredData).replaceAll("<", "\\u003c");
 ---
 
 <!doctype html>
@@ -10,15 +30,24 @@ const { title, description, image, imageAlt, canonicalPath = Astro.url.pathname 
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonicalPath} />
+    <meta name="robots" content={robots} />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="alternate" type="application/atom+xml" title="Leonna’s travel journal feed" href="/feed.xml" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:type" content="website" />
-    {image && <meta property="og:image" content={image} />}
+    <meta property="og:type" content={socialType} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:site_name" content="Leonna’s travel journal" />
+    <meta property="og:locale" content="en_NZ" />
+    {socialImage && <meta property="og:image" content={socialImage} />}
     {image && imageAlt && <meta property="og:image:alt" content={imageAlt} />}
     <meta name="twitter:card" content={image ? "summary_large_image" : "summary"} />
-    {image && <meta name="twitter:image" content={image} />}
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    {socialImage && <meta name="twitter:image" content={socialImage} />}
+    {imageAlt && <meta name="twitter:image:alt" content={imageAlt} />}
     <meta name="generator" content={Astro.generator} />
+    <script type="application/ld+json" set:html={jsonLd} is:inline></script>
     <title>{title}</title>
   </head>
   <body>
