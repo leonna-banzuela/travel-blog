@@ -35,4 +35,4 @@ Commit as `task(05): add accessible geographic discovery` and push it.
 - Added World → New Zealand → Auckland navigation, keyboard-enabled map controls and marker, a screen-reader summary, legend, and equivalent place/story list.
 - Eight Chromium tests pass, including discovery through the list and a forced OpenStreetMap tile-failure fallback.
 - Built-in browser QA confirmed live tiles, attribution, compact responsive layout, list parity, and the activated Auckland popup link.
-- The focused local Git commit is required before this task's version is recorded; remote backup remains blocked until the GitHub repository exists.
+- Focused local version: commit `a69d38e` (`task(05): add accessible geographic discovery`). Remote backup remains blocked until the GitHub repository exists.
