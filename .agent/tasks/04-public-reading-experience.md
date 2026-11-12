@@ -35,4 +35,4 @@ Commit as `task(04): implement public reading experience` and push it.
 - Empty optional media and external-link arrays omit their headings and spacing.
 - Six Chromium tests cover discovery, direct story metadata, connected reading routes, not-found handling, small-screen overflow, and 200% text reflow.
 - Built-in browser QA confirmed the live Sandy Beach story at the compact viewport.
-- The focused local Git commit is required before this task's version is recorded; remote backup remains blocked until the GitHub repository exists.
+- Focused local version: commit `ef7ac6d` (`task(04): implement public reading experience`). Remote backup remains blocked until the GitHub repository exists.
