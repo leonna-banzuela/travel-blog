@@ -1,6 +1,6 @@
 # Task 10 — GitHub CI and deployment
 
-Status: In progress — repository and clean-checkout CI verified; Cloudflare account access and deployment configuration remain unavailable
+Status: In progress — public Workers release verified; automated GitHub deployment, rollback evidence, and tagging remain
 
 Depends on: Task 09
 

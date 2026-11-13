@@ -2,7 +2,7 @@
 
 Last updated: 14 November 2026 (Pacific/Auckland)
 
-Overall status: The complete version history is published to GitHub and clean-checkout CI passes; public release is waiting for Cloudflare sign-in and scoped deployment configuration.
+Overall status: The first release is live on Cloudflare Workers and verified on mobile and desktop; GitHub environment configuration, automated redeployment, rollback, and milestone tagging remain.
 
 Next task: `10-github-ci-and-deployment.md`
 
@@ -20,7 +20,7 @@ Next task: `10-github-ci-and-deployment.md`
 | 07 Sandy Beach story and media                            | Complete    | Exact four-sentence story, verified map point, responsive metadata-free photos, silent short video, cover cards, and social image metadata verified.                                                            | Local commit `b3a3521`; GitHub repository creation unavailable through the connected GitHub app |
 | 08 Filters, search, related content, and sharing          | Complete    | Combinable URL filters, synchronized map/list results, search/sort, local-only saves, canonical sharing, and relationship-based related reading verified.                                                       | Local commit `9404c71`; GitHub repository creation unavailable through the connected GitHub app |
 | 09 Quality, accessibility, SEO, performance, and security | Complete    | Cross-browser axe coverage, crawler/social metadata, feed/sitemap, CSP/headers, production budgets, secret scanning, and recovery instructions verified.                                                        | Local commit `d2889a4`; GitHub repository creation unavailable through the connected GitHub app |
-| 10 GitHub CI and deployment                               | In progress | Public repository created and all history pushed; GitHub's clean-checkout verification passed. Production deployment is waiting for Cloudflare access and GitHub environment values.                            | Public repository `leonna-banzuela/travel-blog`; CI run `43502457302`                           |
+| 10 GitHub CI and deployment                               | In progress | Public repository and clean-checkout CI are verified. A least-privilege token deployed the live Workers release; GitHub environment setup and rollback evidence remain.                                         | Repository `leonna-banzuela/travel-blog`; live Workers version `bd38e5db`                       |
 | 11 Soft launch and feedback                               | Not started | —                                                                                                                                                                                                               | —                                                                                               |
 | 12 Creator pilot                                          | Not started | Later phase; not first release.                                                                                                                                                                                 | —                                                                                               |
 | 13 Public submissions and moderation                      | Not started | Later phase; requires authentication and authorization.                                                                                                                                                         | —                                                                                               |
@@ -139,8 +139,11 @@ Next task: `10-github-ci-and-deployment.md`
 - GitHub publication: created the public `leonna-banzuela/travel-blog` repository on 14 November 2026, attached it as `origin`, and pushed the complete `main` history through commit `e25fc5f`.
 - Hosted CI: GitHub Actions run `43502457302` completed the locked clean-checkout verification, all 27 unit tests, all 60 browser checks, the production dependency audit, and the Wrangler dry run successfully.
 - Deployment preflight: the production job stopped before deployment because `SITE_URL` and Cloudflare credentials are not configured; the workflow now reports missing configuration explicitly before attempting a build.
-- Remaining acceptance work: sign in to Cloudflare, configure protected branches and GitHub environments, add the real HTTPS `SITE_URL` and scoped Cloudflare secrets, observe preview/production runs, verify the public URL and headers, perform the rollback drill, then create the milestone tag.
+- Cloudflare credential: created `travel-blog-github-deploy`, scoped to this account with only Workers Scripts Edit and a 14 November 2027 expiry. The token value is not stored in repository files.
+- Public release: built with `SITE_URL=https://leonnas-travel-journal.leonnabanzuela0516.workers.dev`, passed the production verifier, and deployed Workers version `bd38e5db-5520-486d-a2d3-b2a38b92d96e`.
+- Public verification: the home and direct Sandy Beach story URLs return 200 with CSP, referrer policy, and MIME-sniffing protection; canonical metadata uses the live origin. Playwright checks at 390-pixel mobile and 1440-pixel desktop widths found no horizontal overflow and confirmed the author and visit date.
+- Remaining acceptance work: configure protected branches and GitHub environments, transfer the account ID and token through GitHub's encrypted secret controls, add the real HTTPS `SITE_URL`, observe preview/production runs, perform the rollback drill, then create the milestone tag.
 
 ## Current blockers
 
-- Cloudflare is signed out in the built-in browser. Deployment requires account access, the account ID, and a scoped Workers API token stored in the GitHub `preview` and `production` environments; no such credentials are available locally.
+- GitHub Actions cannot redeploy until the Cloudflare account ID and scoped token are placed in the `preview` and `production` environments. Transmitting those credentials to GitHub requires explicit confirmation.
