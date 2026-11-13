@@ -1,8 +1,8 @@
 # Build status
 
-Last updated: 13 November 2026 (Pacific/Auckland)
+Last updated: 14 November 2026 (Pacific/Auckland)
 
-Overall status: GitHub CI and Cloudflare Workers deployment are fully prepared and verified locally; remote publication is waiting for a dedicated GitHub repository and Cloudflare deployment credentials.
+Overall status: The complete version history is published to GitHub and clean-checkout CI passes; public release is waiting for Cloudflare sign-in and scoped deployment configuration.
 
 Next task: `10-github-ci-and-deployment.md`
 
@@ -20,7 +20,7 @@ Next task: `10-github-ci-and-deployment.md`
 | 07 Sandy Beach story and media                            | Complete    | Exact four-sentence story, verified map point, responsive metadata-free photos, silent short video, cover cards, and social image metadata verified.                                                            | Local commit `b3a3521`; GitHub repository creation unavailable through the connected GitHub app |
 | 08 Filters, search, related content, and sharing          | Complete    | Combinable URL filters, synchronized map/list results, search/sort, local-only saves, canonical sharing, and relationship-based related reading verified.                                                       | Local commit `9404c71`; GitHub repository creation unavailable through the connected GitHub app |
 | 09 Quality, accessibility, SEO, performance, and security | Complete    | Cross-browser axe coverage, crawler/social metadata, feed/sitemap, CSP/headers, production budgets, secret scanning, and recovery instructions verified.                                                        | Local commit `d2889a4`; GitHub repository creation unavailable through the connected GitHub app |
-| 10 GitHub CI and deployment                               | In progress | CI, preview/production Workers workflows, pinned Wrangler config, clean-checkout verification, deployment/rollback guide, and LF normalization are complete locally; remote setup remains blocked.              | Local commits `8726250`, `7a9352d`, `3161c8f`; no GitHub remote                                 |
+| 10 GitHub CI and deployment                               | In progress | Public repository created and all history pushed; GitHub's clean-checkout verification passed. Production deployment is waiting for Cloudflare access and GitHub environment values.                            | Public repository `leonna-banzuela/travel-blog`; CI run `43502457302`                           |
 | 11 Soft launch and feedback                               | Not started | —                                                                                                                                                                                                               | —                                                                                               |
 | 12 Creator pilot                                          | Not started | Later phase; not first release.                                                                                                                                                                                 | —                                                                                               |
 | 13 Public submissions and moderation                      | Not started | Later phase; requires authentication and authorization.                                                                                                                                                         | —                                                                                               |
@@ -136,10 +136,11 @@ Next task: `10-github-ci-and-deployment.md`
 - Secrets: workflows reference GitHub environment secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`, plus the non-secret `SITE_URL` variable; forked pull requests do not receive deployment credentials.
 - Clean checkout: a fresh local clone with no private originals completed `npm ci`, the full 27-unit/60-browser verification chain, derivative-only media verification, production checks, and `wrangler deploy --dry-run` successfully.
 - Repository hygiene: original HEIC/MOV assets remain untracked, the local object database is about 4.18 MiB, and `.gitattributes` enforces LF text checkouts so formatting is reproducible on Windows and Linux.
-- GitHub audit: the connected account is `leonna-banzuela`; its accessible repositories were listed on 13 November 2026 and none is a dedicated travel-blog repository. Existing unrelated repositories were not repurposed or overwritten.
-- Remaining acceptance work: create the dedicated repository, push all commits, configure protected branches and GitHub environments, add scoped Cloudflare secrets, observe preview/production runs, verify the public URL and headers, perform the rollback drill, then create the milestone tag.
+- GitHub publication: created the public `leonna-banzuela/travel-blog` repository on 14 November 2026, attached it as `origin`, and pushed the complete `main` history through commit `e25fc5f`.
+- Hosted CI: GitHub Actions run `43502457302` completed the locked clean-checkout verification, all 27 unit tests, all 60 browser checks, the production dependency audit, and the Wrangler dry run successfully.
+- Deployment preflight: the production job stopped before deployment because `SITE_URL` and Cloudflare credentials are not configured; the workflow now reports missing configuration explicitly before attempting a build.
+- Remaining acceptance work: sign in to Cloudflare, configure protected branches and GitHub environments, add the real HTTPS `SITE_URL` and scoped Cloudflare secrets, observe preview/production runs, verify the public URL and headers, perform the rollback drill, then create the milestone tag.
 
 ## Current blockers
 
-- Publishing remains blocked until a dedicated empty GitHub repository is created under `leonna-banzuela`. The connected GitHub app can list and update existing repositories but cannot create one; existing unrelated repositories were not overwritten.
-- Cloudflare deployment also requires the account ID and a scoped Workers API token stored in the GitHub `preview` and `production` environments. No such credentials are available locally or through a connected deployment account.
+- Cloudflare is signed out in the built-in browser. Deployment requires account access, the account ID, and a scoped Workers API token stored in the GitHub `preview` and `production` environments; no such credentials are available locally.
