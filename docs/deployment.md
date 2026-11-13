@@ -4,7 +4,7 @@
 
 Create an empty private or public repository under `leonna-banzuela`, add it as `origin`, and push `main`. Protect `main`: require the `Verify clean checkout` result, require a pull request, block force pushes and deletion, and require resolved review conversations. Do not upload `blog_assets/`; Git confirms only processed `public/media/` derivatives are tracked.
 
-Create GitHub `preview` and `production` environments. Put `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` in environment secrets, and put the final HTTPS origin in the `SITE_URL` environment variable. The token needs only Workers Scripts edit and account read access for the target account. Never put these values in repository files, workflow text, issue comments, or build logs.
+Create GitHub `preview` and `production` environments. Put `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` in environment secrets, and put the final HTTPS origin in the `SITE_URL` environment variable. The verified deployment token is restricted to Workers Scripts edit for the target account and expires after one year. Never put these values in repository files, workflow text, issue comments, or build logs.
 
 The release workflow uses a locked install, all three browser engines, the complete verification chain, a Wrangler dry run, pull-request Workers Preview deployments, and production deployment only after verification on `main`. Forked pull requests do not receive deployment secrets.
 
