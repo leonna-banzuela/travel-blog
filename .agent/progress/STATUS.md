@@ -142,8 +142,9 @@ Next task: `10-github-ci-and-deployment.md`
 - Cloudflare credential: created `travel-blog-github-deploy`, scoped to this account with only Workers Scripts Edit and a 14 November 2027 expiry. The token value is not stored in repository files.
 - Public release: built with `SITE_URL=https://leonnas-travel-journal.leonnabanzuela0516.workers.dev`, passed the production verifier, and deployed Workers version `bd38e5db-5520-486d-a2d3-b2a38b92d96e`.
 - Public verification: the home and direct Sandy Beach story URLs return 200 with CSP, referrer policy, and MIME-sniffing protection; canonical metadata uses the live origin. Playwright checks at 390-pixel mobile and 1440-pixel desktop widths found no horizontal overflow and confirmed the author and visit date.
-- Remaining acceptance work: configure protected branches and GitHub environments, transfer the account ID and token through GitHub's encrypted secret controls, add the real HTTPS `SITE_URL`, observe preview/production runs, perform the rollback drill, then create the milestone tag.
+- GitHub environments: `production` and `preview` each contain encrypted `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` secrets plus the public `SITE_URL` variable. No credential value was committed or printed into a repository file.
+- Remaining acceptance work: observe successful preview and production runs, configure protected branches, perform the rollback drill, then create the milestone tag.
 
 ## Current blockers
 
-- GitHub Actions cannot redeploy until the Cloudflare account ID and scoped token are placed in the `preview` and `production` environments. Transmitting those credentials to GitHub requires explicit confirmation.
+- None. Task 10 remains in progress while automated deployment, preview, branch protection, rollback, and milestone evidence are completed.
