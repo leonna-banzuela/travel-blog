@@ -143,3 +143,9 @@
 - Decision: Remove the duplicate home side rail and introductory hero, lead with one compact live-search row and the map, reduce the public filter drawer to setting, practicality, and experience, and default the map to New Zealand with direct World/New Zealand/Auckland scope controls.
 - Rationale: T01 completed the soft-launch tasks but hesitated at the dense filter drawer and found that duplicated navigation and introductory copy delayed the map and stories. A country-scale starting view also answers the request for geographic context without prematurely building the animated globe.
 - Consequence: Legacy controlled tags remain valid content data, but the first-release discovery UI exposes only the clearest core options. The animated 3D globe remains deferred to Task 14 as planned.
+
+## 2026-11-15 — Replace landing search with the interactive globe now
+
+- Decision: Make a warm, full-width interactive globe the landing page's primary surface, remove search and filters from the home page, focus the initial view on New Zealand, and retain discovery controls on the stories page.
+- Rationale: After reviewing the final-product direction and a supplied visual reference, the owner explicitly moved the globe into the current landing experience and asked for no landing search yet.
+- Consequence: The globe uses locally bundled public-domain Natural Earth geometry, a canvas-based orthographic projection, verified story coordinates, a glowing visit marker, pointer and keyboard rotation, reduced-motion handling, and a direct story fallback. Task 14 now concerns multi-location expansion and monetisation rather than introducing the basic globe.

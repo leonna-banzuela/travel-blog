@@ -39,3 +39,21 @@ Role: build-team verification, not an independent retest
 | Automated coverage | The complete verification chain passed 27 unit tests and 69 browser checks across Chromium, Firefox, and WebKit, including axe scans and the new T01 regression coverage. | Pass   |
 
 The fixes are ready for an independent retest. This internal QA does not change T01's `Pending` retest status.
+
+## Owner-directed globe landing QA — 15 November 2026
+
+Environment: local production-equivalent build, Chromium screenshots plus Chromium/Firefox/WebKit automation
+
+Role: build-team verification of the supplied landing-page direction, not an independent tester session
+
+| Area                | Observed behavior                                                                                                                                           | Result |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
+| Reference direction | At 1440×1000, the landing hero uses a warm editorial globe, oversized journal title, short supporting line, and one rounded exploration action.             | Pass   |
+| Mobile composition  | At 390×844, the globe, two-line title, exploration action, New Zealand beacon, and direct Sandy Beach story card remain usable without horizontal overflow. | Pass   |
+| No landing search   | Home contains no search form or filter drawer; those controls remain available on the dedicated stories page.                                               | Pass   |
+| Globe interaction   | Pointer dragging and arrow keys rotate the projected land geometry; the initial view shows Oceania and a glowing verified Sandy Beach marker.               | Pass   |
+| Accessible fallback | The globe has a labelled focusable region, live readiness status, direct story link, and a tested missing-data fallback.                                    | Pass   |
+| Privacy/performance | Globe geometry is served locally from public-domain Natural Earth data, adds no third-party request, and the full production budget verifier passes.        | Pass   |
+| Automated coverage  | The complete verification chain passed 27 unit tests and 69 browser checks across Chromium, Firefox, and WebKit, including axe scans.                       | Pass   |
+
+The globe landing is ready for protected preview deployment. Independent soft-launch testing remains required before Task 11 is complete.

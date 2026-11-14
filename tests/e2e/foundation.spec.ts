@@ -3,12 +3,12 @@ import { expect, test } from "@playwright/test";
 test("renders the read-only travel journal foundation", async ({ page }) => {
   await page.goto("/");
 
-  await expect(page).toHaveTitle("Travel stories by Leonna Banzuela");
+  await expect(page).toHaveTitle("Leonna’s Travel Journal");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-    "Leonna’s travel map and stories",
+    "Leonna’s Travel Journal",
   );
   await expect(
-    page.getByRole("heading", { name: "Explore the map" }),
+    page.getByRole("region", { name: /interactive 3D globe/i }),
   ).toBeVisible();
   await expect(
     page.getByRole("link", { name: /travel journal home/i }),
@@ -49,37 +49,33 @@ test("layout reflows at 200 percent text zoom", async ({ page }) => {
   }));
   expect(layout.bodyWidth).toBeLessThanOrEqual(layout.viewportWidth);
   await expect(
-    page.getByRole("heading", { name: "Explore the map" }),
+    page.getByRole("heading", { name: "Leonna’s Travel Journal" }),
   ).toBeVisible();
 });
 
-test("soft-launch discovery stays compact and exposes the reduced filters in one click", async ({
+test("landing page leads with an interactive globe and no search controls", async ({
   page,
 }) => {
+  const pageErrors: string[] = [];
+  page.on("pageerror", (error) => pageErrors.push(error.message));
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
 
   await expect(page.locator(".side-rail")).toHaveCount(0);
-  await expect(page.getByText("Every place holds a dated story.")).toHaveCount(
-    0,
+  await expect(page.locator("[data-discovery-form]")).toHaveCount(0);
+  await expect(page.getByRole("searchbox")).toHaveCount(0);
+  await expect(
+    page.getByRole("region", { name: /interactive 3D globe/i }),
+  ).toBeVisible();
+  await expect(page.locator("[data-story-globe]")).toBeVisible();
+  await expect(page.locator(".globe-landing")).toHaveAttribute(
+    "data-globe-state",
+    "ready",
   );
-  const controls = await page.locator("[data-discovery-form]").boundingBox();
-  expect(controls?.height).toBeLessThanOrEqual(100);
-
-  await page.locator('summary[aria-label="Show filters"]').click();
-  await expect(page.getByLabel("Setting")).toBeVisible();
-  await expect(page.getByLabel("Practicality")).toBeVisible();
-  await expect(page.getByLabel("Experience")).toBeVisible();
-  await expect(page.getByLabel("Category")).toHaveCount(0);
-  await expect(page.getByLabel("Climate")).toHaveCount(0);
-  await expect(page.getByLabel("Facilities")).toHaveCount(0);
-
-  await page.locator('summary[aria-label="Show filters"]').click();
-  await page.getByRole("button", { name: "World" }).click();
-  await expect(page.getByRole("button", { name: "World" })).toHaveAttribute(
-    "aria-pressed",
-    "true",
-  );
+  await expect(
+    page.getByRole("link", { name: /Sandy Beach · 1 story/i }),
+  ).toBeVisible();
+  expect(pageErrors).toEqual([]);
 });
 
 test("reader can discover and open the Sandy Beach story", async ({ page }) => {
@@ -172,61 +168,48 @@ test("unknown direct routes show a useful not-found page", async ({ page }) => {
   ).toBeVisible();
 });
 
-test("map and accessible list provide the same discovery path", async ({
+test("globe marker and latest-story list provide accessible discovery paths", async ({
   page,
 }) => {
   await page.goto("/");
 
-  const map = page.getByRole("region", {
-    name: /interactive map showing New Zealand with the verified Sandy Beach visit location/i,
+  const globe = page.getByRole("region", {
+    name: /interactive 3D globe.*Sandy Beach.*Auckland/i,
   });
-  await expect(map).toBeVisible();
-  await expect(
-    page.getByRole("link", { name: "OpenStreetMap contributors" }).first(),
-  ).toBeVisible();
-  await expect(page.getByRole("button", { name: "World" })).toBeVisible();
-  await expect(page.getByRole("button", { name: "New Zealand" })).toBeVisible();
-  await expect(
-    page.getByText("Verified visit location", { exact: true }),
-  ).toBeVisible();
+  await expect(globe).toBeVisible();
+  await globe.focus();
+  await globe.press("ArrowRight");
 
-  await page.getByRole("link", { name: "Read story →", exact: true }).click();
+  await page.getByRole("link", { name: /Sandy Beach · 1 story/i }).click();
   await expect(
     page.getByRole("heading", { level: 1, name: "A nice day at Sandy Beach" }),
   ).toBeVisible();
 });
 
-test("map failure leaves the list route available", async ({ page }) => {
-  await page.route("https://tile.openstreetmap.org/**", (route) =>
-    route.abort(),
-  );
+test("globe data failure leaves the story route available", async ({
+  page,
+}) => {
+  await page.route("**/data/world-land-110m.json", (route) => route.abort());
   await page.goto("/");
 
   await expect(
-    page.getByRole("heading", { name: "1 place with a story" }),
-  ).toBeVisible();
-  await expect(page.getByRole("link", { name: "Place page" })).toHaveAttribute(
-    "href",
-    "/places/sandy-beach-auckland",
-  );
-  await expect(
-    page.getByText(/visit location is verified from the original media/i),
+    page.getByText(/globe could not load.*Sandy Beach location link/i),
   ).toBeAttached();
+  await expect(
+    page.getByRole("link", { name: /Sandy Beach · 1 story/i }),
+  ).toHaveAttribute("href", "/stories/sandy-beach-2026-11-01-leonna-banzuela");
 });
 
-test("combined discovery filters are URL-shareable and keep map and list in sync", async ({
+test("story discovery filters remain URL-shareable away from the landing page", async ({
   page,
 }) => {
-  await page.goto("/?setting=beach&experience=relaxing");
+  await page.goto("/stories?setting=beach&experience=relaxing");
 
   await expect(page.getByLabel("Setting")).toHaveValue("beach");
   await expect(page.getByLabel("Experience")).toHaveValue("relaxing");
   await expect(page.getByText("1 story shown", { exact: true })).toBeVisible();
   await expect(
-    page.getByRole("heading", { name: "1 place with a story" }),
-  ).toBeVisible();
-  await expect(
-    page.getByRole("link", { name: "Read story →", exact: true }),
+    page.getByRole("link", { name: /A nice day at Sandy Beach/i }),
   ).toHaveAttribute(
     "href",
     /setting=beach.*experience=relaxing|experience=relaxing.*setting=beach/,
@@ -238,9 +221,7 @@ test("combined discovery filters are URL-shareable and keep map and list in sync
   await expect(
     page.getByText("No stories match those filters", { exact: true }),
   ).toBeVisible();
-  await expect(
-    page.getByRole("heading", { name: "No matching places" }),
-  ).toBeVisible();
+  await expect(page.locator("[data-discovery-record]:visible")).toHaveCount(0);
 
   await page.locator("[data-clear-filters]").click();
   await expect(page.getByText("1 story shown", { exact: true })).toBeVisible();

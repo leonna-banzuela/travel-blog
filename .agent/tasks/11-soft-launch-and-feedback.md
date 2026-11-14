@@ -1,6 +1,6 @@
 # Task 11 — Soft launch and feedback
 
-Status: In progress — T01 findings are fixed and internally verified; four more tester sessions and independent retest remain
+Status: In progress — T01 findings are fixed; the owner-requested globe landing update is being verified; four more tester sessions and independent retest remain
 
 Depends on: Task 10
 

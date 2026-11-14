@@ -9,7 +9,7 @@ Build a free-to-read, map-first travel journal that begins with Leonna Banzuela'
 The shared ChatGPT roadmap was inspected in the in-app browser on 12 November 2026. Its verified direction is:
 
 - Minimal, editorial design with warm paper tones, generous spacing, distinctive typography, and restrained sticky-note details.
-- A compact header; do not repeat the oversized introductory block from the earlier mock-up. The map should appear quickly, especially on mobile.
+- A compact header and a cinematic interactive globe landing surface. The globe may carry a restrained title and one exploration action, but no search form should precede it.
 - Hand-drawn-feeling geographic outlines. Areas with published experiences have a stronger outline; other areas are light grey and subdued.
 - Progressive navigation: world/country -> region -> locality -> place, while allowing a creator to start at a small scope such as Auckland.
 - A left-side country/region/story navigation on wide screens and a compact, accessible mobile alternative.
@@ -45,4 +45,4 @@ The required four-sentence story copy is:
 
 ## Growth scope, not first-release scope
 
-Creator accounts, public uploads, audience ratings, moderation, reporting, newsletters, direct video hosting, advertising, and the animated globe are later tasks. The data model must leave room for them without exposing unfinished controls.
+Creator accounts, public uploads, audience ratings, moderation, reporting, newsletters, direct video hosting, advertising, and multi-location globe expansion are later tasks. The data model must leave room for them without exposing unfinished controls.

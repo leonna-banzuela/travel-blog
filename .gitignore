@@ -7,6 +7,7 @@ coverage/
 playwright-report/
 test-results/
 .wrangler/
+.tmp-*/
 
 # Local configuration and secrets
 .env

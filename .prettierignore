@@ -5,3 +5,4 @@ playwright-report/
 test-results/
 blog_assets/
 package-lock.json
+public/data/world-land-110m.json
