@@ -1144,6 +1144,37 @@ a {
   line-height: 1.6;
 }
 
+.privacy-sections {
+  display: grid;
+  gap: 1rem;
+  max-width: 48rem;
+}
+
+.privacy-sections section {
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--paper-bright);
+  box-shadow: var(--shadow-sm);
+}
+
+.privacy-sections h2 {
+  margin: 0 0 0.75rem;
+  font-size: clamp(1.35rem, 3vw, 2rem);
+  font-weight: 500;
+}
+
+.privacy-sections p,
+.privacy-sections li {
+  color: var(--ink-soft);
+  line-height: 1.7;
+}
+
+.privacy-sections p:last-child,
+.privacy-sections ul:last-child {
+  margin-bottom: 0;
+}
+
 .location-note {
   margin-top: 0.75rem !important;
   font-family: var(--font-ui);

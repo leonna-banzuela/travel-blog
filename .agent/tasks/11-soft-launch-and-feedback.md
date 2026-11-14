@@ -1,6 +1,6 @@
 # Task 11 — Soft launch and feedback
 
-Status: Not started
+Status: In progress — analytics/privacy and launch materials are prepared; observed tester sessions remain
 
 Depends on: Task 10
 

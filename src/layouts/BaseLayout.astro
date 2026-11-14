@@ -53,6 +53,11 @@ const jsonLd = JSON.stringify(structuredData ?? defaultStructuredData).replaceAl
   <body>
     <a class="skip-link" href="#main-content">Skip to main content</a>
     <slot />
+    <script
+      type="module"
+      src="https://static.cloudflareinsights.com/beacon.min.js"
+      data-cf-beacon='{"token":"de5785d4a4fe4010902c746c2d7078e5"}'
+      is:inline></script>
     <script>
       const discoveryKeys = new Set([
         "q",

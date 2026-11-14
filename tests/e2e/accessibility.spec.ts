@@ -6,6 +6,7 @@ const publicRoutes = [
   "/stories",
   "/stories/sandy-beach-2026-11-01-leonna-banzuela",
   "/places/sandy-beach-auckland",
+  "/privacy",
   "/not-a-real-route",
 ];
 

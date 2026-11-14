@@ -180,6 +180,8 @@ for (const directive of [
   "Content-Security-Policy:",
   "frame-ancestors 'none'",
   "object-src 'none'",
+  "https://static.cloudflareinsights.com/beacon.min.js",
+  "https://cloudflareinsights.com",
   "Permissions-Policy:",
   "Referrer-Policy:",
   "X-Content-Type-Options: nosniff",

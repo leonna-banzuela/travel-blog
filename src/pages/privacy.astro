@@ -1,0 +1,63 @@
+---
+import SiteHeader from "../components/SiteHeader.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Privacy · Leonna’s travel journal"
+  description="Plain-language details about local saves and privacy-first visitor analytics."
+>
+  <SiteHeader active="privacy" />
+
+  <main id="main-content" class="collection-page">
+    <header class="collection-heading">
+      <p class="eyebrow">Visitor privacy</p>
+      <h1>Privacy, in plain language.</h1>
+      <p>This journal collects only the limited information needed to understand whether the site works well.</p>
+    </header>
+
+    <div class="privacy-sections">
+      <section aria-labelledby="analytics-title">
+        <h2 id="analytics-title">Cloudflare Web Analytics</h2>
+        <p>
+          Each public page loads Cloudflare’s cookie-free Web Analytics beacon. It reports page views,
+          visits, page-load timing and Core Web Vitals, plus aggregated dimensions such as country,
+          page path, referring site, device type, browser, operating system, and navigation type.
+        </p>
+        <p>
+          Cloudflare says it does not track people across websites. Query strings and custom events are
+          not collected, so search and filter choices are not reported. Unsampled beacon data is kept
+          for seven days before longer-term aggregation; the dashboard provides up to six months of
+          analytics history.
+        </p>
+      </section>
+
+      <section aria-labelledby="local-title">
+        <h2 id="local-title">What stays on your device</h2>
+        <p>
+          Saved-place identifiers are stored only in your browser’s local storage. There is no reader
+          account, public login, cloud profile, newsletter, advertising tracker, or public upload form.
+          Clearing this site’s browser storage removes saved places from that browser.
+        </p>
+      </section>
+
+      <section aria-labelledby="hosting-title">
+        <h2 id="hosting-title">Hosting and external links</h2>
+        <p>
+          Cloudflare hosts the public site and necessarily processes normal web requests to deliver it.
+          Links to other websites have their own privacy practices. The journal does not use advertising
+          trackers and does not sell visitor data.
+        </p>
+      </section>
+
+      <section aria-labelledby="changes-title">
+        <h2 id="changes-title">Questions and changes</h2>
+        <p>
+          This notice was last updated on 14 November 2026. If the site adds accounts, advertising, or
+          different analytics later, this page must be updated before those features go live. Privacy
+          questions can be sent to Leonna through the same channel where this journal link was shared.
+        </p>
+      </section>
+    </div>
+  </main>
+</BaseLayout>

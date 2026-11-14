@@ -41,6 +41,7 @@ test("crawler endpoints publish discoverable routes and a feed", async ({
   await expect(sitemap.text()).resolves.toContain(
     "/stories/sandy-beach-2026-11-01-leonna-banzuela",
   );
+  await expect(sitemap.text()).resolves.toContain("/privacy");
 
   const robots = await request.get("/robots.txt");
   await expect(robots.text()).resolves.toContain("Sitemap:");
@@ -50,6 +51,27 @@ test("crawler endpoints publish discoverable routes and a feed", async ({
     /(?:application\/atom\+xml|text\/xml)/,
   );
   await expect(feed.text()).resolves.toContain("A nice day at Sandy Beach");
+});
+
+test("privacy copy and privacy-first analytics match the public build", async ({
+  page,
+}) => {
+  await page.goto("/privacy");
+
+  await expect(
+    page.getByRole("heading", { name: "Privacy, in plain language" }),
+  ).toBeVisible();
+  await expect(
+    page.getByText("Cloudflare Web Analytics", { exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByText(/does not use advertising trackers/i),
+  ).toBeVisible();
+  await expect(
+    page.locator(
+      'script[src="https://static.cloudflareinsights.com/beacon.min.js"]',
+    ),
+  ).toHaveAttribute("data-cf-beacon", /"token"/);
 });
 
 test("non-content utility and missing pages are not indexed", async ({

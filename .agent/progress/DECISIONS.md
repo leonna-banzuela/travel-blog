@@ -131,3 +131,9 @@
 - Decision: Use pinned Wrangler static-assets configuration and one GitHub workflow whose preview and production jobs depend on the full verification job. Keep Cloudflare credentials in separate GitHub environments and never deploy forked pull requests.
 - Rationale: The official Cloudflare Workers workflow supports preview deployments through `cloudflare/wrangler-action@v4`, while environment boundaries prevent unverified code and forked contributions from receiving deployment credentials.
 - Consequence: Task 10 remains incomplete until a dedicated repository and scoped Cloudflare credentials exist, the real `SITE_URL` is configured, preview and production runs succeed, and rollback is observed. Unrelated repositories must not be reused merely because they are empty.
+
+## 2026-11-14 — Use cookie-free Cloudflare Web Analytics
+
+- Decision: Use one manually installed Cloudflare Web Analytics beacon for aggregate page, device, referral, geography, navigation, and real-user performance metrics; publish matching plain-language privacy copy.
+- Rationale: The soft launch needs enough evidence to find device and performance problems without reader accounts, advertising identifiers, custom events, or query-string collection. Cloudflare already hosts the site and documents that Web Analytics does not track individuals across customer sites.
+- Consequence: The public CSP permits only Cloudflare's documented beacon script and reporting origin. Any new vendor, custom event, account feature, or advertising tracker requires a separate privacy/security decision, updated copy, and tests before release.
