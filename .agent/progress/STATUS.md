@@ -2,7 +2,7 @@
 
 Last updated: 14 November 2026 (Pacific/Auckland)
 
-Overall status: The first release is live on Cloudflare Workers and verified on mobile and desktop; GitHub environment configuration, automated redeployment, rollback, and milestone tagging remain.
+Overall status: The first release is live on Cloudflare Workers and verified on mobile and desktop. GitHub CI, preview/production deployments, environment secrets, and the rollback drill are verified; branch protection and milestone tagging remain.
 
 Next task: `10-github-ci-and-deployment.md`
 
@@ -20,7 +20,7 @@ Next task: `10-github-ci-and-deployment.md`
 | 07 Sandy Beach story and media                            | Complete    | Exact four-sentence story, verified map point, responsive metadata-free photos, silent short video, cover cards, and social image metadata verified.                                                            | Local commit `b3a3521`; GitHub repository creation unavailable through the connected GitHub app |
 | 08 Filters, search, related content, and sharing          | Complete    | Combinable URL filters, synchronized map/list results, search/sort, local-only saves, canonical sharing, and relationship-based related reading verified.                                                       | Local commit `9404c71`; GitHub repository creation unavailable through the connected GitHub app |
 | 09 Quality, accessibility, SEO, performance, and security | Complete    | Cross-browser axe coverage, crawler/social metadata, feed/sitemap, CSP/headers, production budgets, secret scanning, and recovery instructions verified.                                                        | Local commit `d2889a4`; GitHub repository creation unavailable through the connected GitHub app |
-| 10 GitHub CI and deployment                               | In progress | Public repository and clean-checkout CI are verified. A least-privilege token deployed the live Workers release; GitHub environment setup and rollback evidence remain.                                         | Repository `leonna-banzuela/travel-blog`; live Workers version `bd38e5db`                       |
+| 10 GitHub CI and deployment                               | In progress | Public repository, clean-checkout CI, isolated PR previews, automated production deployment, and rollback recovery are verified. Branch protection and the milestone tag remain.                                | Repository `leonna-banzuela/travel-blog`; current Workers version `5d3f5ca2`                    |
 | 11 Soft launch and feedback                               | Not started | —                                                                                                                                                                                                               | —                                                                                               |
 | 12 Creator pilot                                          | Not started | Later phase; not first release.                                                                                                                                                                                 | —                                                                                               |
 | 13 Public submissions and moderation                      | Not started | Later phase; requires authentication and authorization.                                                                                                                                                         | —                                                                                               |
@@ -143,8 +143,12 @@ Next task: `10-github-ci-and-deployment.md`
 - Public release: built with `SITE_URL=https://leonnas-travel-journal.leonnabanzuela0516.workers.dev`, passed the production verifier, and deployed Workers version `bd38e5db-5520-486d-a2d3-b2a38b92d96e`.
 - Public verification: the home and direct Sandy Beach story URLs return 200 with CSP, referrer policy, and MIME-sniffing protection; canonical metadata uses the live origin. Playwright checks at 390-pixel mobile and 1440-pixel desktop widths found no horizontal overflow and confirmed the author and visit date.
 - GitHub environments: `production` and `preview` each contain encrypted `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` secrets plus the public `SITE_URL` variable. No credential value was committed or printed into a repository file.
-- Remaining acceptance work: observe successful preview and production runs, configure protected branches, perform the rollback drill, then create the milestone tag.
+- Preview deployment: pull request #1 run `43507572302` passed `Verify clean checkout` and deployed an isolated Workers preview at `pr-1-leonnas-travel-journal.leonnabanzuela0516.workers.dev`. The preview home and direct Sandy Beach story routes returned 200, included the required story copy, and served the production CSP.
+- Automated production deployment: after pull request #1 merged, run `43508086399` passed verification and deployed Workers version `5d3f5ca2-b4c3-428e-8a51-27150158c5bc` to the public URL.
+- Rollback drill: rolled the live Worker back from `5d3f5ca2-b4c3-428e-8a51-27150158c5bc` to known-good version `debff308-ae76-4663-a6a3-4c6b43f00cdd`; both the home and direct Sandy Beach story routes returned 200 with the story copy and CSP. Restored `5d3f5ca2-b4c3-428e-8a51-27150158c5bc` and reverified both routes, the canonical URL, and security headers.
+- Final release-record PR: pull request #2 run `43541828386` passed the full clean-checkout verification and isolated preview deployment. The preview home and direct story routes returned 200 with CSP; the story contained the required four sentences, author, and visit date.
+- Remaining acceptance work: create the prepared `main` branch protection rule, merge this final Task 10 release record through its required CI/preview path, then tag `v0.1.0` after the resulting production deployment is verified.
 
 ## Current blockers
 
-- None. Task 10 remains in progress while automated deployment, preview, branch protection, rollback, and milestone evidence are completed.
+- GitHub requires the repository owner to re-enter their password before the prepared `main` branch protection rule can be saved. All other Task 10 acceptance evidence is complete.

@@ -1,6 +1,6 @@
 # Task 10 — GitHub CI and deployment
 
-Status: In progress — public Workers release verified; automated GitHub deployment, rollback evidence, and tagging remain
+Status: In progress — CI, preview/production deployment, and rollback are verified; branch protection and milestone tagging remain
 
 Depends on: Task 09
 
