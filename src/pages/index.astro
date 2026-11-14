@@ -18,25 +18,8 @@ if (!firstStory) throw new Error("The public journal needs one published story."
   <SiteHeader active="stories" />
 
   <main id="main-content" class="app-shell">
-    <aside class="side-rail" aria-label="Journal sections">
-      <p class="rail-label">Explore</p>
-      <a class="is-active" href="#map-discovery">Latest map</a>
-      <a href="#stories">Recent stories</a>
-      <a href="/privacy">Privacy</a>
-      <p class="rail-note">A quiet record of where I went and when.</p>
-    </aside>
-
     <div class="page-canvas">
-      <section class="page-intro" aria-labelledby="page-title">
-        <div>
-          <p class="eyebrow">Auckland, New Zealand</p>
-          <h1 id="page-title">Every place holds a dated story.</h1>
-        </div>
-        <p>
-          Browse Leonna’s travel notes by map, place, and visit date. The first published entry is
-          a sunny memory from Sandy Beach.
-        </p>
-      </section>
+      <h1 class="sr-only">Leonna’s travel map and stories</h1>
 
       <DiscoveryControls />
 

@@ -12,17 +12,7 @@ const hasExactLocation = coordinates !== null;
   <div class="map-discovery-heading">
     <div>
       <p class="eyebrow">Map journal</p>
-      <h2 id="map-title">Explore Auckland</h2>
-      {
-        hasExactLocation ? (
-          <p>This point marks a visit location verified from the original media.</p>
-        ) : (
-          <p>
-            The outlined area contains a published visit. It does not mean every part of Auckland
-            has been explored.
-          </p>
-        )
-      }
+      <h2 id="map-title">Explore the map</h2>
     </div>
     <div class="view-jumps" aria-label="Choose a discovery view">
       <a class="chip is-active" href="#interactive-map">Map view</a>
@@ -30,11 +20,11 @@ const hasExactLocation = coordinates !== null;
     </div>
   </div>
 
-  <nav class="geo-trail" aria-label="Geographic levels">
-    <a href="/areas/world">World</a><span aria-hidden="true">›</span>
-    <a href="/areas/new-zealand">New Zealand</a><span aria-hidden="true">›</span>
-    <a class="is-active" href="/areas/auckland" aria-current="location">Auckland</a>
-  </nav>
+  <div class="geo-trail" role="group" aria-label="Map scope">
+    <button type="button" data-map-scope data-latitude="15" data-longitude="0" data-zoom="2">World</button>
+    <button class="is-active" type="button" data-map-scope data-latitude="-41.2" data-longitude="174.7" data-zoom="5" aria-pressed="true">New Zealand</button>
+    <button type="button" data-map-scope data-latitude="-36.85" data-longitude="174.76" data-zoom="10">Auckland</button>
+  </div>
 
   <div class="map-and-list">
     <div class="interactive-map-panel">
@@ -52,7 +42,7 @@ const hasExactLocation = coordinates !== null;
         data-longitude={coordinates?.longitude}
         role="region"
         aria-label={hasExactLocation
-          ? `Interactive map centered on the verified ${view.place.name} visit location.`
+          ? `Interactive map showing New Zealand with the verified ${view.place.name} visit location.`
           : `Interactive map centered on the Auckland area. The outlined marker represents one published visit; ${view.place.name}'s exact position is pending verification.`}
       >
         <p class="map-loading">Loading the Auckland map…</p>
@@ -138,11 +128,12 @@ const hasExactLocation = coordinates !== null;
     const hasExactLocation = Number.isFinite(latitude) && Number.isFinite(longitude);
     const aucklandOverview = L.latLng(-36.85, 174.76);
     const markerPosition = hasExactLocation ? L.latLng(latitude, longitude) : aucklandOverview;
+    const newZealandOverview = L.latLng(-41.2, 174.7);
     const map = L.map(element, {
       keyboard: true,
       scrollWheelZoom: false,
       zoomControl: true,
-    }).setView(markerPosition, hasExactLocation ? 15 : 10);
+    }).setView(newZealandOverview, 5);
 
     L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution:
@@ -185,6 +176,23 @@ const hasExactLocation = coordinates !== null;
       offset: [0, -14],
       permanent: true,
     });
+
+    for (const scopeButton of document.querySelectorAll("[data-map-scope]")) {
+      if (!(scopeButton instanceof HTMLButtonElement)) continue;
+      scopeButton.addEventListener("click", () => {
+        const scopeLatitude = Number(scopeButton.dataset.latitude);
+        const scopeLongitude = Number(scopeButton.dataset.longitude);
+        const scopeZoom = Number(scopeButton.dataset.zoom);
+        if (!Number.isFinite(scopeLatitude) || !Number.isFinite(scopeLongitude) || !Number.isFinite(scopeZoom)) return;
+        map.setView([scopeLatitude, scopeLongitude], scopeZoom);
+        for (const button of document.querySelectorAll("[data-map-scope]")) {
+          if (!(button instanceof HTMLButtonElement)) continue;
+          const active = button === scopeButton;
+          button.classList.toggle("is-active", active);
+          button.setAttribute("aria-pressed", String(active));
+        }
+      });
+    }
 
     const markerElement = areaMarker.getElement();
     markerElement?.setAttribute("role", "button");
