@@ -76,7 +76,13 @@ const structuredData = {
     <article>
       <header class="story-hero">
         <div>
-          <p class="eyebrow">{view.place.name} · {view.area.name}</p>
+          <div class="story-context">
+            <p class="eyebrow">{view.place.name} · {view.area.name}</p>
+            <nav aria-label="Related location pages">
+              <a href={`/places/${view.place.slug}`} data-preserve-discovery data-base-href={`/places/${view.place.slug}`}>More at this place</a>
+              <a href={`/areas/${view.area.slug}`} data-preserve-discovery data-base-href={`/areas/${view.area.slug}`}>More in this area</a>
+            </nav>
+          </div>
           <h1>{view.story.title}</h1>
           <p class="story-deck">{view.story.summary}</p>
         </div>
@@ -89,28 +95,10 @@ const structuredData = {
 
       <div class="story-actions">
         <ShareButton title={view.story.title} canonicalPath={storyPath} />
-        <a
-          class="button button--paper"
-          href={`/places/${view.place.slug}`}
-          data-preserve-discovery
-          data-base-href={`/places/${view.place.slug}`}>More at this place</a
-        >
-        <a
-          class="button button--paper"
-          href={`/areas/${view.area.slug}`}
-          data-preserve-discovery
-          data-base-href={`/areas/${view.area.slug}`}>More in this area</a
-        >
-        <SavePlaceButton placeId={view.place.id} placeName={view.place.name} />
+        <SavePlaceButton placeId={view.place.id} placeName={view.place.name} compact iconOnly />
       </div>
 
-      <MediaGallery media={view.media} />
-
-      <section class="story-section story-copy" aria-labelledby="story-title">
-        <p class="eyebrow">The story</p>
-        <h2 id="story-title" class="sr-only">{view.story.title}</h2>
-        {paragraphs.map((paragraph) => <p>{paragraph}</p>)}
-      </section>
+      <MediaGallery media={view.media} passages={paragraphs.flatMap((paragraph) => paragraph.split(/(?<=[.!?])\s+(?=[A-Z])/))} />
 
       {
         placeStories.length > 0 && (

@@ -21,3 +21,21 @@ Role: build-team verification, not an external tester session
 ## Findings
 
 No release-blocking defect was observed in this internal pass. This evidence does not replace the five to ten independent sessions required by Task 11; unfamiliar readers may reveal comprehension and navigation problems that build-team checks cannot.
+
+## T01 remediation QA — 15 November 2026
+
+Environment: local production build, Chromium screenshots plus Chromium/Firefox/WebKit automation
+
+Role: build-team verification, not an independent retest
+
+| Area               | Observed behavior                                                                                                                                                         | Result |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
+| Compact discovery  | At 390×844, search, filter, and clear controls fit in one row; the collapsed form remained under 100 pixels high and the map followed immediately.                        | Pass   |
+| Reduced filters    | One click exposed only Setting, Practicality, Experience, Sort, saved-only, and copy-link controls. Search and select changes applied without an Apply button.            | Pass   |
+| Landing hierarchy  | The duplicate rail and long introduction were absent. Home screenshots at 390×844 and 1440×1000 led with search and a visible map/story path.                             | Pass   |
+| Map scope          | World, New Zealand, and Auckland controls changed the Leaflet scope; New Zealand was the default country view.                                                            | Pass   |
+| Story rhythm       | At 768×900 and 1440×1000, the four exact sentences alternated with two photos and the short video instead of appearing as a separate block below an oversized gallery.    | Pass   |
+| Story actions      | Share, copy, and save rendered as three equal circular icon controls with accessible names. Related-location links appeared beside the Sandy Beach/Auckland context.      | Pass   |
+| Automated coverage | The complete verification chain passed 27 unit tests and 69 browser checks across Chromium, Firefox, and WebKit, including axe scans and the new T01 regression coverage. | Pass   |
+
+The fixes are ready for an independent retest. This internal QA does not change T01's `Pending` retest status.

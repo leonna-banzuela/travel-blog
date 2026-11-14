@@ -137,3 +137,9 @@
 - Decision: Use one manually installed Cloudflare Web Analytics beacon for aggregate page, device, referral, geography, navigation, and real-user performance metrics; publish matching plain-language privacy copy.
 - Rationale: The soft launch needs enough evidence to find device and performance problems without reader accounts, advertising identifiers, custom events, or query-string collection. Cloudflare already hosts the site and documents that Web Analytics does not track individuals across customer sites.
 - Consequence: The public CSP permits only Cloudflare's documented beacon script and reporting origin. Any new vendor, custom event, account feature, or advertising tracker requires a separate privacy/security decision, updated copy, and tests before release.
+
+## 2026-11-15 — Lead with a compact country-scale map and three core filters
+
+- Decision: Remove the duplicate home side rail and introductory hero, lead with one compact live-search row and the map, reduce the public filter drawer to setting, practicality, and experience, and default the map to New Zealand with direct World/New Zealand/Auckland scope controls.
+- Rationale: T01 completed the soft-launch tasks but hesitated at the dense filter drawer and found that duplicated navigation and introductory copy delayed the map and stories. A country-scale starting view also answers the request for geographic context without prematurely building the animated globe.
+- Consequence: Legacy controlled tags remain valid content data, but the first-release discovery UI exposes only the clearest core options. The animated 3D globe remains deferred to Task 14 as planned.

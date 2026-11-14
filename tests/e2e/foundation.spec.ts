@@ -5,10 +5,10 @@ test("renders the read-only travel journal foundation", async ({ page }) => {
 
   await expect(page).toHaveTitle("Travel stories by Leonna Banzuela");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-    "Every place holds a dated story.",
+    "Leonna’s travel map and stories",
   );
   await expect(
-    page.getByRole("heading", { name: "Explore Auckland" }),
+    page.getByRole("heading", { name: "Explore the map" }),
   ).toBeVisible();
   await expect(
     page.getByRole("link", { name: /travel journal home/i }),
@@ -49,8 +49,37 @@ test("layout reflows at 200 percent text zoom", async ({ page }) => {
   }));
   expect(layout.bodyWidth).toBeLessThanOrEqual(layout.viewportWidth);
   await expect(
-    page.getByRole("heading", { name: "Explore Auckland" }),
+    page.getByRole("heading", { name: "Explore the map" }),
   ).toBeVisible();
+});
+
+test("soft-launch discovery stays compact and exposes the reduced filters in one click", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+
+  await expect(page.locator(".side-rail")).toHaveCount(0);
+  await expect(page.getByText("Every place holds a dated story.")).toHaveCount(
+    0,
+  );
+  const controls = await page.locator("[data-discovery-form]").boundingBox();
+  expect(controls?.height).toBeLessThanOrEqual(100);
+
+  await page.locator('summary[aria-label="Show filters"]').click();
+  await expect(page.getByLabel("Setting")).toBeVisible();
+  await expect(page.getByLabel("Practicality")).toBeVisible();
+  await expect(page.getByLabel("Experience")).toBeVisible();
+  await expect(page.getByLabel("Category")).toHaveCount(0);
+  await expect(page.getByLabel("Climate")).toHaveCount(0);
+  await expect(page.getByLabel("Facilities")).toHaveCount(0);
+
+  await page.locator('summary[aria-label="Show filters"]').click();
+  await page.getByRole("button", { name: "World" }).click();
+  await expect(page.getByRole("button", { name: "World" })).toHaveAttribute(
+    "aria-pressed",
+    "true",
+  );
 });
 
 test("reader can discover and open the Sandy Beach story", async ({ page }) => {
@@ -66,8 +95,13 @@ test("reader can discover and open the Sandy Beach story", async ({ page }) => {
   await expect(page.getByText("Visited on")).toBeVisible();
   await expect(page.getByText("1 November 2026")).toBeVisible();
   await expect(page.getByRole("button", { name: "Share story" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Copy link" })).toBeVisible();
   await expect(
-    page.getByRole("heading", { name: "Photos and videos" }),
+    page.getByRole("button", { name: "Save Sandy Beach" }),
+  ).toBeVisible();
+  await expect(page.locator(".story-moment")).toHaveCount(3);
+  await expect(
+    page.getByRole("heading", { name: "Photos, videos, and story" }),
   ).toBeVisible();
   await expect(
     page.getByRole("img", { name: /broad-canopied tree/i }),
@@ -100,7 +134,10 @@ test("direct story route has metadata and connected reading pages", async ({
     "content",
     "summary_large_image",
   );
-  await expect(page.locator(".story-copy p:not(.eyebrow)")).toHaveText(
+  const storyCopy = await page
+    .locator(".story-copy .story-passage")
+    .allTextContents();
+  expect(storyCopy.join(" ")).toBe(
     "Sandy Beach was a lovely place to slow down and enjoy the Auckland coast. The water looked so inviting that I really wanted to go for a swim. Unfortunately, I had not brought my swimsuit, so I could not get in. I still had a nice time taking in the view and would happily return better prepared.",
   );
 
@@ -141,14 +178,14 @@ test("map and accessible list provide the same discovery path", async ({
   await page.goto("/");
 
   const map = page.getByRole("region", {
-    name: /interactive map centered on the verified Sandy Beach visit location/i,
+    name: /interactive map showing New Zealand with the verified Sandy Beach visit location/i,
   });
   await expect(map).toBeVisible();
   await expect(
     page.getByRole("link", { name: "OpenStreetMap contributors" }).first(),
   ).toBeVisible();
-  await expect(page.getByRole("link", { name: "World" })).toBeVisible();
-  await expect(page.getByRole("link", { name: "New Zealand" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "World" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "New Zealand" })).toBeVisible();
   await expect(
     page.getByText("Verified visit location", { exact: true }),
   ).toBeVisible();
@@ -195,9 +232,9 @@ test("combined discovery filters are URL-shareable and keep map and list in sync
     /setting=beach.*experience=relaxing|experience=relaxing.*setting=beach/,
   );
 
-  await page.getByText("More filters", { exact: true }).click();
-  await page.getByLabel("Experience").selectOption("adventure");
-  await expect(page).toHaveURL(/experience=adventure/);
+  await page.locator('summary[aria-label="Show filters"]').click();
+  await page.getByLabel("Experience").selectOption("exciting");
+  await expect(page).toHaveURL(/experience=exciting/);
   await expect(
     page.getByText("No stories match those filters", { exact: true }),
   ).toBeVisible();
@@ -205,7 +242,7 @@ test("combined discovery filters are URL-shareable and keep map and list in sync
     page.getByRole("heading", { name: "No matching places" }),
   ).toBeVisible();
 
-  await page.getByRole("button", { name: "Clear filters" }).click();
+  await page.locator("[data-clear-filters]").click();
   await expect(page.getByText("1 story shown", { exact: true })).toBeVisible();
   await expect(page).not.toHaveURL(/experience=/);
 });
@@ -232,6 +269,7 @@ test("search and saved places work without an account", async ({ page }) => {
       localStorage.getItem("leonna-travel-blog:saved-places:v1"),
     ),
   ).toContain("sandy-beach-auckland");
+  await page.locator('summary[aria-label="Show filters"]').click();
   await page.getByLabel("Saved places only").check();
   await expect(page).toHaveURL(/saved=1/);
   await expect(

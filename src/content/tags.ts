@@ -12,6 +12,7 @@ export const controlledTagValues = [
   "forest",
   "mountains",
   "city",
+  "exciting",
   "relaxing",
   "adventure",
   "adrenaline",
@@ -36,7 +37,7 @@ export const controlledTagGroups = {
   foodAndDrink: ["restaurant", "cafe", "bakery", "street-food"],
   studyAndWork: ["study-spot", "laptop-friendly", "library", "coworking"],
   setting: ["nature", "beach", "forest", "mountains", "city"],
-  experience: ["relaxing", "adventure", "adrenaline", "cultural"],
+  experience: ["exciting", "relaxing", "adventure", "adrenaline", "cultural"],
   climate: ["hot", "warm", "cool", "cold"],
   practicalNeeds: [
     "free-entry",

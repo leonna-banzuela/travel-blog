@@ -1,14 +1,33 @@
 ---
-import { controlledTagGroups } from "../content/tags";
-
-const categoryTags = [...controlledTagGroups.foodAndDrink, ...controlledTagGroups.studyAndWork];
 const groups = [
-  { key: "category", label: "Category", tags: categoryTags },
-  { key: "setting", label: "Setting", tags: controlledTagGroups.setting },
-  { key: "experience", label: "Experience", tags: controlledTagGroups.experience },
-  { key: "climate", label: "Climate", tags: controlledTagGroups.climate },
-  { key: "practical", label: "Practical", tags: controlledTagGroups.practicalNeeds },
-  { key: "facilities", label: "Facilities", tags: controlledTagGroups.studyFacilities },
+  {
+    key: "setting",
+    label: "Setting",
+    options: [
+      ["city", "City"],
+      ["restaurant", "Restaurant"],
+      ["beach", "Beach"],
+      ["nature", "Nature"],
+    ],
+  },
+  {
+    key: "practical",
+    label: "Practicality",
+    options: [
+      ["budget-friendly", "Budget-friendly"],
+      ["free-entry", "Free"],
+      ["indoor", "Indoor"],
+      ["outdoor", "Outdoor"],
+    ],
+  },
+  {
+    key: "experience",
+    label: "Experience",
+    options: [
+      ["exciting", "Exciting"],
+      ["relaxing", "Relaxing"],
+    ],
+  },
 ];
 const { preview = false } = Astro.props;
 ---
@@ -22,54 +41,61 @@ const { preview = false } = Astro.props;
 >
   <div class="discovery-primary-row">
     <label class="search-field">
-      <span>Search</span>
+      <span class="sr-only">Search stories</span>
       <span class="search-input-wrap">
         <span aria-hidden="true">⌕</span>
-        <input type="search" name="q" placeholder="Place, story, creator, or tag" autocomplete="off" />
+        <input type="search" name="q" placeholder="Search places and stories" autocomplete="off" />
       </span>
     </label>
 
-    <label>
-      <span>Sort</span>
-      <select name="sort">
-        <option value="newest">Newest visit</option>
-        <option value="oldest">Oldest visit</option>
-        <option value="rating">Highest rating</option>
-      </select>
-    </label>
-
-    <button class="button button--ink" type="submit">Apply</button>
-    <button class="button button--paper" type="button" data-clear-filters>Clear</button>
-  </div>
-
-  <details class="filter-drawer">
-    <summary>More filters</summary>
-    <div class="filter-grid">
-      {
-        groups.map((group) => (
-          <label>
-            <span>{group.label}</span>
-            <select name={group.key}>
-              <option value="">Any</option>
-              {group.tags.map((tag) => (
-                <option value={tag}>{tag.replaceAll("-", " ")}</option>
-              ))}
+    <details class="filter-drawer">
+      <summary aria-label="Show filters">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M7 12h10M10 17h4" /></svg>
+        <span>Filters</span>
+      </summary>
+      <div class="filter-panel">
+        <div class="filter-grid">
+          {
+            groups.map((group) => (
+              <label>
+                <span>{group.label}</span>
+                <select name={group.key}>
+                  <option value="">Any</option>
+                  {group.options.map(([value, label]) => (
+                    <option value={value}>{label}</option>
+                  ))}
+                </select>
+              </label>
+            ))
+          }
+        </div>
+        <div class="filter-panel-footer">
+          <label class="sort-filter">
+            <span>Sort</span>
+            <select name="sort">
+              <option value="newest">Newest visit</option>
+              <option value="oldest">Oldest visit</option>
+              <option value="rating">Highest rating</option>
             </select>
           </label>
-        ))
-      }
-    </div>
-  </details>
+          <label class="saved-filter">
+            <input type="checkbox" name="saved" value="1" aria-label="Saved places only" />
+            <span>Saved only</span>
+          </label>
+          <button class="text-button" type="button" data-copy-discovery>Copy filtered link</button>
+        </div>
+      </div>
+    </details>
+
+    <button class="icon-button clear-filters" type="button" data-clear-filters aria-label="Clear filters" title="Clear filters">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
+    </button>
+  </div>
 
   <div class="discovery-meta-row">
-    <label class="saved-filter">
-      <input type="checkbox" name="saved" value="1" />
-      <span>Saved places only</span>
-    </label>
     <p data-discovery-count role="status" aria-live="polite">Showing all stories</p>
-    <button class="text-button" type="button" data-copy-discovery>Copy filtered link</button>
+    <p class="filter-privacy">Saved places stay in this browser.</p>
   </div>
-  <p class="filter-privacy">Saved places stay in this browser. No account or cloud sync.</p>
 </form>
 
 <section class="state-panel discovery-empty" data-discovery-empty hidden aria-live="polite">
@@ -80,12 +106,9 @@ const { preview = false } = Astro.props;
 
 <script>
   const allowedSelects = new Map([
-    ["category", ["restaurant", "cafe", "bakery", "street-food", "study-spot", "laptop-friendly", "library", "coworking"]],
-    ["setting", ["nature", "beach", "forest", "mountains", "city"]],
-    ["experience", ["relaxing", "adventure", "adrenaline", "cultural"]],
-    ["climate", ["hot", "warm", "cool", "cold"]],
-    ["practical", ["free-entry", "budget-friendly", "family-friendly", "indoor", "outdoor"]],
-    ["facilities", ["wifi", "power-outlets", "quiet-space"]],
+    ["setting", ["city", "restaurant", "beach", "nature"]],
+    ["practical", ["budget-friendly", "free-entry", "indoor", "outdoor"]],
+    ["experience", ["exciting", "relaxing"]],
     ["sort", ["newest", "oldest", "rating"]],
   ]);
   const storageKey = "leonna-travel-blog:saved-places:v1";
@@ -224,6 +247,7 @@ const { preview = false } = Astro.props;
       apply();
     });
     discoveryForm.addEventListener("change", () => apply());
+    if (search instanceof HTMLInputElement) search.addEventListener("input", () => apply());
     discoveryForm.querySelector("[data-clear-filters]")?.addEventListener("click", clearFilters);
     document.querySelector("[data-empty-clear]")?.addEventListener("click", clearFilters);
     discoveryForm

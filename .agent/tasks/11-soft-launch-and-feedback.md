@@ -1,6 +1,6 @@
 # Task 11 — Soft launch and feedback
 
-Status: In progress — analytics/privacy and launch materials are prepared; observed tester sessions remain
+Status: In progress — T01 findings are fixed and internally verified; four more tester sessions and independent retest remain
 
 Depends on: Task 10
 

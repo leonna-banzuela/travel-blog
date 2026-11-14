@@ -1,17 +1,20 @@
 ---
-const { placeId, placeName, compact = false } = Astro.props;
+const { placeId, placeName, compact = false, iconOnly = false } = Astro.props;
 ---
 
-<div class:list={["save-place", { "save-place--compact": compact }] }>
+<div class:list={["save-place", { "save-place--compact": compact, "save-place--icon": iconOnly }] }>
   <button
-    class="button button--paper"
+    class:list={["button", "button--paper", { "icon-button": iconOnly }]}
     type="button"
     data-save-place
     data-place-id={placeId}
     data-place-name={placeName}
     aria-pressed="false"
+    aria-label={iconOnly ? `Save ${placeName}` : undefined}
+    title={iconOnly ? `Save ${placeName}` : undefined}
   >
-    Save {placeName}
+    {iconOnly && <svg viewBox="0 0 24 24" aria-hidden="true"><path data-save-icon d="M12 20.5 4.8 13.8A5.2 5.2 0 0 1 12 6.3a5.2 5.2 0 0 1 7.2 7.5Z" /></svg>}
+    <span class:list={{ "sr-only": iconOnly }} data-save-label>Save {placeName}</span>
   </button>
   {!compact && <p>Saved only in this browser. No account or cloud sync.</p>}
 </div>
@@ -41,7 +44,15 @@ const { placeId, placeName, compact = false } = Astro.props;
       const placeName = element.dataset.placeName ?? "place";
       const isSaved = saved.has(placeId);
       element.setAttribute("aria-pressed", String(isSaved));
-      element.textContent = isSaved ? `Saved: ${placeName}` : `Save ${placeName}`;
+      const label = isSaved ? `Saved: ${placeName}` : `Save ${placeName}`;
+      element.setAttribute("aria-label", label);
+      element.setAttribute("title", label);
+      const labelElement = element.querySelector("[data-save-label]");
+      if (labelElement instanceof HTMLElement) labelElement.textContent = label;
+      const icon = element.querySelector("[data-save-icon]");
+      if (icon instanceof SVGPathElement) {
+        icon.setAttribute("fill", isSaved ? "currentColor" : "none");
+      }
     }
   }
 
@@ -58,7 +69,10 @@ const { placeId, placeName, compact = false } = Astro.props;
         refreshButtons();
         window.dispatchEvent(new CustomEvent("travel:savedplaceschange"));
       } catch {
-        element.textContent = "Saving is unavailable in this browser";
+        const message = "Saving is unavailable in this browser";
+        element.setAttribute("aria-label", message);
+        const label = element.querySelector("[data-save-label]");
+        if (label instanceof HTMLElement) label.textContent = message;
       }
     });
   }

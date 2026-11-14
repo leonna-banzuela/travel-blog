@@ -4,20 +4,21 @@ import { mediaSchema } from "../content/schemas";
 import ResponsiveImage from "./ResponsiveImage.astro";
 
 const media = mediaSchema.array().parse(Astro.props.media);
+const passages = Array.isArray(Astro.props.passages)
+  ? Astro.props.passages.filter((passage) => typeof passage === "string")
+  : [];
 ---
 
 {
   media.length > 0 && (
-    <section class="story-section" aria-labelledby="gallery-title">
-      <div class="section-heading reading-heading">
-        <div>
-          <p class="eyebrow">From the visit</p>
-          <h2 id="gallery-title">Photos and videos</h2>
-        </div>
-      </div>
-      <div class="media-gallery">
-        {media.map((item) => (
-          <figure class:list={["media-item", `media-item--${item.kind}`]}>
+    <section class="story-section story-journey" aria-labelledby="gallery-title">
+      <p class="eyebrow">The story</p>
+      <h2 id="gallery-title" class="sr-only">Photos, videos, and story</h2>
+      <div class="media-gallery story-copy">
+        {media.map((item, index) => (
+          <div class:list={["story-moment", { "story-moment--reverse": index % 2 === 1 }] }>
+            {passages[index] && <p class="story-passage">{passages[index]}</p>}
+            <figure class:list={["media-item", `media-item--${item.kind}`]}>
             {item.kind === "image" && (
               <ResponsiveImage
                 media={item}
@@ -40,8 +41,14 @@ const media = mediaSchema.array().parse(Astro.props.media);
               />
             )}
             {item.caption && <figcaption>{item.caption}</figcaption>}
-          </figure>
+            </figure>
+          </div>
         ))}
+        {passages.length > media.length && (
+          <div class="story-closing">
+            {passages.slice(media.length).map((passage) => <p class="story-passage">{passage}</p>)}
+          </div>
+        )}
       </div>
     </section>
   )
