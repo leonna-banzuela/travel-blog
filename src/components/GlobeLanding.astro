@@ -1,0 +1,45 @@
+---
+const { view } = Astro.props;
+const coordinates = view.place.coordinates;
+if (!coordinates) throw new Error("The globe landing needs a verified story location.");
+---
+
+<section id="globe-explorer" class="globe-landing" aria-labelledby="globe-title">
+  <div class="globe-stage" aria-hidden="true">
+    <canvas
+      data-story-globe
+      data-latitude={coordinates.latitude}
+      data-longitude={coordinates.longitude}
+    ></canvas>
+    <div class="globe-fallback"></div>
+  </div>
+
+  <div class="globe-copy">
+    <p class="eyebrow">A journal mapped by memory</p>
+    <h1 id="globe-title">Leonna’s Travel Journal</h1>
+    <p>Personal stories, photographs, and practical notes from every dated visit.</p>
+    <a class="button globe-cta" href="#latest-story">Start exploring</a>
+  </div>
+
+  <p class="globe-instruction">Drag the globe or use the arrow keys</p>
+  <a class="globe-story-marker" href={`/stories/${view.story.slug}`}>
+    <span aria-hidden="true"></span>
+    <small>{view.place.addressSummary}</small>
+    <strong>{view.place.name} · 1 story</strong>
+  </a>
+
+  <div
+    class="globe-keyboard-control"
+    role="region"
+    tabindex="0"
+    aria-label={`Interactive 3D globe. A glowing marker identifies ${view.place.name}, ${view.place.addressSummary}. Drag to rotate or use the arrow keys.`}
+    data-globe-control
+  ></div>
+  <p class="sr-only" aria-live="polite" data-globe-status>
+    The globe is loading. The Sandy Beach story remains available through the location link.
+  </p>
+</section>
+
+<script>
+  import "../scripts/globe";
+</script>

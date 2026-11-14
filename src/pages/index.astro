@@ -1,6 +1,5 @@
 ---
-import DiscoveryControls from "../components/DiscoveryControls.astro";
-import MapDiscovery from "../components/MapDiscovery.astro";
+import GlobeLanding from "../components/GlobeLanding.astro";
 import SiteHeader from "../components/SiteHeader.astro";
 import StoryCard from "../components/StoryCard.astro";
 import { storyViews } from "../content/public-content";
@@ -12,20 +11,16 @@ if (!firstStory) throw new Error("The public journal needs one published story."
 ---
 
 <BaseLayout
-  title="Travel stories by Leonna Banzuela"
-  description="A map-first editorial travel journal beginning with Auckland."
+  title="Leonna’s Travel Journal"
+  description="Personal, date-specific travel stories discovered through an interactive globe."
 >
-  <SiteHeader active="stories" />
+  <SiteHeader active="home" />
 
   <main id="main-content" class="app-shell">
-    <div class="page-canvas">
-      <h1 class="sr-only">Leonna’s travel map and stories</h1>
+    <div class="page-canvas page-canvas--landing">
+      <GlobeLanding view={firstStory} />
 
-      <DiscoveryControls />
-
-      <MapDiscovery view={firstStory} />
-
-      <section id="stories" class="section-block" aria-labelledby="stories-title">
+      <section id="latest-story" class="section-block" aria-labelledby="stories-title">
         <div class="section-heading">
           <div>
             <p class="eyebrow">From the notebook</p>

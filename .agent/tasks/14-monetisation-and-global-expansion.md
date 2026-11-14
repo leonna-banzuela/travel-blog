@@ -12,7 +12,7 @@ Expand countries and introduce sustainable revenue without compromising editoria
 
 - Use observed readership, storage, support, and revenue data to decide whether this task is justified.
 - Add new countries/regions through the same verified place/story model and accessible list fallback.
-- Add the globe/beacon view only when enough geographically diverse content makes it useful.
+- Extend the established globe with multiple story beacons, progressive geographic navigation, and clustering only when enough geographically diverse content makes those controls useful.
 - Trial discreet, clearly labelled ads or sponsorships outside core map controls; keep ratings editorially independent.
 - Measure performance, reader impact, revenue, and creator impact; provide rollback/disable controls.
 - Add a custom domain and production services only with documented costs, ownership, and recovery.

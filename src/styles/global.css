@@ -232,6 +232,185 @@ a {
   padding: clamp(1.25rem, 3vw, 3rem);
 }
 
+.page-canvas--landing {
+  padding-top: clamp(1rem, 2vw, 1.75rem);
+}
+
+.globe-landing {
+  position: relative;
+  isolation: isolate;
+  min-height: clamp(35rem, calc(100svh - 7rem), 48rem);
+  overflow: hidden;
+  border: 1px solid rgb(83 57 47 / 35%);
+  background:
+    radial-gradient(circle at 50% 14%, rgb(255 242 220 / 70%), transparent 26%),
+    linear-gradient(145deg, #ad8d7d 0%, #846f69 52%, #675a59 100%);
+  box-shadow: var(--shadow-md);
+}
+
+.globe-landing::after {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  background:
+    linear-gradient(
+      180deg,
+      rgb(45 32 29 / 9%),
+      transparent 26%,
+      rgb(44 31 29 / 18%)
+    ),
+    radial-gradient(circle at center, transparent 42%, rgb(43 31 30 / 28%) 100%);
+  content: "";
+  pointer-events: none;
+}
+
+.globe-stage,
+.globe-stage canvas,
+.globe-fallback,
+.globe-keyboard-control {
+  position: absolute;
+  inset: 0;
+}
+
+.globe-stage {
+  z-index: 0;
+}
+
+.globe-stage canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.globe-fallback {
+  z-index: -1;
+  width: min(70vw, 44rem);
+  height: min(70vw, 44rem);
+  margin: auto auto -17rem;
+  border: 1px solid rgb(255 241 218 / 74%);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 35% 27%,
+    #fff3dc 0,
+    #dfad8f 54%,
+    #8f645d 100%
+  );
+  box-shadow: 0 2rem 5rem rgb(40 24 20 / 40%);
+}
+
+.globe-copy {
+  position: absolute;
+  z-index: 3;
+  top: 43%;
+  left: 50%;
+  width: min(94%, 76rem);
+  color: #211f1d;
+  text-align: center;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.globe-copy .eyebrow {
+  color: #5f3227;
+}
+
+.globe-copy h1 {
+  margin: 0.35rem 0 1rem;
+  font-size: clamp(3.25rem, 8vw, 7.6rem);
+  font-weight: 400;
+  line-height: 0.92;
+  letter-spacing: -0.055em;
+  text-wrap: balance;
+}
+
+.globe-copy > p:not(.eyebrow) {
+  max-width: 47rem;
+  margin: 0 auto;
+  font: 500 clamp(1rem, 1.7vw, 1.35rem)/1.55 var(--font-ui);
+  text-wrap: balance;
+}
+
+.globe-cta {
+  min-width: 11rem;
+  margin-top: 1.6rem;
+  border-color: var(--ink);
+  border-radius: 99rem;
+  background: var(--terracotta);
+  color: var(--paper-bright);
+  pointer-events: auto;
+}
+
+.globe-cta:hover {
+  background: var(--terracotta-dark);
+}
+
+.globe-instruction {
+  position: absolute;
+  z-index: 4;
+  bottom: 1rem;
+  left: 1rem;
+  margin: 0;
+  color: rgb(255 253 247 / 82%);
+  font: 700 0.68rem/1.4 var(--font-ui);
+  letter-spacing: 0.04em;
+}
+
+.globe-story-marker {
+  position: absolute;
+  z-index: 4;
+  right: 1rem;
+  bottom: 1rem;
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 0.1rem 0.6rem;
+  align-items: center;
+  padding: 0.65rem 0.8rem;
+  border: 1px solid rgb(255 253 247 / 46%);
+  border-radius: var(--radius-sm);
+  background: rgb(37 30 28 / 72%);
+  color: var(--paper-bright);
+  font-family: var(--font-ui);
+  text-decoration: none;
+  backdrop-filter: blur(0.5rem);
+}
+
+.globe-story-marker > span {
+  grid-row: 1 / 3;
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  background: #fff3a8;
+  box-shadow: 0 0 1rem #ffe878;
+}
+
+.globe-story-marker small {
+  color: rgb(255 253 247 / 72%);
+  font-size: 0.66rem;
+}
+
+.globe-story-marker strong {
+  font-size: 0.78rem;
+}
+
+.globe-story-marker:hover {
+  background: rgb(37 30 28 / 90%);
+}
+
+.globe-keyboard-control {
+  z-index: 2;
+  cursor: grab;
+  touch-action: none;
+}
+
+.globe-keyboard-control.is-dragging {
+  cursor: grabbing;
+}
+
+.globe-keyboard-control:focus-visible {
+  inset: 0.35rem;
+  outline-color: #fff3a8;
+}
+
 .page-intro {
   display: grid;
   grid-template-columns: minmax(0, 1.2fr) minmax(16rem, 0.65fr);
@@ -1680,6 +1859,44 @@ a {
     padding: 1rem;
   }
 
+  .page-canvas--landing {
+    padding: 0.75rem;
+  }
+
+  .globe-landing {
+    min-height: min(43rem, calc(100svh - 7.75rem));
+  }
+
+  .globe-copy {
+    top: 39%;
+    width: calc(100% - 2rem);
+  }
+
+  .globe-copy h1 {
+    margin-bottom: 0.75rem;
+    font-size: clamp(2.75rem, 14vw, 4.5rem);
+  }
+
+  .globe-copy > p:not(.eyebrow) {
+    max-width: 30ch;
+    font-size: 0.95rem;
+  }
+
+  .globe-cta {
+    margin-top: 1.1rem;
+  }
+
+  .globe-instruction {
+    display: none;
+  }
+
+  .globe-story-marker {
+    right: 0.75rem;
+    bottom: 0.75rem;
+    left: 0.75rem;
+    justify-content: center;
+  }
+
   .map-discovery-heading {
     align-items: flex-start;
     flex-direction: column;
@@ -1826,7 +2043,8 @@ a {
 @media (prefers-reduced-motion: no-preference) {
   .skip-link,
   .button,
-  .primary-nav a {
+  .primary-nav a,
+  .globe-story-marker {
     transition:
       color 150ms ease,
       background-color 150ms ease,
@@ -1851,6 +2069,7 @@ a {
 
 @media (forced-colors: active) {
   .map-panel,
+  .globe-landing,
   .card-image-placeholder,
   .sticky-note,
   .state-panel {
