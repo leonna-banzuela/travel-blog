@@ -42,7 +42,7 @@ One independent tester session has been reported. Automated checks and owner QA 
 - Expected behavior: The core filters should be understandable after one click and should not push the map and stories far down the page, especially on mobile.
 - Severity: S3 medium
 - Evidence: Owner-provided observation from the T01 session.
-- Resolution commit/PR: Implemented on `codex/task-11-t01-fixes`; full internal verification passed.
+- Resolution commit/PR: PR #7, merged as `aa26f7c`; production run `43646551520` passed.
 - Retest evidence: Pending independent retest.
 
 ### F-002 — Desktop story media overwhelms the writing
@@ -55,7 +55,7 @@ One independent tester session has been reported. Automated checks and owner QA 
 - Expected behavior: Photography and writing should share the visual hierarchy and maintain a comfortable reading rhythm.
 - Severity: S3 medium
 - Evidence: Owner-provided observation from the T01 session.
-- Resolution commit/PR: Implemented on `codex/task-11-t01-fixes`; full internal verification passed.
+- Resolution commit/PR: PR #7, merged as `aa26f7c`; production run `43646551520` passed.
 - Retest evidence: Pending independent retest.
 
 ### F-003 — Story actions have inconsistent hierarchy and sizing
@@ -68,7 +68,7 @@ One independent tester session has been reported. Automated checks and owner QA 
 - Expected behavior: Utility actions should have consistent sizing while contextual navigation should appear with the location context.
 - Severity: S3 medium
 - Evidence: Owner-provided observation from the T01 session.
-- Resolution commit/PR: Implemented on `codex/task-11-t01-fixes`; full internal verification passed.
+- Resolution commit/PR: PR #7, merged as `aa26f7c`; production run `43646551520` passed.
 - Retest evidence: Pending independent retest.
 
 ### F-004 — Landing page delays the map and repeats navigation
@@ -81,7 +81,7 @@ One independent tester session has been reported. Automated checks and owner QA 
 - Expected behavior: The landing page should lead with a compact search/filter row and the map, without duplicate primary navigation.
 - Severity: S3 medium
 - Evidence: Owner-provided observation from the T01 session.
-- Resolution commit/PR: Implemented on `codex/task-11-t01-fixes`; full internal verification passed.
+- Resolution commit/PR: PR #7, merged as `aa26f7c`; production run `43646551520` passed.
 - Retest evidence: Pending independent retest.
 
 ### F-005 — Landing map scope feels too narrow
@@ -94,5 +94,5 @@ One independent tester session has been reported. Automated checks and owner QA 
 - Expected behavior: The initial map should make geographic scale clear and provide direct world, New Zealand, and Auckland scope controls. The animated globe remains the explicitly deferred Task 14 growth feature.
 - Severity: S4 low
 - Evidence: Owner-provided observation from the T01 session and the recorded implementation plan.
-- Resolution commit/PR: World/New Zealand/Auckland scopes are implemented on `codex/task-11-t01-fixes`; full internal verification passed and the 3D globe remains deferred.
+- Resolution commit/PR: PR #7, merged as `aa26f7c`; production run `43646551520` passed. The 3D globe remains deferred.
 - Retest evidence: Pending independent retest.
