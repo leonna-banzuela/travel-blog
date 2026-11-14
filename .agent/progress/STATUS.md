@@ -146,6 +146,7 @@ Next task: `10-github-ci-and-deployment.md`
 - Preview deployment: pull request #1 run `43507572302` passed `Verify clean checkout` and deployed an isolated Workers preview at `pr-1-leonnas-travel-journal.leonnabanzuela0516.workers.dev`. The preview home and direct Sandy Beach story routes returned 200, included the required story copy, and served the production CSP.
 - Automated production deployment: after pull request #1 merged, run `43508086399` passed verification and deployed Workers version `5d3f5ca2-b4c3-428e-8a51-27150158c5bc` to the public URL.
 - Rollback drill: rolled the live Worker back from `5d3f5ca2-b4c3-428e-8a51-27150158c5bc` to known-good version `debff308-ae76-4663-a6a3-4c6b43f00cdd`; both the home and direct Sandy Beach story routes returned 200 with the story copy and CSP. Restored `5d3f5ca2-b4c3-428e-8a51-27150158c5bc` and reverified both routes, the canonical URL, and security headers.
+- Final release-record PR: pull request #2 run `43541828386` passed the full clean-checkout verification and isolated preview deployment. The preview home and direct story routes returned 200 with CSP; the story contained the required four sentences, author, and visit date.
 - Remaining acceptance work: create the prepared `main` branch protection rule, merge this final Task 10 release record through its required CI/preview path, then tag `v0.1.0` after the resulting production deployment is verified.
 
 ## Current blockers
