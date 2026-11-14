@@ -2,7 +2,7 @@
 
 Last updated: 14 November 2026 (Pacific/Auckland)
 
-Overall status: The first release is live on Cloudflare Workers, verified on mobile and desktop, protected by GitHub CI, and tagged as `v0.1.0`. Task 11 soft launch and feedback is next.
+Overall status: The first release is live, protected, and tagged as `v0.1.0`. Task 11 is in progress with privacy-first analytics, public privacy copy, and soft-launch materials prepared; observed tester sessions remain.
 
 Next task: `11-soft-launch-and-feedback.md`
 
@@ -21,7 +21,7 @@ Next task: `11-soft-launch-and-feedback.md`
 | 08 Filters, search, related content, and sharing          | Complete    | Combinable URL filters, synchronized map/list results, search/sort, local-only saves, canonical sharing, and relationship-based related reading verified.                                                       | Local commit `9404c71`; GitHub repository creation unavailable through the connected GitHub app |
 | 09 Quality, accessibility, SEO, performance, and security | Complete    | Cross-browser axe coverage, crawler/social metadata, feed/sitemap, CSP/headers, production budgets, secret scanning, and recovery instructions verified.                                                        | Local commit `d2889a4`; GitHub repository creation unavailable through the connected GitHub app |
 | 10 GitHub CI and deployment                               | Complete    | Protected GitHub workflow, isolated PR previews, automated production deployment, live route/header checks, rollback recovery, and milestone tag are verified.                                                  | PR #2 merge `00489f8`; tag `v0.1.0`; Workers version `10c4bf62`                                 |
-| 11 Soft launch and feedback                               | Not started | —                                                                                                                                                                                                               | —                                                                                               |
+| 11 Soft launch and feedback                               | In progress | Cloudflare Web Analytics site, matching public privacy copy, tester protocol/log, social package, and release-note draft are prepared. Real sessions with 5–10 testers remain.                                  | Branch `codex/task-11-soft-launch-prep`                                                         |
 | 12 Creator pilot                                          | Not started | Later phase; not first release.                                                                                                                                                                                 | —                                                                                               |
 | 13 Public submissions and moderation                      | Not started | Later phase; requires authentication and authorization.                                                                                                                                                         | —                                                                                               |
 | 14 Monetisation and global expansion                      | Not started | Later phase; only after evidence supports it.                                                                                                                                                                   | —                                                                                               |
@@ -153,4 +153,12 @@ Next task: `11-soft-launch-and-feedback.md`
 
 ## Current blockers
 
-- None. Task 10 is complete and Task 11 is ready.
+- Task 11 requires 5–10 real people who did not build the site. Tester findings and retests cannot be invented or replaced by automated checks; the prepared guide and log are ready for the owner to use.
+
+## Task 11 verification
+
+- Cloudflare Web Analytics: created a site entry for the production Workers hostname and installed its public, non-administrative beacon in the shared layout. The CSP allows only the documented beacon script and reporting origin.
+- Privacy: added an indexed `/privacy` route that documents the exact Cloudflare dimensions, performance timing, retention statement, lack of query-string/custom-event collection, local saved-place storage, and absence of accounts or advertising trackers.
+- Launch kit: added a seven-task tester script, severity rubric, ten anonymized tester slots, structured finding/retest template, direct-link social copy, link-preview alt text, and a release-note/retrospective draft.
+- Automated verification: `npm run verify` passed formatting, lint, type checks, 27 unit tests, the 11-page production build, media/boundary/production/security checks, and 63 browser checks. After adding `/privacy` to the shared axe route list, lint, type checks, build, production verification, and all 21 focused Chromium/Firefox/WebKit accessibility checks passed.
+- Visual QA: inspected `/privacy` at 390×844, 768×900, and 1440×1000 in the built-in browser. The page remained readable with no horizontal overflow at each viewport.

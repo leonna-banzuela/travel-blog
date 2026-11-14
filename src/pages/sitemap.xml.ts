@@ -8,6 +8,7 @@ export function GET({ site }: { site?: URL }) {
   const entries = [
     { path: "/", updatedAt: siteCatalog.stories[0]?.updatedAt },
     { path: "/stories", updatedAt: siteCatalog.stories[0]?.updatedAt },
+    { path: "/privacy", updatedAt: "2026-11-14" },
     ...siteCatalog.areas.map((area) => ({
       path: `/areas/${area.slug}`,
       updatedAt: area.updatedAt,
