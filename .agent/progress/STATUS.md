@@ -2,9 +2,9 @@
 
 Last updated: 14 November 2026 (Pacific/Auckland)
 
-Overall status: The first release is live on Cloudflare Workers and verified on mobile and desktop. GitHub CI, preview/production deployments, environment secrets, and the rollback drill are verified; branch protection and milestone tagging remain.
+Overall status: The first release is live on Cloudflare Workers, verified on mobile and desktop, protected by GitHub CI, and tagged as `v0.1.0`. Task 11 soft launch and feedback is next.
 
-Next task: `10-github-ci-and-deployment.md`
+Next task: `11-soft-launch-and-feedback.md`
 
 ## Task tracker
 
@@ -20,7 +20,7 @@ Next task: `10-github-ci-and-deployment.md`
 | 07 Sandy Beach story and media                            | Complete    | Exact four-sentence story, verified map point, responsive metadata-free photos, silent short video, cover cards, and social image metadata verified.                                                            | Local commit `b3a3521`; GitHub repository creation unavailable through the connected GitHub app |
 | 08 Filters, search, related content, and sharing          | Complete    | Combinable URL filters, synchronized map/list results, search/sort, local-only saves, canonical sharing, and relationship-based related reading verified.                                                       | Local commit `9404c71`; GitHub repository creation unavailable through the connected GitHub app |
 | 09 Quality, accessibility, SEO, performance, and security | Complete    | Cross-browser axe coverage, crawler/social metadata, feed/sitemap, CSP/headers, production budgets, secret scanning, and recovery instructions verified.                                                        | Local commit `d2889a4`; GitHub repository creation unavailable through the connected GitHub app |
-| 10 GitHub CI and deployment                               | In progress | Public repository, clean-checkout CI, isolated PR previews, automated production deployment, and rollback recovery are verified. Branch protection and the milestone tag remain.                                | Repository `leonna-banzuela/travel-blog`; current Workers version `5d3f5ca2`                    |
+| 10 GitHub CI and deployment                               | Complete    | Protected GitHub workflow, isolated PR previews, automated production deployment, live route/header checks, rollback recovery, and milestone tag are verified.                                                  | PR #2 merge `00489f8`; tag `v0.1.0`; Workers version `10c4bf62`                                 |
 | 11 Soft launch and feedback                               | Not started | —                                                                                                                                                                                                               | —                                                                                               |
 | 12 Creator pilot                                          | Not started | Later phase; not first release.                                                                                                                                                                                 | —                                                                                               |
 | 13 Public submissions and moderation                      | Not started | Later phase; requires authentication and authorization.                                                                                                                                                         | —                                                                                               |
@@ -147,8 +147,10 @@ Next task: `10-github-ci-and-deployment.md`
 - Automated production deployment: after pull request #1 merged, run `43508086399` passed verification and deployed Workers version `5d3f5ca2-b4c3-428e-8a51-27150158c5bc` to the public URL.
 - Rollback drill: rolled the live Worker back from `5d3f5ca2-b4c3-428e-8a51-27150158c5bc` to known-good version `debff308-ae76-4663-a6a3-4c6b43f00cdd`; both the home and direct Sandy Beach story routes returned 200 with the story copy and CSP. Restored `5d3f5ca2-b4c3-428e-8a51-27150158c5bc` and reverified both routes, the canonical URL, and security headers.
 - Final release-record PR: pull request #2 run `43541828386` passed the full clean-checkout verification and isolated preview deployment. The preview home and direct story routes returned 200 with CSP; the story contained the required four sentences, author, and visit date.
-- Remaining acceptance work: create the prepared `main` branch protection rule, merge this final Task 10 release record through its required CI/preview path, then tag `v0.1.0` after the resulting production deployment is verified.
+- Protected branch: `main` requires pull requests, the GitHub Actions `Verify clean checkout` status check, and resolved conversations; administrator bypass, force pushes, and branch deletion are disabled. Required approvals remain disabled so the sole owner is not locked out.
+- Protected merge and release: pull request #2 merged as `00489f8`; production run `43542822254` passed verification and deployment, publishing Workers version `10c4bf62-9744-4d24-846c-a6a517ee647b`. The live home and direct Sandy Beach story routes were rechecked with CSP, exact story copy, author, and visit date present.
+- Milestone: annotated tag `v0.1.0` points to the verified pull request #2 merge and is present on GitHub.
 
 ## Current blockers
 
-- GitHub requires the repository owner to re-enter their password before the prepared `main` branch protection rule can be saved. All other Task 10 acceptance evidence is complete.
+- None. Task 10 is complete and Task 11 is ready.

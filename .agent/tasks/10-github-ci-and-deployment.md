@@ -1,6 +1,6 @@
 # Task 10 — GitHub CI and deployment
 
-Status: In progress — CI, preview/production deployment, and rollback are verified; branch protection and milestone tagging remain
+Status: Complete — protected CI, preview/production deployment, rollback, live verification, and `v0.1.0` are verified
 
 Depends on: Task 09
 
